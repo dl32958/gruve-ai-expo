@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 
 
 def clean_ocr_text(text: str) -> str:
-    """Light cleanup: normalize whitespace and strip weird spacing."""
+    """Minimal OCR text cleanup for extraction input."""
     if text is None:
         return ""
     text = text.replace("\r\n", "\n").replace("\r", "\n")
@@ -79,40 +79,14 @@ def extract_first_json_object(s: str) -> Optional[Dict[str, Any]]:
     return None
 
 
-def normalize_date_ddmmyyyy(date_str: Optional[str]) -> Optional[str]:
-    """If date contains time, try to keep DD/MM/YYYY only."""
-    if date_str is None:
-        return None
-    date_str = date_str.strip()
-    m = re.search(r"(\d{2}/\d{2}/\d{4})", date_str)
-    return m.group(1) if m else date_str
-
-
-def normalize_total_2dp(total_str: Optional[str]) -> Optional[str]:
-    """Strip currency symbols/commas and enforce two decimals if possible."""
-    if total_str is None:
-        return None
-    s = total_str.strip()
-    # Remove currency and commas, keep digits and dot
-    s = s.replace(",", "")
-    s = re.sub(r"[^\d.]", "", s)
-
-    # If it's already like 193.00
-    if re.match(r"^\d+(\.\d{2})$", s):
-        return s
-
-    # If like 193 or 193.0 or 193.000 -> coerce to 2dp if numeric
-    try:
-        val = float(s)
-        return f"{val:.2f}"
-    except Exception:
-        return total_str.strip()
-
-
 def postprocess_fields(data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Minimal postprocessing to help match dataset formatting.
-    Does NOT add new keys.
+    Minimal extraction-stage postprocessing.
+
+    This function keeps only the expected output fields and applies light
+    cleanup needed to make the extractor output usable by downstream modules.
+    It intentionally avoids heavy normalization, which should happen in the
+    shared normalization module later in the pipeline.
     """
     out = dict(data)
 
@@ -120,17 +94,17 @@ def postprocess_fields(data: Dict[str, Any]) -> Dict[str, Any]:
     expected = {"company", "date", "address", "total"}
     out = {k: out.get(k, None) for k in expected}
 
-    # Normalize
+    # Light cleanup only; no downstream normalization here.
     if isinstance(out.get("company"), str):
         out["company"] = out["company"].strip() or None
 
     if isinstance(out.get("address"), str):
-        out["address"] = re.sub(r"\s+", " ", out["address"]).strip() or None
+        out["address"] = out["address"].strip() or None
 
     if isinstance(out.get("date"), str):
-        out["date"] = normalize_date_ddmmyyyy(out["date"])
+        out["date"] = out["date"].strip() or None
 
     if isinstance(out.get("total"), str):
-        out["total"] = normalize_total_2dp(out["total"])
+        out["total"] = out["total"].strip() or None
 
     return out

@@ -1,24 +1,26 @@
-You are an information extraction system. Your job is to extract invoice fields from OCR text.
+You are an information extraction system. Your job is to extract key invoice fields from OCR text.
 
 RETURN FORMAT (STRICT):
 - Return ONE JSON object and nothing else (no markdown, no commentary).
 - The JSON must contain exactly these keys: "company", "date", "address", "total".
 - If a field is not explicitly present in the OCR text, return null for that field.
-- Do NOT guess or infer.
+- Do NOT guess or infer missing information.
 
 FIELD DEFINITIONS:
-- company: The merchant / company / store name that issued the invoice/receipt.
-- date: The invoice/receipt date in DD/MM/YYYY format only. If OCR includes time, ignore time.
-- address: The full address of the issuing company/store. Join multi-line addresses into a single line separated by spaces.
-- total: The final amount paid / grand total as a numeric string with two decimals (e.g., "193.00"). Ignore currency symbols like RM, $, etc.
+- company: The merchant / company / store name that issued the invoice or receipt.
+- date: The invoice or receipt date as it appears in the OCR text. Ignore time if present.
+- address: The address of the issuing company or store. If the address spans multiple lines, include the full address content.
+- total: The final amount paid or grand total shown on the receipt or invoice.
 
-NORMALIZATION RULES:
-- date: must be DD/MM/YYYY (e.g., 05/01/2019). If multiple dates appear, choose the one most clearly labeled as the receipt/invoice date (e.g., near "DATE", "INVOICE DATE"). If unclear, choose the most prominent date near the top of the document. If still unclear, return null.
-- total: output only digits and a decimal point with exactly two decimals. Example: "RM 1,234.50" -> "1234.50".
-- address: remove repeated whitespace and line breaks; keep commas if present.
+EXTRACTION GUIDELINES:
+- Extract values exactly as they appear in the OCR text whenever possible.
+- Do not attempt heavy formatting or normalization.
+- Currency symbols or extra text may appear with totals; extract the value associated with the final payment amount.
+- If multiple totals or dates appear, choose the one most clearly associated with the receipt or invoice (for example near labels like "TOTAL", "AMOUNT", "DATE", or "INVOICE DATE").
+- If the correct value cannot be confidently identified, return null.
 
 OUTPUT EXAMPLE:
-{"company":"ABC STORE SDN BHD","date":"15/01/2019","address":"NO 2 & 4, JALAN BAYU 4, BANDAR SERI ALAM, 81750 MASAI, JOHOR","total":"193.00"}
+{"company":"<company_or_null>","date":"<date_or_null>","address":"<address_or_null>","total":"<total_or_null>"}
 
 OCR TEXT:
 {{OCR_TEXT}}

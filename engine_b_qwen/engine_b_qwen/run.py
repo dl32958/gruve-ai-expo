@@ -1,7 +1,7 @@
 import argparse
 import json
 import os
-from typing import Dict, Iterable, Optional, Set
+from typing import Dict, Set
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -15,13 +15,18 @@ def load_prompt(prompt_path: str) -> str:
         return f.read()
 
 
-def iter_jsonl(path: str) -> Iterable[Dict]:
+def load_txt_input(path: str) -> Dict:
+    """
+    Loads a single OCR .txt file and returns a record with doc_id and ocr_text.
+    """
+    if not path.lower().endswith(".txt"):
+        raise ValueError("Engine B expects a single OCR .txt file as input.")
+
+    doc_id = os.path.splitext(os.path.basename(path))[0]
     with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            yield json.loads(line)
+        ocr_text = f.read()
+
+    return {"doc_id": doc_id, "ocr_text": ocr_text}
 
 
 def load_done_doc_ids(output_path: str) -> Set[str]:
@@ -92,7 +97,6 @@ def qwen_extract(
         **inputs,
         max_new_tokens=max_new_tokens,
         do_sample=False,      # deterministic
-        temperature=0.0,
         top_p=1.0,
         repetition_penalty=1.05,
         eos_token_id=tokenizer.eos_token_id,
@@ -125,7 +129,7 @@ def process_record(
 
     obj = postprocess_fields(obj)
 
-    # Validate strictly (will raise if date/total formatting violates schema)
+    # Validate only the minimal extraction-stage schema.
     validated = validate_output(obj)
 
     return {
@@ -139,7 +143,11 @@ def process_record(
 
 def main():
     parser = argparse.ArgumentParser(description="Engine B (Qwen) - OCR text to invoice fields.")
-    parser.add_argument("--input", required=True, help="Path to input JSONL with {doc_id, ocr_text}.")
+    parser.add_argument(
+        "--input",
+        required=True,
+        help="Path to a single OCR .txt file.",
+    )
     parser.add_argument("--output", required=True, help="Path to output JSONL.")
     parser.add_argument("--model", required=True, help="HuggingFace model name/path for Qwen.")
     parser.add_argument("--prompt", default=os.path.join(os.path.dirname(__file__), "prompt.md"))
@@ -154,22 +162,22 @@ def main():
 
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
 
+    rec = load_txt_input(args.input)
+    doc_id = rec.get("doc_id")
+    ocr_text = rec.get("ocr_text")
+
+    if not isinstance(doc_id, str):
+        raise ValueError("Could not derive a valid doc_id from the input file.")
+    if doc_id in done:
+        return
+    if not isinstance(ocr_text, str):
+        ocr_text = ""
+
+    result = process_record(doc_id, ocr_text, tokenizer, model, prompt_template)
+
     with open(args.output, "a", encoding="utf-8") as out_f:
-        for rec in iter_jsonl(args.input):
-            doc_id = rec.get("doc_id")
-            ocr_text = rec.get("ocr_text")
-
-            if not isinstance(doc_id, str):
-                continue
-            if doc_id in done:
-                continue
-            if not isinstance(ocr_text, str):
-                ocr_text = ""
-
-            result = process_record(doc_id, ocr_text, tokenizer, model, prompt_template)
-            out_f.write(json.dumps(result, ensure_ascii=False) + "\n")
-            out_f.flush()
-            done.add(doc_id)
+        out_f.write(json.dumps(result, ensure_ascii=False) + "\n")
+        out_f.flush()
 
 
 if __name__ == "__main__":

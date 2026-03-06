@@ -1,14 +1,16 @@
 from typing import Optional
-from pydantic import BaseModel, Field, validator
-import re
+from pydantic import BaseModel, Field
 
 
 class InvoiceFields(BaseModel):
     """
-    Canonical output schema for Engine B (Qwen Extractor).
+    Minimal extraction-stage schema for Engine B.
 
-    All fields must exist.
-    Missing values must be None.
+    This schema only enforces the structural contract of the extractor:
+    - all expected fields exist
+    - values are strings or None
+
+    Strict normalization and validation should happen in downstream shared modules.
     """
 
     company: Optional[str] = Field(default=None)
@@ -16,28 +18,14 @@ class InvoiceFields(BaseModel):
     address: Optional[str] = Field(default=None)
     total: Optional[str] = Field(default=None)
 
-    @validator("date")
-    def validate_date_format(cls, v):
-        if v is None:
-            return v
-        # Accept DD/MM/YYYY only
-        if not re.match(r"^\d{2}/\d{2}/\d{4}$", v):
-            raise ValueError("Date must be in DD/MM/YYYY format")
-        return v
-
-    @validator("total")
-    def validate_total_format(cls, v):
-        if v is None:
-            return v
-        # Accept numeric string with 2 decimals
-        if not re.match(r"^\d+(\.\d{2})$", v):
-            raise ValueError("Total must be a numeric string with two decimals (e.g., '193.00')")
-        return v
-
 
 def validate_output(data: dict) -> InvoiceFields:
     """
-    Validates and returns a strongly-typed InvoiceFields object.
-    Raises validation error if schema is violated.
+    Validates and returns a typed InvoiceFields object.
+
+    This function is intentionally lightweight at the extraction stage.
+    It checks only that the output matches the expected field structure.
+    Downstream modules should handle normalization, evidence retrieval,
+    and validity rules.
     """
     return InvoiceFields(**data)
