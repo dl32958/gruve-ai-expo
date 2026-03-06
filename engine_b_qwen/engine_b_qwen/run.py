@@ -65,6 +65,12 @@ def build_model(model_name: str, device: str):
     if not device.startswith("cuda"):
         model.to(device)
 
+    if hasattr(model, "generation_config") and model.generation_config is not None:
+        model.generation_config.do_sample = False
+        model.generation_config.temperature = None
+        model.generation_config.top_p = None
+        model.generation_config.top_k = None
+
     model.eval()
     return tokenizer, model
 
@@ -97,7 +103,6 @@ def qwen_extract(
         **inputs,
         max_new_tokens=max_new_tokens,
         do_sample=False,      # deterministic
-        top_p=1.0,
         repetition_penalty=1.05,
         eos_token_id=tokenizer.eos_token_id,
         pad_token_id=tokenizer.pad_token_id,
