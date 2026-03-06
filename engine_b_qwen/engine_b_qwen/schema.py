@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 from pydantic import BaseModel, Field
 
 
@@ -8,15 +8,15 @@ class InvoiceFields(BaseModel):
 
     This schema only enforces the structural contract of the extractor:
     - all expected fields exist
-    - values are strings or None
+    - values may be string, int, float, or None
 
     Strict normalization and validation should happen in downstream shared modules.
     """
 
-    company: Optional[str] = Field(default=None)
-    date: Optional[str] = Field(default=None)
-    address: Optional[str] = Field(default=None)
-    total: Optional[str] = Field(default=None)
+    company: Optional[Union[str, int, float]] = Field(default=None)
+    date: Optional[Union[str, int, float]] = Field(default=None)
+    address: Optional[Union[str, int, float]] = Field(default=None)
+    total: Optional[Union[str, int, float]] = Field(default=None)
 
 
 def validate_output(data: dict) -> InvoiceFields:
