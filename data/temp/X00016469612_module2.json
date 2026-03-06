@@ -1,0 +1,490 @@
+{
+  "source_file": "data/temp/X00016469612.txt",
+  "raw_text": {
+    "full_raw": "tan woon yann\n\nBOOK TA-K (TAMAN DAYA) SDN BHD\nB94 7-W\nNO.5? 55,57 & 59, JALAN SAGU 18,\nTAMAN DAYA\n81100 JOHOR BAHRU,\nJOHOR.\n\nLAM MCU\n\nDocument Ho : TDO1167104\n\n \n\nDate 25/12/2018 8:13:39 PM\nCashier MANIS\nMember\nCASH BILL\nCODE/DESC PRICE — Disc AMOUIT\nQuy RM RM\n9556939040118 KF MODELLING CLAY KIDDY FISH\n1PC * 9.00) 6,00 9.00\nTotal : 9.00\nRour ding Adjustment 0.00\n\nRound: :d Total (RM):\n\n9.60\n\nCash\nCHANGE\n\n  \n\nGOODS SOLD ARE NOT RETURNAR\nEXCHANGEABLE\n\n \n\nTHANK YOU.\nPLEASE COME AGATY t\n\f",
+    "lines_raw": [
+      "tan woon yann",
+      "",
+      "BOOK TA-K (TAMAN DAYA) SDN BHD",
+      "B94 7-W",
+      "NO.5? 55,57 & 59, JALAN SAGU 18,",
+      "TAMAN DAYA",
+      "81100 JOHOR BAHRU,",
+      "JOHOR.",
+      "",
+      "LAM MCU",
+      "",
+      "Document Ho : TDO1167104",
+      "",
+      " ",
+      "",
+      "Date 25/12/2018 8:13:39 PM",
+      "Cashier MANIS",
+      "Member",
+      "CASH BILL",
+      "CODE/DESC PRICE — Disc AMOUIT",
+      "Quy RM RM",
+      "9556939040118 KF MODELLING CLAY KIDDY FISH",
+      "1PC * 9.00) 6,00 9.00",
+      "Total : 9.00",
+      "Rour ding Adjustment 0.00",
+      "",
+      "Round: :d Total (RM):",
+      "",
+      "9.60",
+      "",
+      "Cash",
+      "CHANGE",
+      "",
+      "  ",
+      "",
+      "GOODS SOLD ARE NOT RETURNAR",
+      "EXCHANGEABLE",
+      "",
+      " ",
+      "",
+      "THANK YOU.",
+      "PLEASE COME AGATY t",
+      ""
+    ],
+    "lines_norm": [
+      "tan woon yann",
+      "",
+      "BOOK TA-K (TAMAN DAYA) SDN BHD",
+      "B94 7-W",
+      "NO.5? 55,57 & 59, JALAN SAGU 18,",
+      "TAMAN DAYA",
+      "81100 JOHOR BAHRU,",
+      "JOHOR.",
+      "",
+      "LAM MCU",
+      "",
+      "Document Ho : TDO1167104",
+      "",
+      "",
+      "",
+      "Date 25/12/2018 8:13:39 PM",
+      "Cashier MANIS",
+      "Member",
+      "CASH BILL",
+      "CODE/DESC PRICE — Disc AMOUIT",
+      "Quy RM RM",
+      "9556939040118 KF MODELLING CLAY KIDDY FISH",
+      "1PC * 9.00) 6,00 9.00",
+      "Total : 9.00",
+      "Rour ding Adjustment 0.00",
+      "",
+      "Round: :d Total (RM):",
+      "",
+      "9.60",
+      "",
+      "Cash",
+      "CHANGE",
+      "",
+      "",
+      "",
+      "GOODS SOLD ARE NOT RETURNAR",
+      "EXCHANGEABLE",
+      "",
+      "",
+      "",
+      "THANK YOU.",
+      "PLEASE COME AGATY t",
+      ""
+    ],
+    "tokens_per_line": [
+      [
+        "tan",
+        "woon",
+        "yann"
+      ],
+      [],
+      [
+        "BOOK",
+        "TA",
+        "-",
+        "K",
+        "(",
+        "TAMAN",
+        "DAYA",
+        ")",
+        "SDN",
+        "BHD"
+      ],
+      [
+        "B",
+        "94",
+        "7",
+        "-",
+        "W"
+      ],
+      [
+        "NO",
+        ".",
+        "5",
+        "?",
+        "55",
+        ",",
+        "57",
+        "&",
+        "59",
+        ",",
+        "JALAN",
+        "SAGU",
+        "18",
+        ","
+      ],
+      [
+        "TAMAN",
+        "DAYA"
+      ],
+      [
+        "81100",
+        "JOHOR",
+        "BAHRU",
+        ","
+      ],
+      [
+        "JOHOR",
+        "."
+      ],
+      [],
+      [
+        "LAM",
+        "MCU"
+      ],
+      [],
+      [
+        "Document",
+        "Ho",
+        ":",
+        "TDO",
+        "1167104"
+      ],
+      [],
+      [],
+      [],
+      [
+        "Date",
+        "25",
+        "/",
+        "12",
+        "/",
+        "2018",
+        "8",
+        ":",
+        "13",
+        ":",
+        "39",
+        "PM"
+      ],
+      [
+        "Cashier",
+        "MANIS"
+      ],
+      [
+        "Member"
+      ],
+      [
+        "CASH",
+        "BILL"
+      ],
+      [
+        "CODE",
+        "/",
+        "DESC",
+        "PRICE",
+        "—",
+        "Disc",
+        "AMOUIT"
+      ],
+      [
+        "Quy",
+        "RM",
+        "RM"
+      ],
+      [
+        "9556939040118",
+        "KF",
+        "MODELLING",
+        "CLAY",
+        "KIDDY",
+        "FISH"
+      ],
+      [
+        "1",
+        "PC",
+        "*",
+        "9.00",
+        ")",
+        "6",
+        ",",
+        "00",
+        "9.00"
+      ],
+      [
+        "Total",
+        ":",
+        "9.00"
+      ],
+      [
+        "Rour",
+        "ding",
+        "Adjustment",
+        "0.00"
+      ],
+      [],
+      [
+        "Round",
+        ":",
+        ":",
+        "d",
+        "Total",
+        "(",
+        "RM",
+        ")",
+        ":"
+      ],
+      [],
+      [
+        "9.60"
+      ],
+      [],
+      [
+        "Cash"
+      ],
+      [
+        "CHANGE"
+      ],
+      [],
+      [],
+      [],
+      [
+        "GOODS",
+        "SOLD",
+        "ARE",
+        "NOT",
+        "RETURNAR"
+      ],
+      [
+        "EXCHANGEABLE"
+      ],
+      [],
+      [],
+      [],
+      [
+        "THANK",
+        "YOU",
+        "."
+      ],
+      [
+        "PLEASE",
+        "COME",
+        "AGATY",
+        "t"
+      ],
+      []
+    ],
+    "regions": {
+      "header_line_range": [
+        0,
+        19
+      ]
+    }
+  },
+  "engines": {
+    "engineA": {
+      "company": {
+        "raw_value": "BOOK TA-K (TAMAN DAYA) SDN BHD",
+        "norm_value": "BOOK TA-K (TAMAN DAYA) SDN BHD",
+        "tokens": [
+          "BOOK",
+          "TA",
+          "-",
+          "K",
+          "(",
+          "TAMAN",
+          "DAYA",
+          ")",
+          "SDN",
+          "BHD"
+        ],
+        "evidence": {
+          "best": {
+            "line_indices": [
+              2
+            ],
+            "match_score": 1.0,
+            "coverage_score": 1.0,
+            "support_score": 1.0
+          },
+          "candidates": [
+            {
+              "line_indices": [
+                5
+              ],
+              "match_score": 0.33333333333333337,
+              "coverage_score": 0.2,
+              "support_score": 0.2
+            },
+            {
+              "line_indices": [
+                26
+              ],
+              "match_score": 0.23529411764705882,
+              "coverage_score": 0.2,
+              "support_score": 0.2
+            }
+          ],
+          "flags": {
+            "triggered_alternatives": false
+          }
+        }
+      },
+      "date": {
+        "raw_value": "25/12/2018 8:13:39 PM",
+        "norm_value": "2018-12-25",
+        "tokens": [
+          "2018",
+          "-",
+          "12",
+          "-",
+          "25"
+        ],
+        "parsed": {
+          "year": 2018,
+          "month": 12,
+          "day": 25
+        },
+        "evidence": {
+          "best": {
+            "line_indices": [
+              15
+            ],
+            "match_score": 1.0,
+            "coverage_score": 1.0,
+            "support_score": 1.0,
+            "text": [
+              "Date 25/12/2018 8:13:39 PM"
+            ]
+          },
+          "candidates": [],
+          "flags": {
+            "triggered_alternatives": false
+          }
+        }
+      },
+      "address": {
+        "raw_value": "NO.5? 55,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU, JOHOR.",
+        "norm_value": "NO.5? 55,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU, JOHOR",
+        "tokens": [
+          "NO",
+          ".",
+          "5",
+          "?",
+          "55",
+          ",",
+          "57",
+          "&",
+          "59",
+          ",",
+          "JALAN",
+          "SAGU",
+          "18",
+          ",",
+          "TAMAN",
+          "DAYA",
+          "81100",
+          "JOHOR",
+          "BAHRU",
+          ",",
+          "JOHOR"
+        ],
+        "evidence": {
+          "best": {
+            "line_indices": [
+              4
+            ],
+            "match_score": 0.8275862068965517,
+            "coverage_score": 0.7058823529411765,
+            "support_score": 0.7058823529411765
+          },
+          "candidates": [
+            {
+              "line_indices": [
+                6
+              ],
+              "match_score": 0.38095238095238093,
+              "coverage_score": 0.23529411764705882,
+              "support_score": 0.23529411764705882
+            },
+            {
+              "line_indices": [
+                2
+              ],
+              "match_score": 0.14814814814814817,
+              "coverage_score": 0.11764705882352941,
+              "support_score": 0.11764705882352941
+            }
+          ],
+          "flags": {
+            "triggered_alternatives": false
+          }
+        }
+      },
+      "total": {
+        "raw_value": "9.60",
+        "norm_value": 9.6,
+        "tokens": [
+          "9.6"
+        ],
+        "parsed": {
+          "amount": 9.6,
+          "currency": null
+        },
+        "evidence": {
+          "best": {
+            "line_indices": [
+              28
+            ],
+            "match_score": 1.0,
+            "coverage_score": 1.0,
+            "support_score": 1.0,
+            "text": [
+              "9.60"
+            ]
+          },
+          "candidates": [],
+          "flags": {
+            "triggered_alternatives": true,
+            "reason": "always_for_total"
+          },
+          "alternatives": [
+            {
+              "amount_str": "9.00",
+              "amount": 9.0,
+              "line_indices": [
+                23
+              ],
+              "text": [
+                "Total : 9.00"
+              ],
+              "tag": "total_context"
+            },
+            {
+              "amount_str": "9.60",
+              "amount": 9.6,
+              "line_indices": [
+                28
+              ],
+              "text": [
+                "9.60"
+              ],
+              "tag": "amount_only"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

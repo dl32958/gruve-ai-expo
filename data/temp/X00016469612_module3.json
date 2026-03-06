@@ -1,0 +1,86 @@
+{
+  "source_file": "data/temp/X00016469612.txt",
+  "engine": "engineA",
+  "doc_state": "review_needed",
+  "doc_flags": [
+    "address_uncertain_ocr",
+    "total_conflict"
+  ],
+  "field_results": {
+    "company": {
+      "state": "pass",
+      "reasons": [],
+      "flags": {
+        "best_exists": true,
+        "best_line_indices": [
+          2
+        ],
+        "best_support_score": 1.0
+      },
+      "evidence": {
+        "best_line_indices": [
+          2
+        ]
+      }
+    },
+    "date": {
+      "state": "pass",
+      "reasons": [],
+      "flags": {
+        "best_exists": true,
+        "best_line_indices": [
+          15
+        ],
+        "best_support_score": 1.0
+      },
+      "evidence": {
+        "best_line_indices": [
+          15
+        ]
+      }
+    },
+    "address": {
+      "state": "review_needed",
+      "reasons": [
+        "contains_question_mark"
+      ],
+      "flags": {
+        "best_exists": true,
+        "best_line_indices": [
+          4
+        ],
+        "best_support_score": 0.7058823529411765
+      },
+      "evidence": {
+        "best_line_indices": [
+          4
+        ]
+      }
+    },
+    "total": {
+      "state": "review_needed",
+      "reasons": [
+        "total_conflict_candidates:[9.0, 9.6]",
+        "total_keyword_mismatch:extracted=9.6,total_context=9.0"
+      ],
+      "flags": {
+        "best_exists": true,
+        "best_line_indices": [
+          28
+        ],
+        "best_support_score": 1.0,
+        "num_alternatives": 2,
+        "unique_alt_amounts": [
+          9.0,
+          9.6
+        ],
+        "suggested_total_from_total_context": 9.0
+      },
+      "evidence": {
+        "best_line_indices": [
+          28
+        ]
+      }
+    }
+  }
+}

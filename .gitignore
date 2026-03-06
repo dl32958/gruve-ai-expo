@@ -17,3 +17,6 @@ __pycache__/
 *.tmp
 *.swp
 *~
+
+.ipynb_checkpoints/
+.virtual_documents/
