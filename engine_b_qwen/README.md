@@ -17,7 +17,7 @@ It does **not** perform:
 Those responsibilities belong to downstream shared modules in the overall architecture.
 
 Example Run:
-python -m engine_b_qwen.engine_b_qwen.run \
+python -m engine_b_qwen.run \
   --input data/temp/X00016469612.txt \
   --output engine_b_qwen/outputs/engine_b_qwen.jsonl \
   --model Qwen/Qwen2.5-3B-Instruct
