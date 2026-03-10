@@ -1,0 +1,21 @@
+{
+  "image_path": "dev\\img\\X51005230617.jpg",
+  "processed_at": "2026-03-09T17:52:56.765108",
+  "regions": {
+    "header": {
+      "start_line": 1,
+      "end_line": 20,
+      "text": "1950\n\nGerbang Alaf Restaurants Sdn Bhd  \n(65351-M)  \nformerly known as  \nGolden Arches Restaurants Sdn Bhd  \nLicensee of McDonald's  \nLevel 6, Bangunan TH, Damansara Uptown3  \nNo.3, Jalan SS21/39, 47400 Petaling Jaya  \nSelangor  \n\n(GST ID No: 000504664064)  \nMcDonald's BHP Taman Melawati (#328)  \nTel No: 03-4162-2318  \nTAX INVOICE  \n\nMFY Side 1  \n\nINV# 003281900229170  \nORD #50 -REG #19- 18/01/2018 10:27:03  "
+    },
+    "body": {
+      "start_line": 21,
+      "end_line": 32,
+      "text": "QTY ITEM    TOTAL  \n2 ChicMcMuffin    11.00  \n1 M Porridge    5.60  \n1 BM 2HotCakes    10.00  \n1 L Coke    1.00  \n\nTakeOut Total (incl GST)    26.60  \nTotal Rounded    26.60  \nCash Tendered    100.00  \nChange    73.40  \n\nTOTAL INCLUDES 6% GST    1.51  "
+    },
+    "ending": {
+      "start_line": 33,
+      "end_line": 47,
+      "text": "\n---\n\nWe'd love to hear your feedback!  \n\n[www.mcdefeedback.com.my](http://www.mcdefeedback.com.my)  \nOR  \n[Download My McD Feedback from Google Play/App Store](https://www.google.com/store)  \n\nto share your experience  \n\n---\n\nThank You and Please Come Again.  \nCustomer Service Hotline: 03-2726-5600"
+    }
+  }
+}

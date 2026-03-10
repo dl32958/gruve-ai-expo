@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X00016469620.jpg",
-  "processed_at": "2026-03-08T18:54:59.232344",
+  "image_path": "dev\\img\\X00016469620.jpg",
+  "processed_at": "2026-03-09T17:46:23.911308",
   "timings": {
-    "pass1_ocr_sec": 16.92,
-    "pass2_markdown_sec": 16.97,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 33.9
+    "model_inference": {
+      "ocr_sec": 20.01,
+      "structured_read_sec": 29.08,
+      "total_sec": 49.09
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 49.09
   },
   "pass1_ocr_text": "tan woon yann  \nMR D.I.Y. (JOHOR) SDN BHD  \n(CO.REG: 933109-X)  \nLOT 1851-A & 1851-B, JALAN KPB 6,  \nKAWASAN PERINDUSTRIAN BALAKONG,  \n43300 SERI KEMBANGAN, SELANGOR  \n(MR DIY TESCO TERBAU)  \n-INVOICE-  \n\nCHOPPING BOARD 35.5x25.5CM 803M#  \nEZ10HD05 - 24  \n8970669  1 X 19.00  19.00  \nAIR PRESSURE SPRAYER SX-575-1 1.5L  \nHC03-7 - 15  \n9066468  1 X 8.02  8.02  \nWAXCO WINDSHIELD CLEANER 120ML  \nWA14-3A - 48  \n9557031100236  1 X 3.02  3.02  \nBOPP TAPE 48MM*100M CLEAR  \nFZ-04 - 36  \n6935818350846  1 X 3.88  3.88  \n\nItem(s): 4  \nQty(s): 4  \n\nTOTAL  \nROUNDING ADJUSTMENT  \nTOTAL ROUNDED  \nCASH  \nCHANGE  \n\nRM 33.92  \n-RM 0.02  \nRM 33.90  \nRM 50.00  \nRM 16.10  \n\n*  \n12-01-19 21:13 SH01 ZK09  \nOPERATOR TRAINEE CASHIER  \n\nT4 R000027830  \nEXCHANGE ARE ALLOWED WITHIN  \n7 DAYS WITH RECEIPT.  \nSTRICTLY NO CASH REFUND.",
   "pass2_markdown": "<|ref|>sub_title<|/ref|><|det|>[[245, 45, 816, 87]]<|/det|>\n## tan woon yann\n\n<|ref|>text<|/ref|><|det|>[[100, 166, 864, 328]]<|/det|>\nMR D.I.Y. (JOHOR) SDN BHD\n(CO.REG : 933109-X)\nLOT 1851-A & 1851-B, JALAN KPB 6,\nKAWASAN PERINDUSTRIAN BALAKONG,\n43300 SERI KEMBANGAN, SELANGOR\n(MR DIY TESCO TERBAU)\n-INVOICE-\n\n<|ref|>text<|/ref|><|det|>[[30, 342, 920, 620]]<|/det|>\nCHOPPING BOARD 35.5x25.5CM 803M#\nEZ10HD05 - 24\n8970669 1 X 19.00 19.00\nAIR PRESSURE SPRAYER SX-575-1 1.5L\nHC03-7 - 15\n9066468 1 X 8.02 8.02\nWAXCO WINDSHIELD CLEANER 120ML\nWA14-3A - 48\n9557031100236 1 X 3.02 3.02\nBOPP TAPE 48MM*100M CLEAR\nFZ-04 - 36\n6935818350846 1 X 3.88 3.88\n\n<|ref|>text<|/ref|><|det|>[[30, 633, 300, 661]]<|/det|>\nItem(s) : 4\n\n<|ref|>text<|/ref|><|det|>[[30, 676, 480, 792]]<|/det|>\nTOTAL\nROUNDING ADJUSTMENT\nTOTAL ROUNDED\nCASH\nCHANGE\n\n<|ref|>text<|/ref|><|det|>[[30, 808, 952, 859]]<|/det|>\n12-01-19 21:13 SH01 ZK09 T4 R000027830\nOPERATOR TRAINEE CASHIER\n\n<|ref|>text<|/ref|><|det|>[[160, 874, 800, 949]]<|/det|>\nEXCHANGE ARE ALLOWED WITHIN 7 DAYS WITH RECEIPT. STRICTLY NO CASH REFUND.",

@@ -1,0 +1,21 @@
+{
+  "image_path": "dev\\img\\X00016469612.jpg",
+  "processed_at": "2026-03-09T17:44:48.522010",
+  "regions": {
+    "header": {
+      "start_line": 1,
+      "end_line": 14,
+      "text": "# tan woon yann\n\n**BOOK TA_K (TAMAN DAYA) SDN BHD**  \n789-17-W  \nNO.5: 55,57 & 59, JALAN SAGU 18,  \nTAMAN DAYA,  \n81100 JOHOR BAHRU,  \nJOHOR.  \n\n---\n\n**Document No** : TD01167104  \n**Date** : 25/12/2018 8:13:39 PM  \n**Cashier** : MANIS  "
+    },
+    "body": {
+      "start_line": 15,
+      "end_line": 39,
+      "text": "**Member** :  \n\n---\n\n# CASH BILL\n\n| CODE/DESC    | PRICE | DISC | AMOUNT |\n|---|---|---|---|\n| QTY    |    |    | RM    |\n| 95569390-0118    | *    |    | 9.00   |\n\n**KFM MODELING CLAY KIDDY FISH**  \n1 PC  \n9.00  0.00  9.00  \n\n**Total**:  9.00  \n**Rour Jing Adjustment**: 0.00  \n\n**Round : d Total (RM):**  \n9.00  \n\n---\n\n**Cash**  10.00  \n**CHANGE**  1.00  "
+    },
+    "ending": {
+      "start_line": 40,
+      "end_line": 49,
+      "text": "\n---\n\n**GOODS SOLD ARE NOT REFURBABLE OR EXCHANGEABLE**  \n(说明：此页无此栏可售，视为无销售记录）  \n\n---\n\n**THANK YOU**  \nPLEASE COME AGAIN !"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "image_path": "dev\\img\\X00016469676.jpg",
+  "processed_at": "2026-03-09T17:50:50.030398",
+  "regions": {
+    "header": {
+      "start_line": 1,
+      "end_line": 23,
+      "text": "tan chay yee  \nS.H.H. MOTOR ( SUNGAI RENGT ) SDN. BHD.  \n( 801580-T )  \nNo. 343, Jalan Kurau, Sungai Rengit,  \n81620 Pengerang, Johor.  \nTel: 07-8263254 Fax: 07-8266888  \n\nINVOICE  \n\nITEM/DESC.    QTY U.PRICE RM (TOTAL)  \n--- ---  \n4132   1    20.00    20.00  \nCROCS 300x17 TUBES  \n\n    SUB TOTAL :    20.00  \n    ROUNDING ADJUSTMENT :  0.00  \n    GRAND TOTAL :    20.00  \n    CASH :    20.00  \n    CHANGE :    0.00  \n\n23-01-2019 13:14:15 PM, PRINT BY: root  \nTOKEN NO: 0, STATION ID: A1, PID: POS  \nINVOICE NO: 22497  "
+    },
+    "body": {
+      "start_line": 24,
+      "end_line": 24,
+      "text": ""
+    },
+    "ending": {
+      "start_line": 25,
+      "end_line": 25,
+      "text": "Thanks Your Support"
+    }
+  }
+}

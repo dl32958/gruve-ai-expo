@@ -1,0 +1,35 @@
+=====================
+BASE:  torch.Size([1, 256, 1280])
+PATCHES:  torch.Size([2, 144, 1280])
+=====================
+<|ref|>sub_title<|/ref|><|det|>[[160, 44, 744, 84]]<|/det|>
+## tan woon yann
+
+<|ref|>text<|/ref|><|det|>[[155, 161, 820, 289]]<|/det|>
+INDAH GIFT & HOME DECO
+27, JALAN DEDAP 13,
+TAMAN JOHOR JAYA,
+81100 JOHOR BAHRU, JOHOR.
+Tel: 07-3507405 Fax: 07-3558160
+
+<|ref|>sub_title<|/ref|><|det|>[[392, 309, 564, 337]]<|/det|>
+## RECEIPT
+
+<|ref|>text<|/ref|><|det|>[[50, 359, 906, 415]]<|/det|>
+19/10/2018 20:49:59 #01
+Cashier: CN Location/SP: 05 /0531
+
+<|ref|>text<|/ref|><|det|>[[50, 435, 310, 489]]<|/det|>
+MB: M026588
+Room No: 01
+
+<|ref|>text<|/ref|><|det|>[[655, 459, 925, 488]]<|/det|>
+050100035279
+
+<|ref|>table<|/ref|><|det|>[[50, 508, 925, 833]]<|/det|>
+<table><tr><td>Desc/Item</td><td>Qty</td><td>Price</td><td>Amt(RM)</td></tr><tr><td>ST-PRIVILEGE CARD/GD</td><td>INDAH</td><td></td><td></td></tr><tr><td>88888</td><td>1</td><td>10.00</td><td>10.00</td></tr><tr><td>GF-TABLE LAMP/STITCH</td><td>&lt;i&gt;</td><td></td><td></td></tr><tr><td>62483</td><td>1</td><td>55.90</td><td>55.90</td></tr><tr><td>@DISC</td><td>10.00%</td><td>-5.59</td><td></td></tr><tr><td>#Total Qty</td><td>2</td><td></td><td></td></tr><tr><td>TOTAL AMT</td><td>RM</td><td>60.31</td><td></td></tr><tr><td>ROUNDING ADJ</td><td></td><td>-0.01</td><td></td></tr><tr><td></td><td>RM</td><td>60.30</td><td>✓</td></tr><tr><td>CASH</td><td>RM</td><td>70.30</td><td></td></tr><tr><td>CHANGE</td><td>RM</td><td>10.00</td><td></td></tr></table>
+
+<|ref|>text<|/ref|><|det|>[[130, 881, 830, 960]]<|/det|>
+Thank You ! Please Come Again !
+Goods Sold Are Not Returnable
+Dealing In Wholesale And Retail.

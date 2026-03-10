@@ -1,0 +1,21 @@
+{
+  "image_path": "dev\\img\\X00016469622.jpg",
+  "processed_at": "2026-03-09T17:47:11.072457",
+  "regions": {
+    "header": {
+      "start_line": 1,
+      "end_line": 16,
+      "text": "# tan woon yann\n\n## YONGFATT ENTERPRISE  \n(JM0517726)  \nNO. 122,124 JALAN DEDAP 13  \n81100 JOHOR BAHRU  \n\n**TEL**: 07-3523888  \n**GST ID**: 000849813504  \n\n**SIMPLIFIED TAX INVOICE**  \n\n| CASH    |    |    |    |    |    |  \n|---|---|---|---|---|---|  \n| Doc No    | CS00031663    | Date    | 25/12/2018 |    |    |  \n| Cashier    | USER    | Time    | 12:31:00  |    |    |  "
+    },
+    "body": {
+      "start_line": 17,
+      "end_line": 50,
+      "text": "| Salesperson  | Ref.    |    |    |    |    |  \n\n| Item    | Qty | S/Price | Amount | Tax  |  \n|---|---|---|---|---|  \n| E8318    | 1   | 80.91   | 80.91  | SR   |  \n\n**ELEGANT SOH TR BAG 15**  \nTotal Qty: 1  \n80.91  \n\n**Total Sales (Excluding GST)**: 80.91  \n\nDiscount: 0.00  \n\n**Total GST**: 0.00  \n\nRounding: -0.01  \n\n**Total Sales (Inclusive of GST)**: 80.90  \n\n**CASH**: 100.00  \n**Change**: 19.10  \n\n**80.90**  \n\n---\n\n## GST SUMMARY  \n\n| Tax Code | % | Amt (RM) | Tax (RM) |  \n|---|---|---|---|  \n| SR    | 0  | 80.91    | 0.00    |  \n\n**Total**: 80.91 0.00  "
+    },
+    "ending": {
+      "start_line": 51,
+      "end_line": 54,
+      "text": "\n---\n\n**GOODS SOLD ARE NOT REFUNDABLE. ONLY RECEIPT SHOWN.**"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+=====================
+BASE:  torch.Size([1, 256, 1280])
+PATCHES:  torch.Size([2, 144, 1280])
+=====================
+<|ref|>sub_title<|/ref|><|det|>[[202, 45, 770, 84]]<|/det|>
+## tan woon yann
+
+<|ref|>sub_title<|/ref|><|det|>[[175, 112, 810, 142]]<|/det|>
+## YONGFATT ENTERPRISE
+
+<|ref|>text<|/ref|><|det|>[[220, 145, 770, 218]]<|/det|>
+(JM0517726)
+NO.122.124 JALAN DEDAP 13
+81100 JOHOR BAHRU
+
+<|ref|>text<|/ref|><|det|>[[320, 231, 660, 258]]<|/det|>
+TEL 07-3523888
+
+<|ref|>text<|/ref|><|det|>[[277, 265, 710, 291]]<|/det|>
+GST ID: 000849813504
+
+<|ref|>sub_title<|/ref|><|det|>[[230, 293, 757, 319]]<|/det|>
+## SIMPLIFIED TAX INVOICE
+
+<|ref|>table<|/ref|><|det|>[[30, 333, 965, 944]]<|/det|>
+<table><tr><td colspan="5">CASH</td></tr><tr><td>Doc No</td><td>CS00031663</td><td>Date</td><td>25/12/2018</td><td></td></tr><tr><td>Cashier</td><td>USER</td><td>Time</td><td>12:31:00</td><td></td></tr><tr><td>Salesperson</td><td></td><td>Ref.</td><td></td><td></td></tr><tr><td>Item</td><td>Qty</td><td>S/Price</td><td>Amount</td><td>Tax</td></tr><tr><td>E8318</td><td>1</td><td>80.91</td><td>80.91</td><td>SR</td></tr><tr><td colspan="5">ELEGANT SOH TR BAG 15</td></tr><tr><td>Total Qty</td><td>1</td><td>80.91</td><td></td><td></td></tr><tr><td>Total Sales (Excluding GST)</td><td></td><td>60.91</td><td></td><td></td></tr><tr><td>Discount</td><td></td><td>0.00</td><td></td><td></td></tr><tr><td>Total GST</td><td></td><td>0.00</td><td></td><td></td></tr><tr><td>Rounding</td><td></td><td>-0.01</td><td></td><td></td></tr><tr><td>Total Sales (Inclusive of GST)</td><td></td><td>80.90</td><td></td><td></td></tr><tr><td>CASH</td><td></td><td>100.00</td><td></td><td></td></tr><tr><td>Change</td><td></td><td>19.10</td><td></td><td></td></tr><tr><td colspan="5">GST SUMMARY</td></tr><tr><td>Tax Code</td><td>%</td><td>Amt (RM)</td><td>Tax (RM)</td><td></td></tr><tr><td>SR</td><td>0</td><td>80.91</td><td>0.00</td><td></td></tr><tr><td>Total</td><td></td><td>80.91</td><td>0.00</td><td></td></tr></table>

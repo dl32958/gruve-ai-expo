@@ -1,6 +1,6 @@
 {
   "engine": "DeepSeek-OCR-2",
-  "source_file": "data\\test\\img\\X00016469619.jpg",
+  "source_file": "dev\\img\\X00016469619.jpg",
   "extracted_fields": {
     "company": "27, JALAN DEDAP 13,",
     "date": "19/10/2018",
@@ -8,9 +8,18 @@
     "total": null
   },
   "timings": {
-    "pass1_ocr_sec": 15.58,
-    "pass2_markdown_sec": 22.43,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 38.01
+    "model_inference": {
+      "ocr_sec": 15.75,
+      "structured_read_sec": 30.48,
+      "total_sec": 46.23
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 46.24
   }
 }

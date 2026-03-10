@@ -1,0 +1,21 @@
+{
+  "image_path": "dev\\img\\X00016469669.jpg",
+  "processed_at": "2026-03-09T17:48:39.261329",
+  "regions": {
+    "header": {
+      "start_line": 1,
+      "end_line": 9,
+      "text": "tan chay yee  \nABC HO TRADING  \nNo.28/4, JALAN HARMONI 3/2,  \nTAMAN DESA HARMONI.  \n81100 JOHOR BAHRU JOHOR  \n07-355 2616  \n\nCash Bill: 01-143008  \nDate: 09/01/2019 8:01:11 PM  "
+    },
+    "body": {
+      "start_line": 10,
+      "end_line": 19,
+      "text": "Cashier: 01  \n\n| Description    | Qty | Price  | Amount  |\n|---|---|---|---|\n| Plastic    | 2   | 15.50  | 31.00  |\n|    |    |    |    |\n| Total    |    |    | 31.00  |\n| Total Amount:    |    |    | 31.00  |\n| Cash Received:    |    |    | 101.00 |\n| Change:    |    |    | 70.00  |"
+    },
+    "ending": {
+      "start_line": 20,
+      "end_line": 25,
+      "text": "\n*Goods Sold are non-refundable*  \n***Thank You***  \n***Please Come Again***  \n\n3/-00"
+    }
+  }
+}

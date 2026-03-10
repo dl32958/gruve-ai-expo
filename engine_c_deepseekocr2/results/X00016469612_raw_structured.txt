@@ -1,0 +1,60 @@
+=====================
+BASE:  torch.Size([1, 256, 1280])
+PATCHES:  torch.Size([2, 144, 1280])
+=====================
+<|ref|>sub_title<|/ref|><|det|>[[150, 25, 700, 64]]<|/det|>
+## tan woon yann
+
+<|ref|>text<|/ref|><|det|>[[144, 87, 916, 111]]<|/det|>
+BOOK TA_K (TAMAN DAYA) SDN BHD
+
+<|ref|>text<|/ref|><|det|>[[440, 114, 621, 136]]<|/det|>
+789+17-W
+
+<|ref|>text<|/ref|><|det|>[[226, 138, 830, 161]]<|/det|>
+NO.5: 55,57 & 59, JALAN SAGU 18,
+
+<|ref|>text<|/ref|><|det|>[[409, 162, 653, 185]]<|/det|>
+TAMAN DAYA,
+
+<|ref|>text<|/ref|><|det|>[[345, 186, 728, 209]]<|/det|>
+81100 JOHOR BAHRU,
+
+<|ref|>text<|/ref|><|det|>[[460, 210, 600, 232]]<|/det|>
+JOHOR.
+
+<|ref|>image<|/ref|><|det|>[[186, 264, 864, 320]]<|/det|>
+
+
+<|ref|>text<|/ref|><|det|>[[99, 332, 610, 356]]<|/det|>
+Document No : TD01167104
+
+<|ref|>text<|/ref|><|det|>[[99, 362, 750, 386]]<|/det|>
+Date : 25/12/2018 8:13:39 PM
+
+<|ref|>text<|/ref|><|det|>[[99, 388, 475, 410]]<|/det|>
+Cashier : MANIS
+
+<|ref|>text<|/ref|><|det|>[[99, 413, 275, 435]]<|/det|>
+Member :
+
+<|ref|>sub_title<|/ref|><|det|>[[405, 447, 653, 472]]<|/det|>
+## CASH BILL
+
+<|ref|>table<|/ref|><|det|>[[46, 487, 968, 720]]<|/det|>
+<table><tr><td>CODE/DESC QTY</td><td>PRICE RIA</td><td>Disc RIA</td><td>AMOUNT RIA</td></tr><tr><td>95569390+0118</td><td>KF MODELING CLAY KIDDY FISH</td><td></td><td></td></tr><tr><td>1 PC</td><td>9.00</td><td>0.00</td><td>9.00</td></tr><tr><td></td><td>Total :</td><td></td><td>9.00</td></tr><tr><td></td><td>Rour Jing Adjustment :</td><td></td><td>0.00</td></tr><tr><td>Round :d Total (RM):</td><td></td><td>9.00</td><td></td></tr></table>
+
+<|ref|>text<|/ref|><|det|>[[432, 732, 585, 779]]<|/det|>
+Cash CHANGE
+
+<|ref|>text<|/ref|><|det|>[[201, 828, 864, 850]]<|/det|>
+GOODS SOLD ARE NOT REFURBABLE OR
+
+<|ref|>text<|/ref|><|det|>[[404, 849, 679, 868]]<|/det|>
+EXCHANGEABLE
+
+<|ref|>text<|/ref|><|det|>[[290, 868, 770, 910]]<|/det|>
+好，好出！，想个办法就更难啦！如有不便，敬请谅解。谢谢！
+
+<|ref|>text<|/ref|><|det|>[[360, 926, 721, 966]]<|/det|>
+THANK YOU PLEASE COME AGAIN!

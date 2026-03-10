@@ -1,6 +1,6 @@
 {
   "engine": "DeepSeek-OCR-2",
-  "source_file": "data\\test\\img\\X00016469612.jpg",
+  "source_file": "dev\\img\\X00016469612.jpg",
   "extracted_fields": {
     "company": "BOOK TA_K (TAMAN DAYA) SDN BHD",
     "date": "25/12/2018",
@@ -8,9 +8,18 @@
     "total": "9.00"
   },
   "timings": {
-    "pass1_ocr_sec": 14.51,
-    "pass2_markdown_sec": 24.16,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 38.67
+    "model_inference": {
+      "ocr_sec": 12.94,
+      "structured_read_sec": 26.39,
+      "total_sec": 39.33
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 39.34
   }
 }

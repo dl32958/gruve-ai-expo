@@ -1,0 +1,49 @@
+=====================
+BASE:  torch.Size([1, 256, 1280])
+PATCHES:  torch.Size([2, 144, 1280])
+=====================
+<|ref|>title<|/ref|><|det|>[[170, 37, 730, 75]]<|/det|>
+# tan woon yann
+
+<|ref|>text<|/ref|><|det|>[[100, 163, 850, 312]]<|/det|>
+MR D.I.Y. (M) SDN BHD
+(CO.RTG : 86Q671-D)
+101 1851-A & 1851-B, JALAN KPB 6,
+KAWASAN PERINDUSTRIAN BALAKONG,
+43300 SERI KEMBANGAN, SELANGOR
+(TESCO PUTRA NILAI)
+-INVOICE-
+
+<|ref|>text<|/ref|><|det|>[[28, 327, 910, 642]]<|/det|>
+KILAT AUTO FCO WASH & SHINE ES1000 1L
+WA45 /2A - 12
+9555916500133 1 X 3.11 3.11
+KILAT' ECO AUTO WASH &WAX EW-1000-1L
+WA44-A - 12
+9555916500126 1 X 4.62 4.62
+WD40 277m1 M00 2572
+WA43-A - 24
+079567600084 1 X 11.23 11.23
+KLEFNSO AJAIB 99 SERAI WANYI 900G
+WD00 - 15
+9555651400385 1 X 7.45 7.45
+HANDKERCHIEF 71386#2PCS
+PI12PJ11-4 - 6/300
+9090822 1 X 4.50 4.50
+
+<|ref|>text<|/ref|><|det|>[[37, 660, 310, 684]]<|/det|>
+Item(s) : 5
+
+<|ref|>text<|/ref|><|det|>[[33, 700, 468, 808]]<|/det|>
+Total
+ROUNDING ADJUSTMENT
+TOTAL ROUNDED
+CASH
+CHANGE
+
+<|ref|>text<|/ref|><|det|>[[33, 822, 960, 867]]<|/det|>
+18-11-18 13:58 SH01 Z153 T2 R000002902
+OPERATOR IRAINEE CASHIER
+
+<|ref|>text<|/ref|><|det|>[[168, 884, 800, 950]]<|/det|>
+EXCHANGE ARE ALLOWED WITHIN 7 DAYS WITH RECEIPT. STRICTLY NO CASH REFUND.

@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X00016469623.jpg",
-  "processed_at": "2026-03-08T18:56:06.904288",
+  "image_path": "dev\\img\\X00016469623.jpg",
+  "processed_at": "2026-03-09T17:48:04.231375",
   "timings": {
-    "pass1_ocr_sec": 14.85,
-    "pass2_markdown_sec": 18.04,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 32.9
+    "model_inference": {
+      "ocr_sec": 27.5,
+      "structured_read_sec": 25.64,
+      "total_sec": 53.14
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 53.14
   },
   "pass1_ocr_text": "tan woon yann\n\nMR D.I.Y. (M) SDN BHD  \n(CO.RTG : 86Q671-D)  \n101 1051-A & 1051-B, JALAN KP8 6,  \nKAWASAN PERINDUSTRIAN BALAKONG,  \n43300 SERI KEMBANGAN, SELANGOR  \n(TESCO PUTRA NILAI)  \n-INVOICE-  \n\nKILAT AUTO FCO WASH & SHINE ES1000 1L  \nWA45 - /2A - 12  \n9555916500133  1 X 3.11  3.11  \nKILAT AUTO WASH & WAX EW-1000-1L  \nWA44-A - 12  \n9555916500126  1 X 4.62  4.62  \nWD40 277ml MOQ 2572  \nWA43-A - 24  \n079567600084  1 X 11.23  11.23  \nKLEENSO AJAIB 99 SERAI WANYI 900G  \nWD00 - 15  \n955551400385  1 X 7.45  7.45  \nHANDKERCHIEF 71386#2PCS  \nP112PJ11-4 - 6/300  \n9090822  1 X 4.50  4.50  \n\nItem(s) : 5  \nQty(s) : 5  \n\nTotal  \nROUNDING ADJUSTMENT  \n- RM 0.01  \nTOTAL ROUNDED  \nRM 30.91  \nCASH  \nRM 51.00  \nCHANGE  \nRM 20.10  \n*  \n18-11-18 13:58 SH01 Z153 T2 R000002902  \nOPERATOR IRANIEE CASHIER  \n\nEXCHANGE ARE ALLOWED WITHIN  \n7 DAYS WITH RECEIPT.  \nSTRICTLY NO CASH REFUND.",
   "pass2_markdown": "<|ref|>title<|/ref|><|det|>[[170, 37, 730, 75]]<|/det|>\n# tan woon yann\n\n<|ref|>text<|/ref|><|det|>[[100, 163, 850, 312]]<|/det|>\nMR D.I.Y. (M) SDN BHD\n(CO.RTG : 86Q671-D)\n101 1851-A & 1851-B, JALAN KPB 6,\nKAWASAN PERINDUSTRIAN BALAKONG,\n43300 SERI KEMBANGAN, SELANGOR\n(TESCO PUTRA NILAI)\n-INVOICE-\n\n<|ref|>text<|/ref|><|det|>[[28, 327, 910, 642]]<|/det|>\nKILAT AUTO FCO WASH & SHINE ES1000 1L\nWA45 /2A - 12\n9555916500133 1 X 3.11 3.11\nKILAT' ECO AUTO WASH &WAX EW-1000-1L\nWA44-A - 12\n9555916500126 1 X 4.62 4.62\nWD40 277m1 M00 2572\nWA43-A - 24\n079567600084 1 X 11.23 11.23\nKLEFNSO AJAIB 99 SERAI WANYI 900G\nWD00 - 15\n9555651400385 1 X 7.45 7.45\nHANDKERCHIEF 71386#2PCS\nPI12PJ11-4 - 6/300\n9090822 1 X 4.50 4.50\n\n<|ref|>text<|/ref|><|det|>[[37, 660, 310, 684]]<|/det|>\nItem(s) : 5\n\n<|ref|>text<|/ref|><|det|>[[33, 700, 468, 808]]<|/det|>\nTotal\nROUNDING ADJUSTMENT\nTOTAL ROUNDED\nCASH\nCHANGE\n\n<|ref|>text<|/ref|><|det|>[[33, 822, 960, 867]]<|/det|>\n18-11-18 13:58 SH01 Z153 T2 R000002902\nOPERATOR IRAINEE CASHIER\n\n<|ref|>text<|/ref|><|det|>[[168, 884, 800, 950]]<|/det|>\nEXCHANGE ARE ALLOWED WITHIN 7 DAYS WITH RECEIPT. STRICTLY NO CASH REFUND.",

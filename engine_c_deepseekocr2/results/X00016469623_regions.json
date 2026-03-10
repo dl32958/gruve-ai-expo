@@ -1,0 +1,21 @@
+{
+  "image_path": "dev\\img\\X00016469623.jpg",
+  "processed_at": "2026-03-09T17:48:04.235725",
+  "regions": {
+    "header": {
+      "start_line": 1,
+      "end_line": 24,
+      "text": "tan woon yann\n\nMR D.I.Y. (M) SDN BHD  \n(CO.RTG : 86Q671-D)  \n101 1051-A & 1051-B, JALAN KP8 6,  \nKAWASAN PERINDUSTRIAN BALAKONG,  \n43300 SERI KEMBANGAN, SELANGOR  \n(TESCO PUTRA NILAI)  \n-INVOICE-  \n\nKILAT AUTO FCO WASH & SHINE ES1000 1L  \nWA45 - /2A - 12  \n9555916500133  1 X 3.11  3.11  \nKILAT AUTO WASH & WAX EW-1000-1L  \nWA44-A - 12  \n9555916500126  1 X 4.62  4.62  \nWD40 277ml MOQ 2572  \nWA43-A - 24  \n079567600084  1 X 11.23  11.23  \nKLEENSO AJAIB 99 SERAI WANYI 900G  \nWD00 - 15  \n955551400385  1 X 7.45  7.45  \nHANDKERCHIEF 71386#2PCS  \nP112PJ11-4 - 6/300  "
+    },
+    "body": {
+      "start_line": 25,
+      "end_line": 38,
+      "text": "9090822  1 X 4.50  4.50  \n\nItem(s) : 5  \nQty(s) : 5  \n\nTotal  \nROUNDING ADJUSTMENT  \n- RM 0.01  \nTOTAL ROUNDED  \nRM 30.91  \nCASH  \nRM 51.00  \nCHANGE  \nRM 20.10  "
+    },
+    "ending": {
+      "start_line": 39,
+      "end_line": 45,
+      "text": "*  \n18-11-18 13:58 SH01 Z153 T2 R000002902  \nOPERATOR IRANIEE CASHIER  \n\nEXCHANGE ARE ALLOWED WITHIN  \n7 DAYS WITH RECEIPT.  \nSTRICTLY NO CASH REFUND."
+    }
+  }
+}

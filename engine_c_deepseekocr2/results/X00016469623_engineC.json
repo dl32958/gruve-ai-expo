@@ -1,6 +1,6 @@
 {
   "engine": "DeepSeek-OCR-2",
-  "source_file": "data\\test\\img\\X00016469623.jpg",
+  "source_file": "dev\\img\\X00016469623.jpg",
   "extracted_fields": {
     "company": "MR D.I.Y. (M) SDN BHD",
     "date": null,
@@ -8,9 +8,18 @@
     "total": "30.91"
   },
   "timings": {
-    "pass1_ocr_sec": 14.85,
-    "pass2_markdown_sec": 18.04,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 32.9
+    "model_inference": {
+      "ocr_sec": 27.5,
+      "structured_read_sec": 25.64,
+      "total_sec": 53.14
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 53.14
   }
 }

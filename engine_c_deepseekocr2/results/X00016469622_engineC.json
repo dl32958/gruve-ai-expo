@@ -1,6 +1,6 @@
 {
   "engine": "DeepSeek-OCR-2",
-  "source_file": "data\\test\\img\\X00016469622.jpg",
+  "source_file": "dev\\img\\X00016469622.jpg",
   "extracted_fields": {
     "company": "NO. 122,124 JALAN DEDAP 13",
     "date": "25/12/2018",
@@ -8,9 +8,18 @@
     "total": "80.91"
   },
   "timings": {
-    "pass1_ocr_sec": 14.44,
-    "pass2_markdown_sec": 20.29,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 34.73
+    "model_inference": {
+      "ocr_sec": 17.87,
+      "structured_read_sec": 29.25,
+      "total_sec": 47.12
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 47.13
   }
 }

@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X00016469676.jpg",
-  "processed_at": "2026-03-08T18:57:56.175809",
+  "image_path": "dev\\img\\X00016469676.jpg",
+  "processed_at": "2026-03-09T17:50:50.026143",
   "timings": {
-    "pass1_ocr_sec": 8.61,
-    "pass2_markdown_sec": 14.3,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 22.91
+    "model_inference": {
+      "ocr_sec": 13.83,
+      "structured_read_sec": 18.9,
+      "total_sec": 32.73
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 32.74
   },
   "pass1_ocr_text": "tan chay yee  \nS.H.H. MOTOR ( SUNGAI RENGT ) SDN. BHD.  \n( 801580-T )  \nNo. 343, Jalan Kurau, Sungai Rengit,  \n81620 Pengerang, Johor.  \nTel: 07-8263254 Fax: 07-8266888  \n\nINVOICE  \n\nITEM/DESC.    QTY U.PRICE RM (TOTAL)  \n--- ---  \n4132   1    20.00    20.00  \nCROCS 300x17 TUBES  \n\n    SUB TOTAL :    20.00  \n    ROUNDING ADJUSTMENT :  0.00  \n    GRAND TOTAL :    20.00  \n    CASH :    20.00  \n    CHANGE :    0.00  \n\n23-01-2019 13:14:15 PM, PRINT BY: root  \nTOKEN NO: 0, STATION ID: A1, PID: POS  \nINVOICE NO: 22497  \n\nThanks Your Support",
   "pass2_markdown": "<|ref|>sub_title<|/ref|><|det|>[[280, 65, 740, 110]]<|/det|>\n## tan chay yee\n\n<|ref|>text<|/ref|><|det|>[[123, 110, 888, 163]]<|/det|>\nS.H.H. MOTOR (SUNGAI RENGIT) SDN. BHD. (801580-T)\n\n<|ref|>text<|/ref|><|det|>[[163, 182, 850, 266]]<|/det|>\nNo. 343, Jalan Kurau, Sungai Rengit, 81620 Pengerang, Johor.\nTel: 07-8263254 Fax: 07-8266888\n\n<|ref|>sub_title<|/ref|><|det|>[[430, 289, 576, 322]]<|/det|>\n## INVOICE\n\n<|ref|>table<|/ref|><|det|>[[28, 370, 955, 650]]<|/det|>\n<table><tr><td>ITEM/DESC.</td><td>QTY U.PRICE RM(TOTAL)</td></tr><tr><td>4132</td><td>1 20.00 20.00</td></tr><tr><td>CROCS 300X17 TUBES</td><td></td></tr><tr><td></td><td>SUB TOTAL : 20.00</td></tr><tr><td></td><td>ROUNDING ADJUSTMENT : 0.00</td></tr><tr><td></td><td>GRAND TOTAL : 20.00</td></tr><tr><td></td><td>CASH : 20.00</td></tr><tr><td></td><td>CHANGE : 0.00</td></tr></table>\n\n<|ref|>text<|/ref|><|det|>[[28, 669, 768, 755]]<|/det|>\n23-01-2019 13:14:15 PM, PRINT BY: root TOKEN NO: 0, STATION ID: A1, PID: POS INVOICE NO: 22497\n\n<|ref|>text<|/ref|><|det|>[[28, 777, 405, 812]]<|/det|>\nThanks Your Support\n\n<|ref|>image<|/ref|><|det|>[[537, 728, 842, 888]]<|/det|>",

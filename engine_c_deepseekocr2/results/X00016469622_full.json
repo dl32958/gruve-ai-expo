@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X00016469622.jpg",
-  "processed_at": "2026-03-08T18:55:33.989543",
+  "image_path": "dev\\img\\X00016469622.jpg",
+  "processed_at": "2026-03-09T17:47:11.068301",
   "timings": {
-    "pass1_ocr_sec": 14.44,
-    "pass2_markdown_sec": 20.29,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 34.73
+    "model_inference": {
+      "ocr_sec": 17.87,
+      "structured_read_sec": 29.25,
+      "total_sec": 47.12
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 47.13
   },
   "pass1_ocr_text": "# tan woon yann\n\n## YONGFATT ENTERPRISE  \n(JM0517726)  \nNO. 122,124 JALAN DEDAP 13  \n81100 JOHOR BAHRU  \n\n**TEL**: 07-3523888  \n**GST ID**: 000849813504  \n\n**SIMPLIFIED TAX INVOICE**  \n\n| CASH    |    |    |    |    |    |  \n|---|---|---|---|---|---|  \n| Doc No    | CS00031663    | Date    | 25/12/2018 |    |    |  \n| Cashier    | USER    | Time    | 12:31:00  |    |    |  \n| Salesperson  | Ref.    |    |    |    |    |  \n\n| Item    | Qty | S/Price | Amount | Tax  |  \n|---|---|---|---|---|  \n| E8318    | 1   | 80.91   | 80.91  | SR   |  \n\n**ELEGANT SOH TR BAG 15**  \nTotal Qty: 1  \n80.91  \n\n**Total Sales (Excluding GST)**: 80.91  \n\nDiscount: 0.00  \n\n**Total GST**: 0.00  \n\nRounding: -0.01  \n\n**Total Sales (Inclusive of GST)**: 80.90  \n\n**CASH**: 100.00  \n**Change**: 19.10  \n\n**80.90**  \n\n---\n\n## GST SUMMARY  \n\n| Tax Code | % | Amt (RM) | Tax (RM) |  \n|---|---|---|---|  \n| SR    | 0  | 80.91    | 0.00    |  \n\n**Total**: 80.91 0.00  \n\n---\n\n**GOODS SOLD ARE NOT REFUNDABLE. ONLY RECEIPT SHOWN.**",
   "pass2_markdown": "<|ref|>sub_title<|/ref|><|det|>[[202, 45, 770, 84]]<|/det|>\n## tan woon yann\n\n<|ref|>sub_title<|/ref|><|det|>[[175, 112, 810, 142]]<|/det|>\n## YONGFATT ENTERPRISE\n\n<|ref|>text<|/ref|><|det|>[[220, 145, 770, 218]]<|/det|>\n(JM0517726)\nNO.122.124 JALAN DEDAP 13\n81100 JOHOR BAHRU\n\n<|ref|>text<|/ref|><|det|>[[320, 231, 660, 258]]<|/det|>\nTEL 07-3523888\n\n<|ref|>text<|/ref|><|det|>[[277, 265, 710, 291]]<|/det|>\nGST ID: 000849813504\n\n<|ref|>sub_title<|/ref|><|det|>[[230, 293, 757, 319]]<|/det|>\n## SIMPLIFIED TAX INVOICE\n\n<|ref|>table<|/ref|><|det|>[[30, 333, 965, 944]]<|/det|>\n<table><tr><td colspan=\"5\">CASH</td></tr><tr><td>Doc No</td><td>CS00031663</td><td>Date</td><td>25/12/2018</td><td></td></tr><tr><td>Cashier</td><td>USER</td><td>Time</td><td>12:31:00</td><td></td></tr><tr><td>Salesperson</td><td></td><td>Ref.</td><td></td><td></td></tr><tr><td>Item</td><td>Qty</td><td>S/Price</td><td>Amount</td><td>Tax</td></tr><tr><td>E8318</td><td>1</td><td>80.91</td><td>80.91</td><td>SR</td></tr><tr><td colspan=\"5\">ELEGANT SOH TR BAG 15</td></tr><tr><td>Total Qty</td><td>1</td><td>80.91</td><td></td><td></td></tr><tr><td>Total Sales (Excluding GST)</td><td></td><td>60.91</td><td></td><td></td></tr><tr><td>Discount</td><td></td><td>0.00</td><td></td><td></td></tr><tr><td>Total GST</td><td></td><td>0.00</td><td></td><td></td></tr><tr><td>Rounding</td><td></td><td>-0.01</td><td></td><td></td></tr><tr><td>Total Sales (Inclusive of GST)</td><td></td><td>80.90</td><td></td><td></td></tr><tr><td>CASH</td><td></td><td>100.00</td><td></td><td></td></tr><tr><td>Change</td><td></td><td>19.10</td><td></td><td></td></tr><tr><td colspan=\"5\">GST SUMMARY</td></tr><tr><td>Tax Code</td><td>%</td><td>Amt (RM)</td><td>Tax (RM)</td><td></td></tr><tr><td>SR</td><td>0</td><td>80.91</td><td>0.00</td><td></td></tr><tr><td>Total</td><td></td><td>80.91</td><td>0.00</td><td></td></tr></table>",

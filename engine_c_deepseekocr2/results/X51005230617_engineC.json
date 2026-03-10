@@ -1,6 +1,6 @@
 {
   "engine": "DeepSeek-OCR-2",
-  "source_file": "data\\test\\img\\X51005230617.jpg",
+  "source_file": "dev\\img\\X51005230617.jpg",
   "extracted_fields": {
     "company": "Gerbang Alaf Restaurants Sdn Bhd",
     "date": "18/01/2018",
@@ -8,9 +8,18 @@
     "total": "26.60"
   },
   "timings": {
-    "pass1_ocr_sec": 13.1,
-    "pass2_markdown_sec": 12.28,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 25.38
+    "model_inference": {
+      "ocr_sec": 19.89,
+      "structured_read_sec": 14.63,
+      "total_sec": 34.52
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 34.53
   }
 }

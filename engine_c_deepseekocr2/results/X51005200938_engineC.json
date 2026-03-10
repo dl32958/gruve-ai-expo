@@ -1,6 +1,6 @@
 {
   "engine": "DeepSeek-OCR-2",
-  "source_file": "data\\test\\img\\X51005200938.jpg",
+  "source_file": "dev\\img\\X51005200938.jpg",
   "extracted_fields": {
     "company": "PERNIAGAAN ZHENG HUI",
     "date": "12/02/2018",
@@ -8,9 +8,18 @@
     "total": "106.10"
   },
   "timings": {
-    "pass1_ocr_sec": 24.78,
-    "pass2_markdown_sec": 39.78,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 64.57
+    "model_inference": {
+      "ocr_sec": 36.98,
+      "structured_read_sec": 55.16,
+      "total_sec": 92.14
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 92.15
   }
 }

@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X00016469612.jpg",
-  "processed_at": "2026-03-08T18:53:47.273734",
+  "image_path": "dev\\img\\X00016469612.jpg",
+  "processed_at": "2026-03-09T17:44:48.518498",
   "timings": {
-    "pass1_ocr_sec": 14.51,
-    "pass2_markdown_sec": 24.16,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 38.67
+    "model_inference": {
+      "ocr_sec": 12.94,
+      "structured_read_sec": 26.39,
+      "total_sec": 39.33
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 39.34
   },
   "pass1_ocr_text": "# tan woon yann\n\n**BOOK TA_K (TAMAN DAYA) SDN BHD**  \n789-17-W  \nNO.5: 55,57 & 59, JALAN SAGU 18,  \nTAMAN DAYA,  \n81100 JOHOR BAHRU,  \nJOHOR.  \n\n---\n\n**Document No** : TD01167104  \n**Date** : 25/12/2018 8:13:39 PM  \n**Cashier** : MANIS  \n**Member** :  \n\n---\n\n# CASH BILL\n\n| CODE/DESC    | PRICE | DISC | AMOUNT |\n|---|---|---|---|\n| QTY    |    |    | RM    |\n| 95569390-0118    | *    |    | 9.00   |\n\n**KFM MODELING CLAY KIDDY FISH**  \n1 PC  \n9.00  0.00  9.00  \n\n**Total**:  9.00  \n**Rour Jing Adjustment**: 0.00  \n\n**Round : d Total (RM):**  \n9.00  \n\n---\n\n**Cash**  10.00  \n**CHANGE**  1.00  \n\n---\n\n**GOODS SOLD ARE NOT REFURBABLE OR EXCHANGEABLE**  \n(说明：此页无此栏可售，视为无销售记录）  \n\n---\n\n**THANK YOU**  \nPLEASE COME AGAIN !",
   "pass2_markdown": "<|ref|>sub_title<|/ref|><|det|>[[150, 25, 700, 64]]<|/det|>\n## tan woon yann\n\n<|ref|>text<|/ref|><|det|>[[144, 87, 916, 111]]<|/det|>\nBOOK TA_K (TAMAN DAYA) SDN BHD\n\n<|ref|>text<|/ref|><|det|>[[440, 114, 621, 136]]<|/det|>\n789+17-W\n\n<|ref|>text<|/ref|><|det|>[[226, 138, 830, 161]]<|/det|>\nNO.5: 55,57 & 59, JALAN SAGU 18,\n\n<|ref|>text<|/ref|><|det|>[[409, 162, 653, 185]]<|/det|>\nTAMAN DAYA,\n\n<|ref|>text<|/ref|><|det|>[[345, 186, 728, 209]]<|/det|>\n81100 JOHOR BAHRU,\n\n<|ref|>text<|/ref|><|det|>[[460, 210, 600, 232]]<|/det|>\nJOHOR.\n\n<|ref|>image<|/ref|><|det|>[[186, 264, 864, 320]]<|/det|>\n\n\n<|ref|>text<|/ref|><|det|>[[99, 332, 610, 356]]<|/det|>\nDocument No : TD01167104\n\n<|ref|>text<|/ref|><|det|>[[99, 362, 750, 386]]<|/det|>\nDate : 25/12/2018 8:13:39 PM\n\n<|ref|>text<|/ref|><|det|>[[99, 388, 475, 410]]<|/det|>\nCashier : MANIS\n\n<|ref|>text<|/ref|><|det|>[[99, 413, 275, 435]]<|/det|>\nMember :\n\n<|ref|>sub_title<|/ref|><|det|>[[405, 447, 653, 472]]<|/det|>\n## CASH BILL\n\n<|ref|>table<|/ref|><|det|>[[46, 487, 968, 720]]<|/det|>\n<table><tr><td>CODE/DESC QTY</td><td>PRICE RIA</td><td>Disc RIA</td><td>AMOUNT RIA</td></tr><tr><td>95569390+0118</td><td>KF MODELING CLAY KIDDY FISH</td><td></td><td></td></tr><tr><td>1 PC</td><td>9.00</td><td>0.00</td><td>9.00</td></tr><tr><td></td><td>Total :</td><td></td><td>9.00</td></tr><tr><td></td><td>Rour Jing Adjustment :</td><td></td><td>0.00</td></tr><tr><td>Round :d Total (RM):</td><td></td><td>9.00</td><td></td></tr></table>\n\n<|ref|>text<|/ref|><|det|>[[432, 732, 585, 779]]<|/det|>\nCash CHANGE\n\n<|ref|>text<|/ref|><|det|>[[201, 828, 864, 850]]<|/det|>\nGOODS SOLD ARE NOT REFURBABLE OR\n\n<|ref|>text<|/ref|><|det|>[[404, 849, 679, 868]]<|/det|>\nEXCHANGEABLE\n\n<|ref|>text<|/ref|><|det|>[[290, 868, 770, 910]]<|/det|>\n好，好出！，想个办法就更难啦！如有不便，敬请谅解。谢谢！\n\n<|ref|>text<|/ref|><|det|>[[360, 926, 721, 966]]<|/det|>\nTHANK YOU PLEASE COME AGAIN!",

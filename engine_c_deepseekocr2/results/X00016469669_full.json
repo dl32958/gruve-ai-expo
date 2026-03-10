@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X00016469669.jpg",
-  "processed_at": "2026-03-08T18:56:27.159072",
+  "image_path": "dev\\img\\X00016469669.jpg",
+  "processed_at": "2026-03-09T17:48:39.258437",
   "timings": {
-    "pass1_ocr_sec": 7.97,
-    "pass2_markdown_sec": 12.25,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 20.23
+    "model_inference": {
+      "ocr_sec": 14.07,
+      "structured_read_sec": 20.92,
+      "total_sec": 34.99
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 34.99
   },
   "pass1_ocr_text": "tan chay yee  \nABC HO TRADING  \nNo.28/4, JALAN HARMONI 3/2,  \nTAMAN DESA HARMONI.  \n81100 JOHOR BAHRU JOHOR  \n07-355 2616  \n\nCash Bill: 01-143008  \nDate: 09/01/2019 8:01:11 PM  \nCashier: 01  \n\n| Description    | Qty | Price  | Amount  |\n|---|---|---|---|\n| Plastic    | 2   | 15.50  | 31.00  |\n|    |    |    |    |\n| Total    |    |    | 31.00  |\n| Total Amount:    |    |    | 31.00  |\n| Cash Received:    |    |    | 101.00 |\n| Change:    |    |    | 70.00  |\n\n*Goods Sold are non-refundable*  \n***Thank You***  \n***Please Come Again***  \n\n3/-00",
   "pass2_markdown": "<|ref|>sub_title<|/ref|><|det|>[[315, 72, 777, 137]]<|/det|>\n## tan chay yee\n\n<|ref|>text<|/ref|><|det|>[[230, 144, 710, 333]]<|/det|>\nABC HO TRADING:\nNo.284, JALAN HARMONI 3/2,\nTAMAN DESA HARMONI.\n81100 JOHOR BAHRU JOHOR\n07-355 2616\n\n<|ref|>text<|/ref|><|det|>[[52, 395, 444, 432]]<|/det|>\nCash Bill : 01-143008\n\n<|ref|>text<|/ref|><|det|>[[52, 435, 650, 472]]<|/det|>\nDate : 09/01/2019 8:01:11 PM\n\n<|ref|>text<|/ref|><|det|>[[52, 475, 315, 510]]<|/det|>\nCashier : 01\n\n<|ref|>table<|/ref|><|det|>[[45, 510, 912, 950]]<|/det|>\n<table><tr><td>Description</td><td>Qty</td><td>Price</td><td>Amount</td></tr><tr><td></td><td></td><td>RM</td><td>RM</td></tr><tr><td>Plastic</td><td>2</td><td>15.50</td><td>31.00</td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td>Total :</td><td></td><td>31.00</td></tr><tr><td></td><td>Total Amount :</td><td></td><td>31.00</td></tr><tr><td></td><td>Cash Received :</td><td></td><td>101.00</td></tr><tr><td></td><td>Change :</td><td></td><td>70.00</td></tr><tr><td></td><td>*Goods Sold are non-refundable*</td><td></td><td></td></tr><tr><td></td><td>***Thank You***</td><td></td><td>3/-00</td></tr></table>",

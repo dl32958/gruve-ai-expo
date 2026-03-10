@@ -1,0 +1,25 @@
+=====================
+BASE:  torch.Size([1, 256, 1280])
+NO PATCHES
+=====================
+<|ref|>sub_title<|/ref|><|det|>[[315, 72, 777, 137]]<|/det|>
+## tan chay yee
+
+<|ref|>text<|/ref|><|det|>[[230, 144, 710, 333]]<|/det|>
+ABC HO TRADING:
+No.284, JALAN HARMONI 3/2,
+TAMAN DESA HARMONI.
+81100 JOHOR BAHRU JOHOR
+07-355 2616
+
+<|ref|>text<|/ref|><|det|>[[52, 395, 444, 432]]<|/det|>
+Cash Bill : 01-143008
+
+<|ref|>text<|/ref|><|det|>[[52, 435, 650, 472]]<|/det|>
+Date : 09/01/2019 8:01:11 PM
+
+<|ref|>text<|/ref|><|det|>[[52, 475, 315, 510]]<|/det|>
+Cashier : 01
+
+<|ref|>table<|/ref|><|det|>[[45, 510, 912, 950]]<|/det|>
+<table><tr><td>Description</td><td>Qty</td><td>Price</td><td>Amount</td></tr><tr><td></td><td></td><td>RM</td><td>RM</td></tr><tr><td>Plastic</td><td>2</td><td>15.50</td><td>31.00</td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td>Total :</td><td></td><td>31.00</td></tr><tr><td></td><td>Total Amount :</td><td></td><td>31.00</td></tr><tr><td></td><td>Cash Received :</td><td></td><td>101.00</td></tr><tr><td></td><td>Change :</td><td></td><td>70.00</td></tr><tr><td></td><td>*Goods Sold are non-refundable*</td><td></td><td></td></tr><tr><td></td><td>***Thank You***</td><td></td><td>3/-00</td></tr></table>

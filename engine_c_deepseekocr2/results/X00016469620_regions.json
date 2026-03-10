@@ -1,0 +1,21 @@
+{
+  "image_path": "dev\\img\\X00016469620.jpg",
+  "processed_at": "2026-03-09T17:46:23.915959",
+  "regions": {
+    "header": {
+      "start_line": 1,
+      "end_line": 2,
+      "text": "tan woon yann  \nMR D.I.Y. (JOHOR) SDN BHD  "
+    },
+    "body": {
+      "start_line": 3,
+      "end_line": 36,
+      "text": "(CO.REG: 933109-X)  \nLOT 1851-A & 1851-B, JALAN KPB 6,  \nKAWASAN PERINDUSTRIAN BALAKONG,  \n43300 SERI KEMBANGAN, SELANGOR  \n(MR DIY TESCO TERBAU)  \n-INVOICE-  \n\nCHOPPING BOARD 35.5x25.5CM 803M#  \nEZ10HD05 - 24  \n8970669  1 X 19.00  19.00  \nAIR PRESSURE SPRAYER SX-575-1 1.5L  \nHC03-7 - 15  \n9066468  1 X 8.02  8.02  \nWAXCO WINDSHIELD CLEANER 120ML  \nWA14-3A - 48  \n9557031100236  1 X 3.02  3.02  \nBOPP TAPE 48MM*100M CLEAR  \nFZ-04 - 36  \n6935818350846  1 X 3.88  3.88  \n\nItem(s): 4  \nQty(s): 4  \n\nTOTAL  \nROUNDING ADJUSTMENT  \nTOTAL ROUNDED  \nCASH  \nCHANGE  \n\nRM 33.92  \n-RM 0.02  \nRM 33.90  \nRM 50.00  \nRM 16.10  "
+    },
+    "ending": {
+      "start_line": 37,
+      "end_line": 45,
+      "text": "\n*  \n12-01-19 21:13 SH01 ZK09  \nOPERATOR TRAINEE CASHIER  \n\nT4 R000027830  \nEXCHANGE ARE ALLOWED WITHIN  \n7 DAYS WITH RECEIPT.  \nSTRICTLY NO CASH REFUND."
+    }
+  }
+}

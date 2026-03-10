@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X51005230617.jpg",
-  "processed_at": "2026-03-08T18:59:26.173917",
+  "image_path": "dev\\img\\X51005230617.jpg",
+  "processed_at": "2026-03-09T17:52:56.762196",
   "timings": {
-    "pass1_ocr_sec": 13.1,
-    "pass2_markdown_sec": 12.28,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 25.38
+    "model_inference": {
+      "ocr_sec": 19.89,
+      "structured_read_sec": 14.63,
+      "total_sec": 34.52
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 34.53
   },
   "pass1_ocr_text": "1950\n\nGerbang Alaf Restaurants Sdn Bhd  \n(65351-M)  \nformerly known as  \nGolden Arches Restaurants Sdn Bhd  \nLicensee of McDonald's  \nLevel 6, Bangunan TH, Damansara Uptown3  \nNo.3, Jalan SS21/39, 47400 Petaling Jaya  \nSelangor  \n\n(GST ID No: 000504664064)  \nMcDonald's BHP Taman Melawati (#328)  \nTel No: 03-4162-2318  \nTAX INVOICE  \n\nMFY Side 1  \n\nINV# 003281900229170  \nORD #50 -REG #19- 18/01/2018 10:27:03  \nQTY ITEM    TOTAL  \n2 ChicMcMuffin    11.00  \n1 M Porridge    5.60  \n1 BM 2HotCakes    10.00  \n1 L Coke    1.00  \n\nTakeOut Total (incl GST)    26.60  \nTotal Rounded    26.60  \nCash Tendered    100.00  \nChange    73.40  \n\nTOTAL INCLUDES 6% GST    1.51  \n\n---\n\nWe'd love to hear your feedback!  \n\n[www.mcdefeedback.com.my](http://www.mcdefeedback.com.my)  \nOR  \n[Download My McD Feedback from Google Play/App Store](https://www.google.com/store)  \n\nto share your experience  \n\n---\n\nThank You and Please Come Again.  \nCustomer Service Hotline: 03-2726-5600",
   "pass2_markdown": "<|ref|>text<|/ref|><|det|>[[0, 0, 999, 998]]<|/det|>\n1950\n\nGerbang Alaf Restaurants Sdn Bhd (65351-M)\n\nformerly known as Golden Arches Restaurants Sdn Bhd Licensee of McDonald's Level 6, Bangunan TH, Damansara Uptown3 No.3, Jalan SS21/39, 47400 Petaling Jaya Selangor (GST ID No: 000504664064)\n\nMcDonald's BHP Taman Melawati (#328)\n\nTel No. 03-4162-2318\n\nTAX INVOICE\n\nMFY Side 1\n\nINV# 003281900229170\n\nORD #50 -REG #19- 18/01/2018 10:27:03\n\nQTY ITEM TOTAL\n\n2 ChicMcMuffin 11.00\n\n1 M Porridge 5.60\n\n1 BM 2HotCakes 10.00\n\n1 L Coke\n\nTakeOut Total (incl GST) 26.60\n\nTotal Rounded 26.60\n\nCash Tendered 100.00\n\nChange 73.40\n\nTOTAL INCLUDES 6% GST 1.51\n\nWe'd love to hear your feedback!\n\nsit www.mcdfeedback.com.my\n\nOR\n\nDownload My McD Feedback from Google Play/App Store\n\nto share your experience\n\nThank You and Please Come Again.\n\nCustomer Service Hotline : 03-2726-5600",

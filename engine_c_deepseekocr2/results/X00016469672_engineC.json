@@ -1,6 +1,6 @@
 {
   "engine": "DeepSeek-OCR-2",
-  "source_file": "data\\test\\img\\X00016469672.jpg",
+  "source_file": "dev\\img\\X00016469672.jpg",
   "extracted_fields": {
     "company": "NO.53 JALAN PUTRA 1,",
     "date": "11/01/2019",
@@ -8,9 +8,18 @@
     "total": "327.00"
   },
   "timings": {
-    "pass1_ocr_sec": 26.34,
-    "pass2_markdown_sec": 39.71,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 66.05
+    "model_inference": {
+      "ocr_sec": 46.76,
+      "structured_read_sec": 51.2,
+      "total_sec": 97.96
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 97.97
   }
 }

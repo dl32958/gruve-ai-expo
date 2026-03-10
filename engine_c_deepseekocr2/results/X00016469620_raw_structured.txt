@@ -1,0 +1,46 @@
+=====================
+BASE:  torch.Size([1, 256, 1280])
+PATCHES:  torch.Size([2, 144, 1280])
+=====================
+<|ref|>sub_title<|/ref|><|det|>[[245, 45, 816, 87]]<|/det|>
+## tan woon yann
+
+<|ref|>text<|/ref|><|det|>[[100, 166, 864, 328]]<|/det|>
+MR D.I.Y. (JOHOR) SDN BHD
+(CO.REG : 933109-X)
+LOT 1851-A & 1851-B, JALAN KPB 6,
+KAWASAN PERINDUSTRIAN BALAKONG,
+43300 SERI KEMBANGAN, SELANGOR
+(MR DIY TESCO TERBAU)
+-INVOICE-
+
+<|ref|>text<|/ref|><|det|>[[30, 342, 920, 620]]<|/det|>
+CHOPPING BOARD 35.5x25.5CM 803M#
+EZ10HD05 - 24
+8970669 1 X 19.00 19.00
+AIR PRESSURE SPRAYER SX-575-1 1.5L
+HC03-7 - 15
+9066468 1 X 8.02 8.02
+WAXCO WINDSHIELD CLEANER 120ML
+WA14-3A - 48
+9557031100236 1 X 3.02 3.02
+BOPP TAPE 48MM*100M CLEAR
+FZ-04 - 36
+6935818350846 1 X 3.88 3.88
+
+<|ref|>text<|/ref|><|det|>[[30, 633, 300, 661]]<|/det|>
+Item(s) : 4
+
+<|ref|>text<|/ref|><|det|>[[30, 676, 480, 792]]<|/det|>
+TOTAL
+ROUNDING ADJUSTMENT
+TOTAL ROUNDED
+CASH
+CHANGE
+
+<|ref|>text<|/ref|><|det|>[[30, 808, 952, 859]]<|/det|>
+12-01-19 21:13 SH01 ZK09 T4 R000027830
+OPERATOR TRAINEE CASHIER
+
+<|ref|>text<|/ref|><|det|>[[160, 874, 800, 949]]<|/det|>
+EXCHANGE ARE ALLOWED WITHIN 7 DAYS WITH RECEIPT. STRICTLY NO CASH REFUND.

@@ -1,0 +1,69 @@
+=====================
+BASE:  torch.Size([1, 256, 1280])
+PATCHES:  torch.Size([3, 144, 1280])
+=====================
+<|ref|>sub_title<|/ref|><|det|>[[210, 33, 680, 67]]<|/det|>
+## tan chay yee
+
+<|ref|>sub_title<|/ref|><|det|>[[50, 88, 931, 112]]<|/det|>
+## SOON HUAT MACHINERY ENTERPRISE
+
+<|ref|>text<|/ref|><|det|>[[352, 109, 635, 128]]<|/det|>
+(JM0352019-K)
+
+<|ref|>text<|/ref|><|det|>[[279, 130, 702, 150]]<|/det|>
+NO.53 JALAN PUTRA 1,
+
+<|ref|>text<|/ref|><|det|>[[312, 151, 666, 170]]<|/det|>
+TAMAN SRI PUTRA.
+
+<|ref|>text<|/ref|><|det|>[[288, 171, 693, 190]]<|/det|>
+81200 JOHOR BAHRU
+
+<|ref|>text<|/ref|><|det|>[[420, 191, 560, 210]]<|/det|>
+JOHOR
+
+<|ref|>text<|/ref|><|det|>[[33, 211, 951, 232]]<|/det|>
+TEL: 07-5547360 / 016-7993391 FAX: 07-5624059
+
+<|ref|>text<|/ref|><|det|>[[184, 232, 792, 251]]<|/det|>
+SOONHUAT2000@HOTMAIL.COM
+
+<|ref|>text<|/ref|><|det|>[[282, 253, 702, 272]]<|/det|>
+GST ID : 002116837376
+
+<|ref|>sub_title<|/ref|><|det|>[[360, 278, 632, 297]]<|/det|>
+## CASH SALES
+
+<|ref|>table<|/ref|><|det|>[[25, 300, 960, 370]]<|/det|>
+<table><tr><td>Doc No.</td><td>CS00004040</td><td>Date:</td><td>11/01/2019</td></tr><tr><td>Cashier</td><td>USER</td><td>Time:</td><td>09:44:00</td></tr><tr><td>Salesperson</td><td></td><td>Ref.:</td><td></td></tr></table>
+
+<|ref|>table<|/ref|><|det|>[[25, 382, 960, 777]]<|/det|>
+<table><tr><td>Item</td><td>Qty</td><td>S/Price</td><td>S/Price</td><td>Amount</td><td>Tax</td></tr><tr><td>1072</td><td>1</td><td>80.00</td><td>80.00</td><td>80.00</td><td></td></tr><tr><td colspan="6">REPAIR ENGINE POWER SPRAYER (1UNIT)</td></tr><tr><td colspan="6">workmanship &amp; service</td></tr><tr><td>70s49</td><td>1</td><td>160.00</td><td>160.00</td><td>160.00</td><td></td></tr><tr><td colspan="6">GIANT 606 OVERFLOW ASSY</td></tr><tr><td>1071</td><td>1</td><td>17.00</td><td>17.00</td><td>17.00</td><td></td></tr><tr><td colspan="6">ENGINE OIL</td></tr><tr><td>70791</td><td>1</td><td>10.00</td><td>10.00</td><td>10.00</td><td></td></tr><tr><td colspan="6">GREASE FOR TOOLS 40ML (AKODA)</td></tr><tr><td>70637</td><td>1</td><td>6.00</td><td>6.00</td><td>6.00</td><td></td></tr><tr><td colspan="6">EY20 PLUG CHAMPION</td></tr><tr><td>1643</td><td>1</td><td>8.00</td><td>8.00</td><td>8.00</td><td></td></tr><tr><td colspan="6">STARTER TALI</td></tr><tr><td>70197</td><td>1</td><td>10.00</td><td>10.00</td><td>10.00</td><td colspan="2"></td></tr><tr><td colspan="6">EY20 STARTER HANDLE</td></tr><tr><td>70561</td><td>2</td><td>18.00</td><td>18.00</td><td>36.00</td><td></td></tr><tr><td colspan="6">HD40 1L COTIN</td></tr><tr><td>Total Qty</td><td>9</td><td></td><td></td><td>327.00</td><td></td></tr></table>
+
+<|ref|>text<|/ref|><|det|>[[160, 800, 430, 884]]<|/det|>
+327.00
+
+<|ref|>text<|/ref|><|det|>[[444, 799, 860, 820]]<|/det|>
+Total Sales : 327.00
+
+<|ref|>text<|/ref|><|det|>[[480, 826, 860, 846]]<|/det|>
+Discount : 0.00
+
+<|ref|>text<|/ref|><|det|>[[546, 850, 860, 870]]<|/det|>
+Total : 0.00
+
+<|ref|>text<|/ref|><|det|>[[470, 876, 860, 896]]<|/det|>
+Rounding : 0.00
+
+<|ref|>text<|/ref|><|det|>[[430, 903, 860, 923]]<|/det|>
+Total Sales : 327.00
+
+<|ref|>text<|/ref|><|det|>[[519, 928, 860, 948]]<|/det|>
+CASH : 327.00
+
+<|ref|>text<|/ref|><|det|>[[480, 949, 860, 968]]<|/det|>
+Change : 0.00
+
+<|ref|>text<|/ref|><|det|>[[90, 971, 900, 990]]<|/det|>
+GOODS SOLD ARE NOT RETURNABLE, THANK YOU.

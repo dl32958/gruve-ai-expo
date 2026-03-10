@@ -1,11 +1,20 @@
 {
-  "image_path": "data\\test\\img\\X51005200938.jpg",
-  "processed_at": "2026-03-08T18:59:00.764088",
+  "image_path": "dev\\img\\X51005200938.jpg",
+  "processed_at": "2026-03-09T17:52:22.200216",
   "timings": {
-    "pass1_ocr_sec": 24.78,
-    "pass2_markdown_sec": 39.78,
-    "pass3_coords_sec": 0.0,
-    "total_sec": 64.57
+    "model_inference": {
+      "ocr_sec": 36.98,
+      "structured_read_sec": 55.16,
+      "total_sec": 92.14
+    },
+    "extraction": {
+      "coord_parsing_sec": 0.0,
+      "total_sec": 0.0
+    },
+    "output": {
+      "total_sec": 0.0
+    },
+    "total_sec": 92.15
   },
   "pass1_ocr_text": "A003045\n\nPERNIAGAAN ZHENG HUI\nJM0325958-V\nNO.59 JALAN PERMAS 9/5\nBANDAR BARU PERMAS JAYA\n81760 JOHOR BAHRU\nTEL: 07-386 7524 FAX: 07-386 3793\nGST NO: 000800589824\n\nSIMPLIFIED TAX INVOICE\n\nGOCHANT ENGINEERING (M) SDN BHD\n\nReceipt #: CS00082852\nSalesperson: Date: 12/02/2018\nCashier: USER Time: 08:30:00\n\n| Item    | Qty | (RM) RSP | (RM) Amount |\n|---|---|---|---|\n| 8239    | 1   | 16.00    | 16.00    |\n| SR: 11\" PROWESS H/DUTY SILICONE GJN G-D2 |    |    |    |\n| 9555075109147    | 3   | 7.00    | 21.00    |\n| SR: XTRASEAL RTV ACETIC SILICONE SA-107 |    |    |    |\n| 9744    | 1   | 18.00    | 18.00    |\n| SR: CENTRAL PUNCH SET 3PCS - 1/4\", 5/32\", 1/4\" |    |    |    |\n| 12525    | 1   | 50.00    | 50.00    |\n| SR: 24\" MARKSMAN PIPE WRENCH |    |    |    |\n| 2016    | 3   | 0.70    | 2.10    |\n| SR: PVC WIRE TAPE 1PC X 7YD |    |    |    |\n| TOTAL QTY: 9    |    |    | 106.10    |\n\n(Excluded GST) Sub Total (RM) : 106.10\nDiscount (RM) : 0.00\nTotal GST (RM) : 6.37\n\nRounding (RM) : -0.02\nTotal (RM) : 112.46\nCASH : 112.46\nChange (RM) : 0.00\n\nGST SUMMARY\n\n| Tax Code | % | Amount | GST  |\n|---|---|---|---|\n| SR    | 6  | 106.10 | 6.37 |\n\nTotal : 106.10 6.37\n\nGOODS SOLD ARE NOT RETURNABLE.\nTHANK YOU.",
   "pass2_markdown": "<|ref|>sub_title<|/ref|><|det|>[[368, 169, 600, 186]]<|/det|>\n## PERNIAGAAN ZHENG HUI\n\n<|ref|>text<|/ref|><|det|>[[440, 186, 530, 199]]<|/det|>\nJM0328595-V\n\n<|ref|>text<|/ref|><|det|>[[395, 199, 572, 212]]<|/det|>\nNO.59 JALAN PERMAS 9/5\n\n<|ref|>text<|/ref|><|det|>[[378, 212, 583, 225]]<|/det|>\nBANDAR BARU PERMAS JAYA\n\n<|ref|>text<|/ref|><|det|>[[400, 225, 570, 238]]<|/det|>\n81760 JOHOR BAHRU\n\n<|ref|>text<|/ref|><|det|>[[365, 238, 620, 252]]<|/det|>\nTEL : 07-38B 7524 FAX : 07-386 3793\n\n<|ref|>text<|/ref|><|det|>[[410, 253, 576, 268]]<|/det|>\nGST NO : 000800589824\n\n<|ref|>sub_title<|/ref|><|det|>[[399, 273, 587, 288]]<|/det|>\n## SIMPLIFIED TAX INVOICE\n\n<|ref|>text<|/ref|><|det|>[[310, 290, 567, 305]]<|/det|>\nGOCHANT ENGINEERING (MJ) SDN BHD\n\n<|ref|>text<|/ref|><|det|>[[310, 309, 466, 324]]<|/det|>\nReceipt #: CS00082852\n\n<|ref|>text<|/ref|><|det|>[[310, 325, 400, 338]]<|/det|>\nSalesperson:\n\n<|ref|>text<|/ref|><|det|>[[310, 338, 410, 352]]<|/det|>\nCashier: USER\n\n<|ref|>text<|/ref|><|det|>[[536, 328, 644, 342]]<|/det|>\nDate: 12/02/2018\n\n<|ref|>text<|/ref|><|det|>[[536, 342, 630, 356]]<|/det|>\nTime: 08:30:00\n\n<|ref|>table<|/ref|><|det|>[[305, 360, 652, 546]]<|/det|>\n<table><tr><td>Item</td><td>City</td><td>(RM) RSP</td><td>(RM) Amount</td></tr><tr><td>8239</td><td>GB 1</td><td>16.00</td><td>15.00</td></tr><tr><td colspan=\"4\">SR: 11&quot; PROWESS H/DUTY SILICONE GJN G-D2</td></tr><tr><td>9555075109147</td><td>GB 3</td><td>7.00</td><td>21.00</td></tr><tr><td colspan=\"4\">SR: XTRASEAL RIV ACETIC SILICONE SA-107</td></tr><tr><td>9744</td><td>GB 1</td><td>18.00</td><td>18.00</td></tr><tr><td colspan=\"4\">SR: CENTRAL PUNCH SET 3PCS - 1/4&quot;, 5/32&quot;, 1/4&quot;</td></tr><tr><td>12525</td><td>GB 1</td><td>50.00</td><td>50.00</td></tr><tr><td colspan=\"4\">SR: 24&quot; MARKSMAN PIPE WRENCH</td></tr><tr><td>2016</td><td>GB 3</td><td>0.70</td><td>2.10</td></tr><tr><td colspan=\"4\">SR: PVC WIRE TAPE 1PC X 7YD</td></tr></table>\n\n<|ref|>text<|/ref|><|det|>[[339, 560, 641, 576]]<|/det|>\n(Excluded GST) Sub Total (RM) : 106.10\n\n<|ref|>text<|/ref|><|det|>[[450, 578, 640, 593]]<|/det|>\nDiscount (RM) : 0.00\n\n<|ref|>text<|/ref|><|det|>[[444, 594, 639, 610]]<|/det|>\nTotal GST (RM) : 6.37\n\n<|ref|>text<|/ref|><|det|>[[417, 612, 639, 630]]<|/det|>\nRounding (RM) : -0.02\n\n<|ref|>text<|/ref|><|det|>[[455, 631, 639, 648]]<|/det|>\nTotal (RM) : 112.46\n\n<|ref|>text<|/ref|><|det|>[[488, 648, 639, 664]]<|/det|>\nCASH : 112.45\n\n<|ref|>text<|/ref|><|det|>[[433, 664, 639, 681]]<|/det|>\nChange (RM) : 0.00\n\n<|ref|>sub_title<|/ref|><|det|>[[301, 699, 440, 716]]<|/det|>\n## GST SUMMARY\n\n<|ref|>table<|/ref|><|det|>[[300, 723, 638, 771]]<|/det|>\n<table><tr><td>Tax Code</td><td>%</td><td>Amount</td><td>GST</td></tr><tr><td>SR</td><td>6</td><td>106.10</td><td>6.37</td></tr><tr><td colspan=\"2\">Total:</td><td>106.10</td><td>6.37</td></tr></table>\n\n<|ref|>text<|/ref|><|det|>[[336, 782, 593, 811]]<|/det|>\nGOODS SOLD ARE NOT RETURNABLE.\nTHANK YOU.",

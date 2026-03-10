@@ -1,0 +1,51 @@
+A003045
+
+PERNIAGAAN ZHENG HUI
+JM0325958-V
+NO.59 JALAN PERMAS 9/5
+BANDAR BARU PERMAS JAYA
+81760 JOHOR BAHRU
+TEL: 07-386 7524 FAX: 07-386 3793
+GST NO: 000800589824
+
+SIMPLIFIED TAX INVOICE
+
+GOCHANT ENGINEERING (M) SDN BHD
+
+Receipt #: CS00082852
+Salesperson: Date: 12/02/2018
+Cashier: USER Time: 08:30:00
+
+| Item    | Qty | (RM) RSP | (RM) Amount |
+|---|---|---|---|
+| 8239    | 1   | 16.00    | 16.00    |
+| SR: 11" PROWESS H/DUTY SILICONE GJN G-D2 |    |    |    |
+| 9555075109147    | 3   | 7.00    | 21.00    |
+| SR: XTRASEAL RTV ACETIC SILICONE SA-107 |    |    |    |
+| 9744    | 1   | 18.00    | 18.00    |
+| SR: CENTRAL PUNCH SET 3PCS - 1/4", 5/32", 1/4" |    |    |    |
+| 12525    | 1   | 50.00    | 50.00    |
+| SR: 24" MARKSMAN PIPE WRENCH |    |    |    |
+| 2016    | 3   | 0.70    | 2.10    |
+| SR: PVC WIRE TAPE 1PC X 7YD |    |    |    |
+| TOTAL QTY: 9    |    |    | 106.10    |
+
+(Excluded GST) Sub Total (RM) : 106.10
+Discount (RM) : 0.00
+Total GST (RM) : 6.37
+
+Rounding (RM) : -0.02
+Total (RM) : 112.46
+CASH : 112.46
+Change (RM) : 0.00
+
+GST SUMMARY
+
+| Tax Code | % | Amount | GST  |
+|---|---|---|---|
+| SR    | 6  | 106.10 | 6.37 |
+
+Total : 106.10 6.37
+
+GOODS SOLD ARE NOT RETURNABLE.
+THANK YOU.

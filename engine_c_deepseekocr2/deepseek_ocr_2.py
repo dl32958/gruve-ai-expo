@@ -1,7 +1,7 @@
 """
 Invoice Extraction System — DeepSeek-OCR-2
 ==========================================
-Dataset : CORD-1000  data/test/{img,box,entities}
+Dataset : SROIE dataset v2  dev/{img,box,entities}
 Model   : deepseek-ai/DeepSeek-OCR-2  (3B MoE, ~500M active, ~10GB VRAM)
 
 Three passes — all using prompts the model was actually trained on:
@@ -34,7 +34,7 @@ Three passes — all using prompts the model was actually trained on:
   Output │ Per field: value + reading_position (where in Pass 1 sequence)
          │            + markdown_context (surrounding markdown from Pass 2)
          │            + bboxes_model (Pass 3 coordinates)
-         │            + bboxes_gt (cross-ref with CORD-1000 box files)
+         │            + bboxes_gt (cross-ref with SROIE dataset v2 box files)
          │
          │ The judgment agent receives all four as the reasoning package.
 """
@@ -56,7 +56,7 @@ DTYPE  = torch.bfloat16
 
 # Fields to extract + evaluate
 INVOICE_FIELDS = [
-    "company", "date", "address", "total",   # covered by CORD-1000 ground truth
+    "company", "date", "address", "total",   # covered by SROIE dataset v2 ground truth
     "receipt_number", "cashier", "member",
     "subtotal", "rounding", "cash", "change",
     "line_items",                             # list of {name, qty, price, amount}
@@ -87,6 +87,10 @@ def load_model():
 
 
 # ── CORE INFERENCE — stdout capture ───────────────────────────────────────────
+# Raw stdout from the last _infer call is stored here so process_sample can
+# read it without changing _infer's return signature or inference path.
+_last_raw_stdout: str = ""
+
 def _infer(model, tokenizer, prompt: str, image_path: str, tmp_dir: str) -> str:
     """
     DeepSeek-OCR-2 streams output to stdout and returns None from model.infer().
@@ -125,6 +129,8 @@ def _infer(model, tokenizer, prompt: str, image_path: str, tmp_dir: str) -> str:
             "DeprecationWarning",
         ])
     ]
+    global _last_raw_stdout
+    _last_raw_stdout = raw.strip()
     return "\n".join(lines).strip()
 
 
@@ -145,7 +151,7 @@ def _parse_boxes(text: str) -> list:
 
 # ── DATA LOADERS ──────────────────────────────────────────────────────────────
 def load_box_file(path: str) -> list:
-    """Parse CORD-1000 box file: x1,y1,x2,y2,x1,y1,x2,y2,text per line."""
+    """Parse SROIE dataset v2 box file: x1,y1,x2,y2,x1,y1,x2,y2,text per line."""
     entries = []
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
@@ -409,6 +415,70 @@ def parse_fields(ocr_text: str) -> dict:
     }
 
 
+
+
+# ── REGION DETECTION ──────────────────────────────────────────────────────────
+def detect_regions(ocr_text: str, fields_out: dict) -> dict:
+    """
+    Split OCR text into header / body / ending using extracted field line
+    positions as anchors — more reliable than keyword guessing.
+
+    Header : lines 1 → last line of {company, address, date, cashier,
+                                      receipt_number, member}
+    Body   : lines after header → last line of any financial field
+             {line_items, subtotal, rounding, total, cash, change}
+    Ending : lines after body — only non-financial footer content.
+             Any line still containing a currency pattern stays in body.
+    """
+    lines = ocr_text.splitlines()
+    n     = len(lines)
+    if n == 0:
+        return {"header": {"start_line": 1, "end_line": 0, "text": ""},
+                "body":   {"start_line": 1, "end_line": 0, "text": ""},
+                "ending": {"start_line": 1, "end_line": 0, "text": ""}}
+
+    header_fields  = ["company", "address", "date", "cashier", "receipt_number", "member"]
+    body_fields    = ["line_items", "subtotal", "rounding", "total", "cash", "change"]
+    header_lines, body_lines = [], []
+
+    for field in header_fields:
+        fd  = fields_out.get(field, {})
+        pos = fd.get("reading_position") or {}
+        if pos.get("line"):
+            header_lines.append(pos["line"])
+
+    for field in body_fields:
+        fd  = fields_out.get(field, {})
+        pos = fd.get("reading_position") or {}
+        if pos.get("line"):
+            body_lines.append(pos["line"])
+        if field == "line_items" and isinstance(fd.get("value"), list):
+            for item in fd["value"]:
+                ip = item.get("reading_position") or {}
+                if ip.get("line"):
+                    body_lines.append(ip["line"])
+
+    header_end = min(max(header_lines) if header_lines else max(1, n // 4), n)
+    body_end   = min(max(body_lines)   if body_lines   else max(header_end + 1, n * 3 // 4), n)
+    body_end   = max(body_end, header_end + 1)
+
+    # Pull any post-body lines that still contain a currency value back into body
+    currency_re = re.compile(r"\d+\.\d{2}")
+    for i in range(body_end, n):
+        if currency_re.search(lines[i]):
+            body_end = i + 1
+
+    ending_start = body_end + 1
+
+    def region_text(start, end):
+        return "\n".join(lines[start - 1:end])
+
+    return {
+        "header": {"start_line": 1,            "end_line": header_end,   "text": region_text(1, header_end)},
+        "body":   {"start_line": header_end+1,  "end_line": body_end,     "text": region_text(header_end+1, body_end)},
+        "ending": {"start_line": ending_start,  "end_line": n,            "text": region_text(ending_start, n)},
+    }
+
 # ── EVALUATION ────────────────────────────────────────────────────────────────
 def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", str(s).lower().strip())
@@ -454,22 +524,29 @@ def process_sample(img_path: str, box_path: str, entities_path: str,
     box_entries  = load_box_file(box_path)    if Path(box_path).exists()      else []
     ground_truth = load_entities(entities_path) if Path(entities_path).exists() else {}
 
-    timings = {}
+    timings = {
+        "model_inference": {},
+        "extraction":      {},
+        "output":          {},
+    }
     t_total = time.time()
 
     # ── Pass 1: Free OCR ─────────────────────────────────────────────────────
     print("  [1/3] Free OCR ...")
     t0 = time.time()
     ocr_text = pass1_free_ocr(model, tokenizer, img_path, tmp_dir)
-    timings["pass1_ocr_sec"] = round(time.time() - t0, 2)
-    print(f"        {len(ocr_text)} chars  ({timings['pass1_ocr_sec']}s)")
+    raw_ocr = _last_raw_stdout
+    timings["model_inference"]["ocr_sec"] = round(time.time() - t0, 2)
+    print(f"        {len(ocr_text)} chars  ({timings['model_inference']['ocr_sec']}s)")
 
     # ── Pass 2: Markdown structure ────────────────────────────────────────────
     print("  [2/3] Markdown structure (spatial reasoning) ...")
     t0 = time.time()
     markdown = pass2_markdown(model, tokenizer, img_path, tmp_dir)
-    timings["pass2_markdown_sec"] = round(time.time() - t0, 2)
-    print(f"        {len(markdown)} chars  ({timings['pass2_markdown_sec']}s)")
+    raw_markdown = _last_raw_stdout
+    timings["model_inference"]["structured_read_sec"] = round(time.time() - t0, 2)
+    timings["model_inference"]["total_sec"] = round(timings["model_inference"]["ocr_sec"] + timings["model_inference"]["structured_read_sec"], 2)
+    print(f"        {len(markdown)} chars  ({timings['model_inference']['structured_read_sec']}s)")
 
     # ── Parse fields from OCR text ────────────────────────────────────────────
     parsed = parse_fields(ocr_text)
@@ -528,12 +605,17 @@ def process_sample(img_path: str, box_path: str, entities_path: str,
             "bboxes_gt":        bboxes_gt,     # pixel evidence: ground truth box file coords
         }
 
+    # ── Region detection ──────────────────────────────────────────────────────
+    regions = detect_regions(ocr_text, fields_out)
+
     # ── Evaluate ──────────────────────────────────────────────────────────────
-    timings["pass3_coords_sec"] = round(time.time() - t0, 2)
+    timings["extraction"]["coord_parsing_sec"] = round(time.time() - t0, 2)
+    timings["extraction"]["total_sec"] = timings["extraction"]["coord_parsing_sec"]
     timings["total_sec"] = round(time.time() - t_total, 2)
     eval_results = evaluate(fields_out, ground_truth)
     acc = eval_results.get("_score", {}).get("accuracy", 0)
-    print(f"  Accuracy: {acc:.1%}  |  P1: {timings['pass1_ocr_sec']}s  P2: {timings['pass2_markdown_sec']}s  P3: {timings['pass3_coords_sec']}s  total: {timings['total_sec']}s")
+    timings["output"]["total_sec"] = 0.0
+    print(f"  Accuracy: {acc:.1%}  |  OCR: {timings['model_inference']['ocr_sec']}s  read: {timings['model_inference']['structured_read_sec']}s  extract: {timings['extraction']['total_sec']}s  total: {timings['total_sec']}s")
 
     # ── Engine-C format (matches engine A: engine + source_file + extracted_fields) ──
     engine_out = {
@@ -543,7 +625,7 @@ def process_sample(img_path: str, box_path: str, entities_path: str,
         "timings":          timings,
     }
 
-    # ── Full result (complete reasoning package for judgment agent) ───────────
+    # ── Full result — no raw text or regions (those are standalone files) ─────
     result = {
         "image_path":      img_path,
         "processed_at":    datetime.now().isoformat(),
@@ -555,7 +637,7 @@ def process_sample(img_path: str, box_path: str, entities_path: str,
         "evaluation":      eval_results,
     }
 
-    # ── Save both files into engine_c_deepseekocr2/results/ ──────────────────
+    # ── Save files ────────────────────────────────────────────────────────────
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
 
@@ -565,8 +647,28 @@ def process_sample(img_path: str, box_path: str, entities_path: str,
     with open(out / f"{stem}_full.json", "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
 
+    # Standalone text files for LLM consumption
+    # _raw_ocr.txt      : clean OCR text, debug lines stripped, ready for LLM extraction
+    # _raw_structured.txt: full structured read with <|ref|> and <|det|> tags for layout context
+    with open(out / f"{stem}_raw_ocr.txt", "w", encoding="utf-8") as f:
+        f.write(ocr_text)
+
+    with open(out / f"{stem}_raw_structured.txt", "w", encoding="utf-8") as f:
+        f.write(raw_markdown)
+
+    # Standalone regions file
+    with open(out / f"{stem}_regions.json", "w", encoding="utf-8") as f:
+        json.dump({
+            "image_path":   img_path,
+            "processed_at": datetime.now().isoformat(),
+            "regions":      regions,
+        }, f, indent=2, ensure_ascii=False)
+
+    t0_vis = time.time()
     if visualise:
         _draw_boxes(img_path, result, str(out / f"{stem}_annotated.png"))
+    timings["output"]["visualisation_sec"] = round(time.time() - t0_vis, 2)
+    timings["output"]["total_sec"] = timings["output"]["visualisation_sec"]
 
     return result
 
@@ -614,8 +716,19 @@ def process_dataset(data_dir: str, output_dir: str,
 
     model, tokenizer = load_model()
 
-    all_results, total_score, scored = [], 0, 0
+    per_image_summaries = []
+    field_correct = {f: 0 for f in GT_FIELDS}
+    field_total   = {f: 0 for f in GT_FIELDS}
+    timing_sums   = {
+        "ocr_sec": 0, "structured_read_sec": 0,
+        "coord_parsing_sec": 0, "visualisation_sec": 0, "total_sec": 0,
+    }
+    scored  = 0
+    errors  = []
+    t_load  = time.time()
+    model_load_sec = round(time.time() - t_load, 2)
     t_dataset = time.time()
+
     for i, img_path in enumerate(images):
         stem = img_path.stem
         print(f"[{i+1}/{len(images)}] {img_path.name}")
@@ -627,36 +740,116 @@ def process_dataset(data_dir: str, output_dir: str,
                 output_dir, visualise,
                 model=model, tokenizer=tokenizer,
             )
-            all_results.append(result)
-            acc = result["evaluation"]["_score"]["accuracy"]
-            total_score += acc
+            t  = result["timings"]
+            mi = t["model_inference"]
+            ex = t["extraction"]
+            op = t["output"]
+            timing_sums["ocr_sec"]             += mi.get("ocr_sec", 0)
+            timing_sums["structured_read_sec"]  += mi.get("structured_read_sec", 0)
+            timing_sums["coord_parsing_sec"]    += ex.get("coord_parsing_sec", 0)
+            timing_sums["visualisation_sec"]    += op.get("visualisation_sec", 0)
+            timing_sums["total_sec"]            += t.get("total_sec", 0)
+            for field in GT_FIELDS:
+                ev = result["evaluation"].get(field, {})
+                if ev.get("gt") is not None:
+                    field_total[field] += 1
+                    if ev.get("norm_match"):
+                        field_correct[field] += 1
             scored += 1
+            per_image_summaries.append({
+                "image":      img_path.name,
+                "accuracy":   result["evaluation"]["_score"]["accuracy"],
+                "timings":    t,
+                "evaluation": {f: result["evaluation"][f] for f in GT_FIELDS
+                               if f in result["evaluation"]},
+                "files": {
+                    "engineC":        f"{stem}_engineC.json",
+                    "full":           f"{stem}_full.json",
+                    "raw_ocr":        f"{stem}_raw_ocr.txt",
+                    "raw_structured": f"{stem}_raw_structured.txt",
+                    "regions":        f"{stem}_regions.json",
+                    "annotated":      f"{stem}_annotated.png" if visualise else None,
+                },
+            })
         except Exception as e:
             import traceback
             print(f"  ERROR: {e}")
             traceback.print_exc()
-            all_results.append({"image_path": str(img_path), "error": str(e)})
+            errors.append({"image": str(img_path), "error": str(e)})
+
+    dataset_secs = round(time.time() - t_dataset, 1)
+    n   = max(scored, 1)
+    avg = round(sum(s["accuracy"] for s in per_image_summaries) / n, 3)
+
+    summary = {
+        "run_info": {
+            "model":             MODEL_NAME,
+            "device":            DEVICE,
+            "processed_at":      datetime.now().isoformat(),
+            "total_images":      len(images),
+            "successful":        scored,
+            "errors":            len(errors),
+            "total_run_sec":     dataset_secs,
+            "avg_sec_per_image": round(dataset_secs / n, 1),
+        },
+        "accuracy_summary": {
+            "overall_avg": avg,
+            "per_field": {
+                f: {
+                    "correct":  field_correct[f],
+                    "total":    field_total[f],
+                    "accuracy": round(field_correct[f] / field_total[f], 3)
+                                if field_total[f] else 0.0,
+                }
+                for f in GT_FIELDS
+            },
+        },
+        "timing_summary": {
+            "model_inference": {
+                "avg_ocr_sec":             round(timing_sums["ocr_sec"] / n, 2),
+                "avg_structured_read_sec": round(timing_sums["structured_read_sec"] / n, 2),
+            },
+            "extraction": {
+                "avg_coord_parsing_sec": round(timing_sums["coord_parsing_sec"] / n, 3),
+            },
+            "output": {
+                "avg_visualisation_sec": round(timing_sums["visualisation_sec"] / n, 3),
+            },
+            "avg_total_sec": round(timing_sums["total_sec"] / n, 2),
+            "min_total_sec": round(min((s["timings"]["total_sec"]
+                                        for s in per_image_summaries), default=0), 2),
+            "max_total_sec": round(max((s["timings"]["total_sec"]
+                                        for s in per_image_summaries), default=0), 2),
+        },
+        "per_image": per_image_summaries,
+        "errors":    errors,
+    }
 
     out = Path(output_dir)
     with open(out / "all_results.json", "w", encoding="utf-8") as f:
-        json.dump(all_results, f, indent=2, ensure_ascii=False)
+        json.dump(summary, f, indent=2, ensure_ascii=False)
 
-    ok = sum(1 for r in all_results if "error" not in r)
-    avg = round(total_score / scored, 3) if scored else 0.0
-    dataset_secs = round(time.time() - t_dataset, 1)
+    ok = scored
     print(f"\n{'='*50}")
-    print(f"Complete       : {ok}/{len(all_results)} processed")
+    print(f"Complete       : {ok}/{len(images)} processed")
     print(f"Avg accuracy   : {avg:.1%}")
-    print(f"Total time     : {dataset_secs}s  (~{round(dataset_secs/max(ok,1),1)}s per image)")
+    print(f"Per field      : " + "  ".join(
+        f"{f}={round(field_correct[f]/field_total[f]*100)}%"
+        if field_total[f] else f"{f}=N/A" for f in GT_FIELDS
+    ))
+    print(f"Avg per image  : {round(timing_sums['total_sec']/n,1)}s  "
+          f"(OCR {round(timing_sums['ocr_sec']/n,1)}s + "
+          f"read {round(timing_sums['structured_read_sec']/n,1)}s)")
+    print(f"Total run time : {dataset_secs}s")
     print(f"Results        : {out / 'all_results.json'}")
-    return all_results
+    return summary
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser(description="DeepSeek-OCR-2 invoice extractor")
-    ap.add_argument("--data",    default="./data/test")
+    ap.add_argument("--data",    default="./dev")
     ap.add_argument("--output",  default="./engine_c_deepseekocr2/results")
     ap.add_argument("--max",     type=int, default=10)
     ap.add_argument("--no-vis",  action="store_true")
