@@ -17,6 +17,11 @@ It does **not** perform:
 Those responsibilities belong to downstream shared modules in the overall architecture.
 
 Example Run:
+1. Connect to HPC Explorer cluster shell
+2. cd gruve-ai-expo 
+3. git pull origin engine_b_module
+4. 
+
 python -m engine_b_qwen.run \
   --input data/temp/X00016469612.txt \
   --output engine_b_qwen/outputs_engine_b/engine_b_qwen.jsonl \

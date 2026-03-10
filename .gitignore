@@ -27,5 +27,5 @@ venv/
 
 
 # data
-data/
-outputs/
+dataset/
+outputs_engine_b/
