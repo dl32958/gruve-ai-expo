@@ -1,0 +1,12 @@
+{
+    "engine": "llama3.1-8B-Instruct",
+    "source_file": "data/temp/deepseek_ocr2_output/X00016469612_raw_text.txt",
+    "doc_state": "receipt",
+    "engine_process_time": 2.54,
+    "extracted_fields": {
+        "company": "BOOK TAK (TAMAN DAYA) SDN BHD",
+        "date": "25/12/2018 8:13:39 PM",
+        "address": "NO.5: 55,57 & 59, JALAN SAGU 18, TAMAN DAYA, 81100 JOHOR BAHRU, JOHOR.",
+        "total": "9.00 RM"
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "field_extraction": {
+    "company": "TAMAN DAYA) SDN BHD",
+    "date": "25/12/2018 8:13:39 PM",
+    "address": "NO.57 55, JALAN SAGU 18, TAMAN DAYA\n81100 JOHOR BAHRU.",
+    "total": "Total : 9.00"
+  },
+  "evidence_trace": {
+    "company": {
+      "evidence_text": "(TAMAN DAYA) SDN BHD"
+    },
+    "date": {
+      "evidence_text": "Date 25/12/2018 8:13:39 PM"
+    },
+    "address": {
+      "evidence_text": "NO.57 55, JALAN SAGU 18,\nTAMAN DAYA\n81100 JOHOR BAHRU."
+    },
+    "total": {
+      "evidence_text": "Total : 9,00"
+    }
+  },
+  "reasoning": {
+    "company": "The company name is extracted from the top of the receipt, matching the pattern of containing alphanumeric characters and ending with 'SDN BHD'. The evidence text directly supports this extraction.",
+    "date": "The date is clearly marked on the receipt and matches the specified pattern. The evidence text provides the exact date and time.",
+    "address": "The address is found in the middle section of the receipt, consisting of multiple lines with house numbers, street names, and city information. The evidence text aligns with the inferred constraints.",
+    "total": "The total amount is located at the bottom of the receipt, starting with 'Total' and ending with the currency symbol. The evidence text confirms this format."
+  }
+}

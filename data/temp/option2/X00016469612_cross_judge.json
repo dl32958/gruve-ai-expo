@@ -1,0 +1,44 @@
+{
+  "field_results": {
+    "company": {
+      "recommended_value": "BOOK TA -K (TAMAN DAYA) SDN BHD",
+      "selected_engine": "engineA",
+      "selection_reason": "Engine A's extracted value is more consistent with the validation rules and has stronger OCR alignment.",
+      "final_rule_consistency": "high",
+      "final_engine_self_consistency": "strong",
+      "final_ocr_alignment": "strong",
+      "field_confidence": "high",
+      "field_state": "pass"
+    },
+    "date": {
+      "recommended_value": "25/12/2018 8:13:39 PM",
+      "selected_engine": "engineB",
+      "selection_reason": "Engine B's extracted value includes time, which is a more specific match to the validation rules.",
+      "final_rule_consistency": "high",
+      "final_engine_self_consistency": "strong",
+      "final_ocr_alignment": "strong",
+      "field_confidence": "high",
+      "field_state": "pass"
+    },
+    "address": {
+      "recommended_value": "NO.57 55, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU.",
+      "selected_engine": "engineB",
+      "selection_reason": "Engine B's extracted value is more consistent with the validation rules and has a stronger self-justification.",
+      "final_rule_consistency": "high",
+      "final_engine_self_consistency": "strong",
+      "final_ocr_alignment": "weak",
+      "field_confidence": "high",
+      "field_state": "pass"
+    },
+    "total": {
+      "recommended_value": "9.00",
+      "selected_engine": "engineA | engineB",
+      "selection_reason": "Both extracted values are identical and have high consistency with the validation rules, strong self-consistency, and strong OCR alignment.",
+      "final_rule_consistency": "high",
+      "final_engine_self_consistency": "strong",
+      "final_ocr_alignment": "strong",
+      "field_confidence": "high",
+      "field_state": "pass"
+    }
+  }
+}

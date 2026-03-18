@@ -1,0 +1,29 @@
+Step 1: Textual patterns analysis
+- **Company**: The company name appears at the top and is formatted as a full name with parentheses and suffixes (e.g., "(TAMAN DAYA) SDN BHD").
+- **Date**: The date is in the format `DD/MM/YYYY HH:MM:SS PM` (e.g., `25/12/2018 8:13:39 PM`).
+- **Address**: The address consists of multiple lines, including house numbers, street names, and city information (e.g., `NO.57 55, JALAN SAGU 18, TAMAN DAYA`).
+- **Total**: The total amount is always prefixed with the word "Total" and ends with the currency symbol (e.g., `Total : 9.00`).
+
+Step 2: Inferred validation constraints
+```json
+{
+  "inferred_constraints": {
+    "company": [
+      "contains_alphanumeric",
+      "ends_with_sdn_bhd_or_similar"
+    ],
+    "date": [
+      "matches_pattern-DD-MM-YYYY_HH:MM:SS_PM"
+    ],
+    "address": [
+      "multiple_lines",
+      "includes_house_number_and_street_name",
+      "includes_city_information"
+    ],
+    "total": [
+      "starts_with_total",
+      "ends_with_currency_symbol"
+    ]
+  }
+}
+```

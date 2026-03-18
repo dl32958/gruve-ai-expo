@@ -1,0 +1,60 @@
+Based on the OCR raw text, here are the observations and inferred validation constraints:
+
+**Step 1: Textual patterns analysis**
+
+- **Numeric patterns:**
+  - Date: The date pattern appears to be in the format "DD/MM/YYYY" (e.g., "25/12/2018").
+  - Total: The total amount is represented as a decimal number with a comma as the thousand separator (e.g., "9,00").
+  - Address: No specific numeric pattern is observed in the address.
+  - Company: No specific numeric pattern is observed in the company name.
+- **Address structure:**
+  - Address lines are separated by a newline character.
+  - Address components (street, city, state, zip) are separated by commas.
+- **Date patterns:**
+  - The date is always in the format "DD/MM/YYYY".
+- **Company patterns:**
+  - Company names are typically in title case (first letter of each word capitalized).
+- **Total patterns:**
+  - Total amount is represented as a decimal number with a comma as the thousand separator.
+
+**Step 2: Inferred validation constraints**
+
+Based on the observed patterns, here are the inferred validation constraints:
+
+```json
+{
+  "inferred_constraints": {
+    "company": [
+      {
+        "type": "string",
+        "min_length": 2,
+        "max_length": 50,
+        "pattern": "^[A-Za-z ]+$"
+      }
+    ],
+    "date": [
+      {
+        "type": "string",
+        "pattern": "^(\\d{2}/\\d{2}/\\d{4})$"
+      }
+    ],
+    "address": [
+      {
+        "type": "string",
+        "min_length": 10,
+        "max_length": 100
+      }
+    ],
+    "total": [
+      {
+        "type": "number",
+        "min_value": 0,
+        "max_value": 9999999.99,
+        "decimal_places": 2
+      }
+    ]
+  }
+}
+```
+
+Note that these constraints are general and may not apply to all receipts. They are based on the specific patterns observed in the provided OCR raw text.

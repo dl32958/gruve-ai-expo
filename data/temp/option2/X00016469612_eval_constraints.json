@@ -1,0 +1,27 @@
+{
+  "consolidated_rules": {
+    "company": [
+      "should resemble a plausible merchant name",
+      "formatted as a full name with optional parentheses and suffixes",
+      "contains alphanumeric characters"
+    ],
+    "date": [
+      "commonly follows a DD/MM/YYYY-style format",
+      "may include time in the format HH:MM:SS PM"
+    ],
+    "address": [
+      "may consist of multiple lines",
+      "includes house number and street name",
+      "includes city information"
+    ],
+    "total": [
+      "may include decimal digits and optional currency notation",
+      "starts with the word 'Total'",
+      "ends with a currency symbol"
+    ]
+  },
+  "synthesis_summary": {
+    "agreement_level": "high",
+    "notes": ""
+  }
+}

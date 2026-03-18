@@ -1,0 +1,364 @@
+{
+  "source_file": "data/temp/deepseek_ocr2_output/X00016469612_raw_text.txt",
+  "ranges_file": "data/temp/deepseek_ocr2_output/X00016469612_ranges.json",
+  "raw_text": {
+    "full_raw": "tan moon yann\nBOOK TAK (TAMAN DAYA) SDN BHD\n789-17-W\nNO.5: 55,57 & 59, JALAN SAGU 18,\nTAMAN DAYA,\n81100 JOHOR BAHRU,\nJOHOR.\nDocument No : TD01167104\nDate : 25/12/2018 8:13:39 PM\nCashier : MANIS\nMember :\nCASH BILL\nCODE/DESC PRICE DISC AMOUNT\n--- --- --- ---\nQTY RM\n95569390-0118\nF. MODELING CLAY KIDDY FISH\n1 PC\n9.00  0.00  9.00\nTotal:  9.00\nRour Jing Adjustment: 0.00\nRound : d Total (RM):\n9.00\nCash  20.00\nCHANGE  10.00\n9.00\nGOODS SOLD ARE NOT REFURBABLE OR EXCHANGEABLE\n(说明：此页无此栏可退)\nTHANK YOU\nPLEASE COME AGAIN !",
+    "lines_raw": [
+      "tan moon yann",
+      "BOOK TAK (TAMAN DAYA) SDN BHD",
+      "789-17-W",
+      "NO.5: 55,57 & 59, JALAN SAGU 18,",
+      "TAMAN DAYA,",
+      "81100 JOHOR BAHRU,",
+      "JOHOR.",
+      "Document No : TD01167104",
+      "Date : 25/12/2018 8:13:39 PM",
+      "Cashier : MANIS",
+      "Member :",
+      "CASH BILL",
+      "CODE/DESC PRICE DISC AMOUNT",
+      "--- --- --- ---",
+      "QTY RM",
+      "95569390-0118",
+      "F. MODELING CLAY KIDDY FISH",
+      "1 PC",
+      "9.00  0.00  9.00",
+      "Total:  9.00",
+      "Rour Jing Adjustment: 0.00",
+      "Round : d Total (RM):",
+      "9.00",
+      "Cash  20.00",
+      "CHANGE  10.00",
+      "9.00",
+      "GOODS SOLD ARE NOT REFURBABLE OR EXCHANGEABLE",
+      "(说明：此页无此栏可退)",
+      "THANK YOU",
+      "PLEASE COME AGAIN !"
+    ],
+    "lines_norm": [
+      "tan moon yann",
+      "BOOK TAK (TAMAN DAYA) SDN BHD",
+      "789-17-W",
+      "NO.5: 55,57 & 59, JALAN SAGU 18,",
+      "TAMAN DAYA,",
+      "81100 JOHOR BAHRU,",
+      "JOHOR.",
+      "Document No : TD01167104",
+      "Date : 25/12/2018 8:13:39 PM",
+      "Cashier : MANIS",
+      "Member :",
+      "CASH BILL",
+      "CODE/DESC PRICE DISC AMOUNT",
+      "--- --- --- ---",
+      "QTY RM",
+      "95569390-0118",
+      "F. MODELING CLAY KIDDY FISH",
+      "1 PC",
+      "9.00 0.00 9.00",
+      "Total: 9.00",
+      "Rour Jing Adjustment: 0.00",
+      "Round : d Total (RM):",
+      "9.00",
+      "Cash 20.00",
+      "CHANGE 10.00",
+      "9.00",
+      "GOODS SOLD ARE NOT REFURBABLE OR EXCHANGEABLE",
+      "(说明：此页无此栏可退)",
+      "THANK YOU",
+      "PLEASE COME AGAIN !"
+    ],
+    "tokens_per_line": [
+      [
+        "tan",
+        "moon",
+        "yann"
+      ],
+      [
+        "BOOK",
+        "TAK",
+        "(",
+        "TAMAN",
+        "DAYA",
+        ")",
+        "SDN",
+        "BHD"
+      ],
+      [
+        "789",
+        "-",
+        "17",
+        "-",
+        "W"
+      ],
+      [
+        "NO",
+        ".",
+        "5",
+        ":",
+        "55",
+        ",",
+        "57",
+        "&",
+        "59",
+        ",",
+        "JALAN",
+        "SAGU",
+        "18",
+        ","
+      ],
+      [
+        "TAMAN",
+        "DAYA",
+        ","
+      ],
+      [
+        "81100",
+        "JOHOR",
+        "BAHRU",
+        ","
+      ],
+      [
+        "JOHOR",
+        "."
+      ],
+      [
+        "Document",
+        "No",
+        ":",
+        "TD",
+        "01167104"
+      ],
+      [
+        "Date",
+        ":",
+        "25",
+        "/",
+        "12",
+        "/",
+        "2018",
+        "8",
+        ":",
+        "13",
+        ":",
+        "39",
+        "PM"
+      ],
+      [
+        "Cashier",
+        ":",
+        "MANIS"
+      ],
+      [
+        "Member",
+        ":"
+      ],
+      [
+        "CASH",
+        "BILL"
+      ],
+      [
+        "CODE",
+        "/",
+        "DESC",
+        "PRICE",
+        "DISC",
+        "AMOUNT"
+      ],
+      [
+        "-",
+        "-",
+        "-",
+        "-",
+        "-",
+        "-",
+        "-",
+        "-",
+        "-",
+        "-",
+        "-",
+        "-"
+      ],
+      [
+        "QTY",
+        "RM"
+      ],
+      [
+        "95569390",
+        "-",
+        "0118"
+      ],
+      [
+        "F",
+        ".",
+        "MODELING",
+        "CLAY",
+        "KIDDY",
+        "FISH"
+      ],
+      [
+        "1",
+        "PC"
+      ],
+      [
+        "9.00",
+        "0.00",
+        "9.00"
+      ],
+      [
+        "Total",
+        ":",
+        "9.00"
+      ],
+      [
+        "Rour",
+        "Jing",
+        "Adjustment",
+        ":",
+        "0.00"
+      ],
+      [
+        "Round",
+        ":",
+        "d",
+        "Total",
+        "(",
+        "RM",
+        ")",
+        ":"
+      ],
+      [
+        "9.00"
+      ],
+      [
+        "Cash",
+        "20.00"
+      ],
+      [
+        "CHANGE",
+        "10.00"
+      ],
+      [
+        "9.00"
+      ],
+      [
+        "GOODS",
+        "SOLD",
+        "ARE",
+        "NOT",
+        "REFURBABLE",
+        "OR",
+        "EXCHANGEABLE"
+      ],
+      [
+        "(",
+        "说",
+        "明",
+        "：",
+        "此",
+        "页",
+        "无",
+        "此",
+        "栏",
+        "可",
+        "退",
+        ")"
+      ],
+      [
+        "THANK",
+        "YOU"
+      ],
+      [
+        "PLEASE",
+        "COME",
+        "AGAIN",
+        "!"
+      ]
+    ],
+    "regions": {
+      "header_line_range": [
+        0,
+        12
+      ],
+      "context_line_range": [
+        12,
+        30
+      ]
+    }
+  },
+  "engines": {
+    "engineA": {
+      "engine_name": "llama3.1-8B-Instruct",
+      "engine_process_time": 2.16,
+      "source_file": "data/temp/deepseek_ocr2_output/X00016469612_raw_text.txt",
+      "company": {
+        "raw_value": "BOOK TAK (TAMAN DAYA) SDN BHD",
+        "norm_value": "BOOK TAK (TAMAN DAYA) SDN BHD",
+        "tokens": [
+          "BOOK",
+          "TAK",
+          "(",
+          "TAMAN",
+          "DAYA",
+          ")",
+          "SDN",
+          "BHD"
+        ]
+      },
+      "date": {
+        "raw_value": "25/12/2018 8:13:39 PM",
+        "norm_value": "2018-12-25",
+        "tokens": [
+          "2018",
+          "-",
+          "12",
+          "-",
+          "25"
+        ],
+        "parsed": {
+          "year": 2018,
+          "month": 12,
+          "day": 25
+        }
+      },
+      "address": {
+        "raw_value": "NO.5: 55,57 & 59, JALAN SAGU 18, TAMAN DAYA, 81100 JOHOR BAHRU, JOHOR.",
+        "norm_value": "NO.5: 55,57 & 59, JALAN SAGU 18, TAMAN DAYA, 81100 JOHOR BAHRU, JOHOR",
+        "tokens": [
+          "NO",
+          ".",
+          "5",
+          ":",
+          "55",
+          ",",
+          "57",
+          "&",
+          "59",
+          ",",
+          "JALAN",
+          "SAGU",
+          "18",
+          ",",
+          "TAMAN",
+          "DAYA",
+          ",",
+          "81100",
+          "JOHOR",
+          "BAHRU",
+          ",",
+          "JOHOR"
+        ]
+      },
+      "total": {
+        "raw_value": "9.00 RM",
+        "norm_value": 9.0,
+        "tokens": [
+          "9.0"
+        ],
+        "parsed": {
+          "amount": 9.0,
+          "currency": "RM"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "engine": "engineA",
+  "field_results": {
+    "company": {
+      "extracted_value": "BOOK TA -K (TAMAN DAYA) SDN BHD",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "sanity_check_result": "pass",
+      "judgment_summary": "The extracted company name is highly consistent with the validation rules and supported by strong evidence from both the engine and OCR text."
+    },
+    "date": {
+      "extracted_value": "25/12/2018",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "sanity_check_result": "pass",
+      "judgment_summary": "The extracted date value is highly consistent with the validation rules and supported by both the engine's evidence and OCR text."
+    },
+    "address": {
+      "extracted_value": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU.",
+      "rule_consistency": "low",
+      "engine_self_consistency": "weak",
+      "ocr_alignment": "weak",
+      "sanity_check_result": "not_pass",
+      "judgment_summary": "The extracted address value is inconsistent with the validation rules and lacks strong support from the engine's evidence and OCR text."
+    },
+    "total": {
+      "extracted_value": "9.00",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "sanity_check_result": "pass",
+      "judgment_summary": "The extracted value for the total field is highly consistent with the validation rules and supported by both the engine's evidence and OCR text."
+    }
+  }
+}

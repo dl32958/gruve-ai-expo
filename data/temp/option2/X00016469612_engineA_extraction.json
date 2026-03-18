@@ -1,0 +1,28 @@
+{
+  "field_extraction": {
+    "company": "BOOK TA -K (TAMAN DAYA) SDN BHD",
+    "date": "25/12/2018",
+    "address": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU.",
+    "total": "9.00"
+  },
+  "evidence_trace": {
+    "company": {
+      "evidence_text": "BOOK TA -K (TAMAN DAYA) SDN BHD"
+    },
+    "date": {
+      "evidence_text": "Date 25/12/2018"
+    },
+    "address": {
+      "evidence_text": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU."
+    },
+    "total": {
+      "evidence_text": "Total : 9,00"
+    }
+  },
+  "reasoning": {
+    "company": "The company name is in title case and matches the pattern of having a maximum length of 50 characters. The evidence text is the company name itself.",
+    "date": "The date pattern matches the observed format of 'DD/MM/YYYY'. The evidence text is the date itself.",
+    "address": "The address is separated by a newline character and has a minimum length of 10 characters. The evidence text is the address itself. However, there is some uncertainty due to the presence of '?' in the address.",
+    "total": "The total amount is represented as a decimal number with a comma as the thousand separator. The evidence text is the total amount itself. The value is within the range of 0 to 9999999.99 with 2 decimal places."
+  }
+}
