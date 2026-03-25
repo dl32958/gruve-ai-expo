@@ -1,0 +1,11 @@
+```json
+{
+  "constraint_summary": {
+    "company": ["usually contains a business name", "often includes 'SDN BHD'", "appears near the top of the document", "may include alphanumeric characters and special characters like hyphens and parentheses"], 
+    "date": ["formatted as day/month/year", "often includes time", "appears near the top or in the header section", "may include colons and slashes"], 
+    "address": ["multi-line text block", "includes street numbers, names, and city/town", "appears below the company name", "contains alphanumeric characters and special characters like commas and periods"], 
+    "total": ["numeric value with currency symbol 'RM'", "ends with a total amount", "appears near the bottom of the document", "may include decimal points"], 
+    "phone number": ["numeric value", "often includes country code or area code", "may appear in the address or contact section", "can be formatted with spaces or hyphens"]
+  }
+}
+```

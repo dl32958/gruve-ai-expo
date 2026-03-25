@@ -1,0 +1,23 @@
+{
+  "field_extraction": {
+    "company": "TA -K (TAMAN DAYA) SDN BHD",
+    "date": "25/12/2018",
+    "address": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU.",
+    "total": "9.00",
+    "phone number": ""
+  },
+  "evidence_trace": {
+    "company": "BOOK TA -K (TAMAN DAYA) SDN BHD",
+    "date": "Date 25/12/2018 8:13:39 PM",
+    "address": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU.",
+    "total": "Total : 9,00",
+    "phone number": ""
+  },
+  "reasoning": {
+    "company": "The extracted value matches the constraint trace's description of a company name, which 'Typically appears as a name with a mix of alphabetic characters, possibly with a suffix like 'SDN BHD''. The evidence_trace directly supports this extraction as it is a multi-line text block containing the company name.",
+    "date": "The date field is supported by the evidence_trace 'Date 25/12/2018 8:13:39 PM', which matches the format 'DD/MM/YYYY' as described in the constraint trace. The date appears near the top of the document, as also mentioned in the constraint trace.",
+    "address": "The address field typically includes a street number, street name, and postal code, which matches the given OCR text. The constraint trace suggests that the address may include words like 'JALAN', 'TAMAN', or 'JOHOR' indicating a location, and the OCR text contains these words. The address is often on multiple lines, which is also consistent with the OCR text.",
+    "total": "The evidence_trace 'Total : 9,00' directly supports the extraction of the total value '9.00'. The constraint trace indicates that the total field usually appears near the bottom of the document and includes a numeric value with a currency symbol like 'RM'. The evidence_trace matches this description, making it a strong candidate for the total value. The presence of 'RM' and the numeric value '9,00' in the evidence_trace further supports this extraction.",
+    "phone number": "No sufficiently supported phone number value was found in the OCR text."
+  }
+}

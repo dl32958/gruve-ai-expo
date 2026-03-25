@@ -1,0 +1,30 @@
+{
+  "consolidated_rules": {
+    "company": [
+      "Typically appears as a name with a mix of alphabetic characters, possibly with a suffix like 'SDN BHD' or 'Sdn Bhd'",
+      "Often includes words like 'TA', 'SDN', or 'BHD' indicating a company name",
+      "May be a multi-line text block and may include alphanumeric characters and special characters like hyphens and parentheses"
+    ],
+    "date": [
+      "Usually in the format 'DD/MM/YYYY' or 'DD/MM/YYYY HH:MM:SS', may include time in 24-hour format",
+      "Often appears near the top of the document or in the header section, and may include colons and slashes"
+    ],
+    "address": [
+      "Typically includes a street number, street name, and postal code",
+      "May include words like 'JALAN', 'TAMAN', or 'JOHOR' indicating a location",
+      "Often appears below the company name, on multiple lines, and contains alphanumeric characters and special characters like commas and periods"
+    ],
+    "total": [
+      "Usually a numeric value with a currency symbol like 'RM', may include a decimal point and two digits after the decimal point",
+      "Often appears near the bottom of the document and ends with a total amount"
+    ],
+    "phone number": [
+      "Numeric value, may include a country code or area code",
+      "Can be formatted with spaces or hyphens, and may appear in the address or contact section"
+    ]
+  },
+  "synthesis_summary": {
+    "agreement_level": "moderate",
+    "notes": "Both engines agree on the general format and location of most fields, but there are differences in specific details and wording."
+  }
+}

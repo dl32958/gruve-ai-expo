@@ -29,3 +29,5 @@ venv/
 # data
 dataset/
 outputs_engine_b/
+
+output/

@@ -1,0 +1,23 @@
+{
+  "field_extraction": {
+    "company": "TAMAN DAYA SDN BHD",
+    "date": "25/12/2018 8:13:39 PM",
+    "address": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA",
+    "total": "9.00",
+    "phone number": ""
+  },
+  "evidence_trace": {
+    "company": "BOOK TA -K (TAMAN DAYA) SDN BHD",
+    "date": "Date 25/12/2018 8:13:39 PM",
+    "address": "NO.5? $5,57 & 59, JALAN SAGU 18,\nTAMAN DAYA",
+    "total": "Total : 9,00",
+    "phone number": ""
+  },
+  "reasoning": {
+    "company": "The evidence 'BOOK TA -K (TAMAN DAYA) SDN BHD' directly matches the constraint that the company name often includes 'SDN BHD' and appears near the top of the document. This text block is short, local, and grounded in the OCR text.",
+    "date": "The evidence directly matches the date format specified in the constraint trace (day/month/year with time). The evidence_trace is short, local, and grounded in the OCR text.",
+    "address": "The evidence_trace directly matches the multi-line address block described in the constraint trace. It includes street numbers, names, and city/town, and appears below the company name as expected.",
+    "total": "The evidence_trace 'Total : 9,00' directly matches the constraint trace's description of the total field being a numeric value with the currency symbol 'RM' and appearing near the bottom of the document. The extracted value '9.00' is clearly visible and matches the format specified in the constraint trace.",
+    "phone number": "No phone number is explicitly provided in the OCR text. The constraint trace suggests that the phone number may appear in the address or contact section, but there is no such information present in the given OCR text."
+  }
+}

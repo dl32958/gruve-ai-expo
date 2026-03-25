@@ -1,0 +1,31 @@
+```json
+{
+  "constraint_summary": {
+    "company": [
+      "Typically appears as a name with a mix of alphabetic characters, possibly with a suffix like 'SDN BHD'",
+      "Often includes words like 'TA', 'SDN', or 'BHD' indicating a company name",
+      "May be a multi-line text block"
+    ],
+    "date": [
+      "Usually in the format 'DD/MM/YYYY' or 'DD/MM/YYYY HH:MM:SS'",
+      "May include time in 24-hour format",
+      "Often appears near the top of the document"
+    ],
+    "address": [
+      "Typically includes a street number, street name, and postal code",
+      "May include words like 'JALAN', 'TAMAN', or 'JOHOR' indicating a location",
+      "Often appears on multiple lines"
+    ],
+    "total": [
+      "Usually a numeric value with a currency symbol like 'RM'",
+      "May include a decimal point and two digits after the decimal point",
+      "Often appears near the bottom of the document"
+    ],
+    "phone number": [
+      "Not present in this document, but typically a sequence of digits with a possible country code"
+    ]
+  }
+}
+```
+
+Note: The phone number field is empty because it's not present in the provided OCR text.

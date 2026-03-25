@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+langgraph
+langfuse
+torch
+transformers
+pillow
+pytesseract
+pandas

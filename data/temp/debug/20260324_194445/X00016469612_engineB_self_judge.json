@@ -1,0 +1,87 @@
+{
+  "engine": "engineB",
+  "engine_metrics": {
+    "elapsed_seconds": 10.7885,
+    "prompt_tokens": 4166,
+    "completion_tokens": 491,
+    "total_tokens": 4657,
+    "field_count": 5
+  },
+  "field_results": {
+    "company": {
+      "extracted_value": "TAMAN DAYA SDN BHD",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "absent",
+      "judgment_summary": "The extracted value 'TAMAN DAYA SDN BHD' is well-aligned with the OCR text, matches the consolidated validation rules, and is supported by the engine's reasoning.",
+      "engine_metrics": {
+        "elapsed_seconds": 10.7885,
+        "prompt_tokens": 4166,
+        "completion_tokens": 491,
+        "total_tokens": 4657,
+        "field_count": 5
+      }
+    },
+    "date": {
+      "extracted_value": "25/12/2018 8:13:39 PM",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "absent",
+      "judgment_summary": "The extracted date value is well-aligned with the OCR text and matches the specified format.",
+      "engine_metrics": {
+        "elapsed_seconds": 10.7885,
+        "prompt_tokens": 4166,
+        "completion_tokens": 491,
+        "total_tokens": 4657,
+        "field_count": 5
+      }
+    },
+    "address": {
+      "extracted_value": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "possible",
+      "judgment_summary": "The extracted address value is well-aligned with the OCR text and matches the consolidated validation rules, but it contains possible OCR corruption in the form of a question mark in the street number.",
+      "engine_metrics": {
+        "elapsed_seconds": 10.7885,
+        "prompt_tokens": 4166,
+        "completion_tokens": 491,
+        "total_tokens": 4657,
+        "field_count": 5
+      }
+    },
+    "total": {
+      "extracted_value": "9.00",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "absent",
+      "judgment_summary": "The extracted value '9.00' is well-aligned with the OCR text and matches the consolidated validation rules for the total field.",
+      "engine_metrics": {
+        "elapsed_seconds": 10.7885,
+        "prompt_tokens": 4166,
+        "completion_tokens": 491,
+        "total_tokens": 4657,
+        "field_count": 5
+      }
+    },
+    "phone number": {
+      "extracted_value": "",
+      "rule_consistency": "low",
+      "engine_self_consistency": "weak",
+      "ocr_alignment": "weak",
+      "ocr_corruption": "absent",
+      "judgment_summary": "No phone number is present in the OCR text, and the engine's reasoning does not support the extraction of a phone number.",
+      "engine_metrics": {
+        "elapsed_seconds": 10.7885,
+        "prompt_tokens": 4166,
+        "completion_tokens": 491,
+        "total_tokens": 4657,
+        "field_count": 5
+      }
+    }
+  }
+}

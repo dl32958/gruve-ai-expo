@@ -1,0 +1,87 @@
+{
+  "engine": "engineA",
+  "engine_metrics": {
+    "elapsed_seconds": 13.0337,
+    "prompt_tokens": 4371,
+    "completion_tokens": 552,
+    "total_tokens": 4923,
+    "field_count": 5
+  },
+  "field_results": {
+    "company": {
+      "extracted_value": "TA -K (TAMAN DAYA) SDN BHD",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "absent",
+      "judgment_summary": "The extracted value is a credible company name, well-aligned with the OCR text and supported by the evidence trace.",
+      "engine_metrics": {
+        "elapsed_seconds": 13.0337,
+        "prompt_tokens": 4371,
+        "completion_tokens": 552,
+        "total_tokens": 4923,
+        "field_count": 5
+      }
+    },
+    "date": {
+      "extracted_value": "25/12/2018",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "absent",
+      "judgment_summary": "The extracted date value is well-aligned with the OCR text, matches the consolidated validation rules, and is supported by the evidence trace.",
+      "engine_metrics": {
+        "elapsed_seconds": 13.0337,
+        "prompt_tokens": 4371,
+        "completion_tokens": 552,
+        "total_tokens": 4923,
+        "field_count": 5
+      }
+    },
+    "address": {
+      "extracted_value": "NO.5? $5,57 & 59, JALAN SAGU 18, TAMAN DAYA 81100 JOHOR BAHRU.",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "possible",
+      "judgment_summary": "The extracted address value is well-aligned with the OCR text and matches the consolidated validation rules, but it contains possible OCR corruption in the form of a question mark in the street number.",
+      "engine_metrics": {
+        "elapsed_seconds": 13.0337,
+        "prompt_tokens": 4371,
+        "completion_tokens": 552,
+        "total_tokens": 4923,
+        "field_count": 5
+      }
+    },
+    "total": {
+      "extracted_value": "9.00",
+      "rule_consistency": "high",
+      "engine_self_consistency": "strong",
+      "ocr_alignment": "strong",
+      "ocr_corruption": "absent",
+      "judgment_summary": "The extracted total value '9.00' is well-aligned with the OCR text and matches the consolidated validation rules.",
+      "engine_metrics": {
+        "elapsed_seconds": 13.0337,
+        "prompt_tokens": 4371,
+        "completion_tokens": 552,
+        "total_tokens": 4923,
+        "field_count": 5
+      }
+    },
+    "phone number": {
+      "extracted_value": "",
+      "rule_consistency": "low",
+      "engine_self_consistency": "weak",
+      "ocr_alignment": "weak",
+      "ocr_corruption": "absent",
+      "judgment_summary": "No phone number value was found in the OCR text that matches the consolidated validation rules.",
+      "engine_metrics": {
+        "elapsed_seconds": 13.0337,
+        "prompt_tokens": 4371,
+        "completion_tokens": 552,
+        "total_tokens": 4923,
+        "field_count": 5
+      }
+    }
+  }
+}
