@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 import time
 from datetime import datetime
+from pathlib import Path
 
-from app.config import DEBUG_OUTPUT_DIR, ENGINE_A_PATH, ENGINE_B_PATH, EVAL_MODEL_PATH
+from app.config import ENGINE_A_PATH, ENGINE_B_PATH, EVAL_MODEL_PATH, OUTPUT_DIR
 from app.pipeline.prompts import (
     build_constraints_prompt_a,
     build_constraints_prompt_b,
@@ -161,29 +162,31 @@ def _run_self_justification_for_engine(state: PipelineState, engine_name: str) -
         "field_results": {},
     }
 
-    for field in state["fields"]:
-        extracted_value = extraction["field_extraction"][field]
-        evidence_text = extraction["evidence_trace"][field]
-        reasoning_text = extraction["reasoning"][field]
-        rules = state["consolidated_rules"]["consolidated_rules"][field]
-        run_sanity_check(extracted_value)
+    tokenizer, model = load_model_and_tokenizer(EVAL_MODEL_PATH)
+    try:
+        for field in state["fields"]:
+            extracted_value = extraction["field_extraction"][field]
+            evidence_text = extraction["evidence_trace"][field]
+            reasoning_text = extraction["reasoning"][field]
+            rules = state["consolidated_rules"]["consolidated_rules"][field]
+            run_sanity_check(extracted_value)
 
-        prompt = build_stage2_prompt(
-            field_name=field,
-            rules=rules,
-            extracted_value=extracted_value,
-            evidence_text=evidence_text,
-            reasoning_text=reasoning_text,
-            ocr_raw_text=state["raw_text"],
-            doc_category=state["doc_category"],
-        )
-        tokenizer, model = load_model_and_tokenizer(EVAL_MODEL_PATH)
-        response = run_chat_inference(model, tokenizer, prompt, max_new_tokens=600)
+            prompt = build_stage2_prompt(
+                field_name=field,
+                rules=rules,
+                extracted_value=extracted_value,
+                evidence_text=evidence_text,
+                reasoning_text=reasoning_text,
+                ocr_raw_text=state["raw_text"],
+                doc_category=state["doc_category"],
+            )
+            response = run_chat_inference(model, tokenizer, prompt, max_new_tokens=600)
+            engine_result["field_results"][field] = {
+                **json.loads(extract_json_block(response)),
+                "engine_metrics": engine_metrics,
+            }
+    finally:
         release_model(model, tokenizer)
-        engine_result["field_results"][field] = {
-            **json.loads(extract_json_block(response)),
-            "engine_metrics": engine_metrics,
-        }
 
     maybe_save_json(
         engine_result,
@@ -209,54 +212,56 @@ def self_justify_engine_b_node(state: PipelineState) -> PipelineState:
 def cross_judgment_node(state: PipelineState) -> PipelineState:
     stage3 = {"field_results": {}}
 
-    for field in state["fields"]:
-        engine_a_result = state["self_justifications"]["engineA"]["field_results"][field]
-        engine_b_result = state["self_justifications"]["engineB"]["field_results"][field]
-        rules = state["consolidated_rules"]["consolidated_rules"][field]
-        prompt = build_cross_judge_prompt(
-            field,
-            rules,
-            engine_a_result,
-            engine_b_result,
-            state["doc_category"],
-        )
-        tokenizer, model = load_model_and_tokenizer(EVAL_MODEL_PATH)
-        response = run_chat_inference(model, tokenizer, prompt, max_new_tokens=600)
+    tokenizer, model = load_model_and_tokenizer(EVAL_MODEL_PATH)
+    try:
+        for field in state["fields"]:
+            engine_a_result = state["self_justifications"]["engineA"]["field_results"][field]
+            engine_b_result = state["self_justifications"]["engineB"]["field_results"][field]
+            rules = state["consolidated_rules"]["consolidated_rules"][field]
+            prompt = build_cross_judge_prompt(
+                field,
+                rules,
+                engine_a_result,
+                engine_b_result,
+                state["doc_category"],
+            )
+            response = run_chat_inference(model, tokenizer, prompt, max_new_tokens=600)
+            judged = json.loads(extract_json_block(response))
+
+            engine_a_metrics = state["self_justifications"]["engineA"].get("engine_metrics", {})
+            engine_b_metrics = state["self_justifications"]["engineB"].get("engine_metrics", {})
+            selected_engine = judged.get("selected_engine", "")
+            selected_metrics = {}
+            if selected_engine == "engineA":
+                selected_metrics = engine_a_metrics
+            elif selected_engine == "engineB":
+                selected_metrics = engine_b_metrics
+
+            stage3["field_results"][field] = {
+                "recommended_value": judged.get("recommended_value", ""),
+                "selected_engine": selected_engine,
+                "selection_reason": judged.get("selection_reason", ""),
+                "selected_engine_total_tokens": selected_metrics.get("total_tokens", 0),
+                "selected_engine_elapsed_seconds": selected_metrics.get("elapsed_seconds", 0.0),
+                "final_rule_consistency": judged.get("final_rule_consistency", ""),
+                "final_engine_self_consistency": judged.get("final_engine_self_consistency", ""),
+                "final_ocr_alignment": judged.get("final_ocr_alignment", ""),
+                "final_ocr_corruption": judged.get("final_ocr_corruption", ""),
+                "field_confidence": judged.get("field_confidence", ""),
+                "field_state": judged.get("field_state", ""),
+                "state_reason": judged.get("state_reason", ""),
+                "engineA_evidence": state["extractions"]["engineA"]["evidence_trace"].get(field, ""),
+                "engineB_evidence": state["extractions"]["engineB"]["evidence_trace"].get(field, ""),
+            }
+    finally:
         release_model(model, tokenizer)
-        judged = json.loads(extract_json_block(response))
-
-        engine_a_metrics = state["self_justifications"]["engineA"].get("engine_metrics", {})
-        engine_b_metrics = state["self_justifications"]["engineB"].get("engine_metrics", {})
-        selected_engine = judged.get("selected_engine", "")
-        selected_metrics = {}
-        if selected_engine == "engineA":
-            selected_metrics = engine_a_metrics
-        elif selected_engine == "engineB":
-            selected_metrics = engine_b_metrics
-
-        stage3["field_results"][field] = {
-            "recommended_value": judged.get("recommended_value", ""),
-            "selected_engine": selected_engine,
-            "selection_reason": judged.get("selection_reason", ""),
-            "selected_engine_total_tokens": selected_metrics.get("total_tokens", 0),
-            "selected_engine_elapsed_seconds": selected_metrics.get("elapsed_seconds", 0.0),
-            "final_rule_consistency": judged.get("final_rule_consistency", ""),
-            "final_engine_self_consistency": judged.get("final_engine_self_consistency", ""),
-            "final_ocr_alignment": judged.get("final_ocr_alignment", ""),
-            "final_ocr_corruption": judged.get("final_ocr_corruption", ""),
-            "field_confidence": judged.get("field_confidence", ""),
-            "field_state": judged.get("field_state", ""),
-            "state_reason": judged.get("state_reason", ""),
-            "engineA_evidence": state["extractions"]["engineA"]["evidence_trace"].get(field, ""),
-            "engineB_evidence": state["extractions"]["engineB"]["evidence_trace"].get(field, ""),
-        }
 
     maybe_save_json(stage3, f"{state['base_name']}_cross_judge.json", state["debug"], state["output_dir"])
     return {"cross_result": stage3}
 
 
 def visualize_node(state: PipelineState) -> PipelineState:
-    output_dir = state.get("output_dir", str(DEBUG_OUTPUT_DIR))
+    output_dir = state["annotated_output_dir"]
     annotated_image = phase_visualize(
         cross_result=state["cross_result"],
         fields=state["fields"],
@@ -269,7 +274,9 @@ def visualize_node(state: PipelineState) -> PipelineState:
 
 
 def finalize_node(state: PipelineState) -> PipelineState:
-    started_at = state.get("run_metadata", {}).get("pipeline_start", time.time())
+    run_metadata = state.get("run_metadata", {})
+    started_at = run_metadata.get("pipeline_start", time.time())
+    run_ts = run_metadata.get("run_ts", "")
     public_field_results = {}
     for field, result in state["cross_result"]["field_results"].items():
         public_field_results[field] = {
@@ -278,15 +285,24 @@ def finalize_node(state: PipelineState) -> PipelineState:
             if key not in {"engineA_evidence", "engineB_evidence"}
         }
 
+    annotated_image_path = Path(state["annotated_image"])
+    try:
+        annotated_relative_path = annotated_image_path.relative_to(OUTPUT_DIR).as_posix()
+        annotated_image_url = f"/artifacts/{annotated_relative_path}"
+    except ValueError:
+        annotated_image_url = ""
+
     final_result = {
         "metadata": {
             "image_path": state["image_path"],
             "doc_category": state["doc_category"],
             "fields": state["fields"],
             "debug": state["debug"],
+            "run_ts": run_ts,
             "timestamp": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
             "elapsed_seconds": round(time.time() - started_at, 1),
             "annotated_image": state["annotated_image"],
+            "annotated_image_url": annotated_image_url,
         },
         "field_results": public_field_results,
     }

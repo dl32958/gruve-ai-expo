@@ -21,6 +21,7 @@ class PipelineState(TypedDict, total=False):
     debug: bool
     base_name: str
     output_dir: str
+    annotated_output_dir: str
     raw_text: str
     word_df: Any
     image: Any
@@ -41,6 +42,7 @@ def build_initial_state(
     fields: list[str],
     debug: bool,
     output_dir: str | Path,
+    annotated_output_dir: str | Path,
 ) -> PipelineState:
     return {
         "image_path": image_path,
@@ -49,6 +51,7 @@ def build_initial_state(
         "debug": debug,
         "base_name": Path(image_path).stem,
         "output_dir": str(output_dir),
+        "annotated_output_dir": str(annotated_output_dir),
         "constraints": {},
         "extractions": {},
         "self_justifications": {},

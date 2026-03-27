@@ -4,7 +4,7 @@ import time
 
 from langgraph.graph import END, START, StateGraph
 
-from app.config import get_debug_output_dir
+from app.config import get_annotated_output_dir, get_debug_output_dir
 from app.pipeline.nodes import (
     constraints_engine_a_node,
     constraints_engine_b_node,
@@ -35,8 +35,7 @@ def build_graph():
     graph.add_node("visualize", visualize_node)
     graph.add_node("finalize", finalize_node)
 
-    # Keep the workflow strictly sequential to match the notebook's
-    # lower-memory execution pattern on a single GPU.
+    # Keep the workflow strictly sequential for single GPU execution pattern.
     graph.add_edge(START, "ocr")
     graph.add_edge("ocr", "constraints_engineA")
     graph.add_edge("constraints_engineA", "constraints_engineB")
@@ -58,11 +57,25 @@ def run_pipeline_graph(
     fields: list[str],
     debug: bool,
     output_dir: str | None = None,
+    annotated_output_dir: str | None = None,
+    run_ts: str | None = None,
 ):
     app = build_graph()
     if output_dir is None:
         output_dir = str(get_debug_output_dir())
-    state = build_initial_state(image_path, doc_category, fields, debug, output_dir)
-    state["run_metadata"] = {"pipeline_start": time.time()}
+    if annotated_output_dir is None:
+        annotated_output_dir = str(get_annotated_output_dir())
+    state = build_initial_state(
+        image_path,
+        doc_category,
+        fields,
+        debug,
+        output_dir,
+        annotated_output_dir,
+    )
+    state["run_metadata"] = {
+        "pipeline_start": time.time(),
+        "run_ts": run_ts,
+    }
     final_state = app.invoke(state)
     return final_state["final_result"]

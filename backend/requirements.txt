@@ -2,6 +2,7 @@ fastapi
 uvicorn
 langgraph
 langfuse
+python-multipart
 torch
 transformers
 pillow
