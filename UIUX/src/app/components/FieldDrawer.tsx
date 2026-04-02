@@ -1,256 +1,165 @@
 import { useState } from 'react';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from './ui/sheet';
-import { Button } from './ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Badge } from './ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Separator } from './ui/separator';
+import { X, Copy, ChevronDown, ChevronUp } from 'lucide-react';
+import { toast } from 'sonner';
 import type { FieldResult } from '../types';
+import type { Tokens } from '../tokens';
 
-interface FieldDrawerProps {
-  field: FieldResult | null;
-  open: boolean;
-  onClose: () => void;
-}
+interface Props { field: FieldResult | null; open: boolean; onClose: () => void; tokens: Tokens; }
 
-const getSignalLabel = (value: number): { label: string; variant: 'default' | 'secondary' | 'destructive' } => {
-  if (value >= 0.9) return { label: 'Very High', variant: 'default' };
-  if (value >= 0.7) return { label: 'High', variant: 'default' };
-  if (value >= 0.5) return { label: 'Medium', variant: 'secondary' };
-  if (value >= 0.3) return { label: 'Low', variant: 'secondary' };
-  return { label: 'Weak', variant: 'destructive' };
+const ScoreBar = ({ val, inv = false, t }: { val: number; inv?: boolean; t: Tokens }) => {
+  const color = inv
+    ? (val <= 0.1 ? t.green : val <= 0.3 ? t.yellow : t.red)
+    : (val >= 0.8 ? t.green : val >= 0.5 ? t.yellow : t.red);
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ flex: 1, height: '3px', background: t.bgInput, borderRadius: '2px', overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${val * 100}%`, background: color, boxShadow: `0 0 6px ${color}`, transition: 'width 0.4s ease' }} />
+      </div>
+      <span style={{ fontSize: '11px', color, fontFamily: 'var(--font-mono)', width: '36px', textAlign: 'right', flexShrink: 0 }}>{val.toFixed(2)}</span>
+    </div>
+  );
 };
 
-const getCorruptionLabel = (value: number): { label: string; variant: 'default' | 'secondary' | 'destructive' } => {
-  if (value <= 0.1) return { label: 'Absent', variant: 'default' };
-  if (value <= 0.3) return { label: 'Possible', variant: 'secondary' };
-  return { label: 'Present', variant: 'destructive' };
-};
+export function FieldDrawer({ field, open, onClose, tokens: t }: Props) {
+  const [compareExpanded, setCompareExpanded] = useState(false);
 
-export function FieldDrawer({ field, open, onClose }: FieldDrawerProps) {
-  const [compareMode, setCompareMode] = useState(false);
+  if (!field || !open) return null;
 
-  if (!field) return null;
+  const stateColor = { pass: t.green, review_needed: t.yellow, fail: t.red }[field.field_state];
+  const stateLabel = { pass: 'Pass', review_needed: 'Review Needed', fail: 'Failed' }[field.field_state];
+
+  const section: React.CSSProperties = { marginBottom: '24px' };
+  const sectionTitle: React.CSSProperties = { fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: t.textMuted, marginBottom: '12px', display: 'block' };
+  const card: React.CSSProperties = { background: t.bgCard, border: `1px solid ${t.border}`, padding: '16px' };
+  const row: React.CSSProperties = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' };
+  const labelStyle: React.CSSProperties = { fontSize: '11px', color: t.textMuted, letterSpacing: '0.06em' };
+  const valStyle: React.CSSProperties = { fontSize: '11px', color: t.text, fontFamily: 'var(--font-mono)' };
 
   return (
-    <Sheet open={open} onOpenChange={onClose}>
-      <SheetContent className="sm:max-w-2xl overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle className="text-xl">{field.field_name}</SheetTitle>
-          <SheetDescription>
-            Detailed analysis and evidence chain
-          </SheetDescription>
-        </SheetHeader>
+    <>
+      {/* Backdrop */}
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 100, transition: 'opacity 0.2s' }} />
 
-        <div className="mt-6 space-y-6">
-          {/* (A) Final Decision (Summary) */}
+      {/* Drawer */}
+      <div style={{
+        position: 'fixed', right: 0, top: 0, bottom: 0, width: '520px', zIndex: 101,
+        background: t.bgPanel, borderLeft: `1px solid ${t.border}`,
+        overflowY: 'auto', fontFamily: 'var(--font-mono)',
+        boxShadow: '-8px 0 40px rgba(0,0,0,0.4)',
+        animation: 'slideIn 0.22s cubic-bezier(0.34,1.2,0.64,1)',
+      }}>
+        {/* Header */}
+        <div style={{ position: 'sticky', top: 0, background: t.bgPanel, borderBottom: `1px solid ${t.border}`, padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 10 }}>
           <div>
-            <h3 className="font-semibold text-lg mb-3">Final Decision</h3>
-            <Card>
-              <CardContent className="p-4 space-y-3">
+            <div style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: t.textMuted, marginBottom: '2px' }}>Field Detail</div>
+            <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '20px', color: t.text }}>{field.field_name}</div>
+          </div>
+          <button onClick={onClose} style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${t.border}`, background: 'transparent', color: t.textMuted, cursor: 'pointer', transition: 'all 0.15s' }}
+            onMouseEnter={e => { (e.currentTarget.style.color = t.red); (e.currentTarget.style.borderColor = t.red); }}
+            onMouseLeave={e => { (e.currentTarget.style.color = t.textMuted); (e.currentTarget.style.borderColor = t.border); }}>
+            <X size={14} />
+          </button>
+        </div>
+
+        <div style={{ padding: '24px' }}>
+          {/* ── Final Decision ── */}
+          <div style={section}>
+            <span style={sectionTitle}>Final Decision</span>
+            <div style={{ ...card, borderLeft: `3px solid ${stateColor}`, position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: `linear-gradient(90deg, ${stateColor}, transparent)`, opacity: 0.5 }} />
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
                 <div>
-                  <span className="text-sm text-gray-600">Recommended Value:</span>
-                  <p className="text-2xl font-semibold mt-1">
+                  <div style={{ fontSize: '10px', color: stateColor, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '6px' }}>{stateLabel}</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '26px', color: t.text, lineHeight: 1 }}>
                     {field.recommended_value || '—'}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant={
-                    field.field_state === 'pass' ? 'default' :
-                    field.field_state === 'review_needed' ? 'secondary' : 'destructive'
-                  }>
-                    {field.field_state === 'pass' ? 'Pass' :
-                     field.field_state === 'review_needed' ? 'Review Needed' : 'Failed'}
-                  </Badge>
-                  <Badge variant="outline">
-                    Confidence: {field.field_confidence.replace('_', ' ')}
-                  </Badge>
-                </div>
-                {field.state_reason && (
-                  <div className="pt-2 border-t">
-                    <span className="text-sm font-medium text-gray-600">Reason:</span>
-                    <p className="text-sm text-gray-700 mt-1">{field.state_reason}</p>
                   </div>
+                </div>
+                {field.recommended_value && (
+                  <button onClick={() => { navigator.clipboard.writeText(field.recommended_value); toast.success('Copied'); }}
+                    style={{ padding: '6px 12px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', border: `1px solid ${t.border}`, color: t.gold, background: 'transparent', cursor: 'pointer', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: '5px', transition: 'all 0.15s' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = t.goldFaint)}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                    <Copy size={10} /> Copy
+                  </button>
                 )}
-              </CardContent>
-            </Card>
-          </div>
-
-          <Separator />
-
-          {/* (B) Signals (2x2 Grid) */}
-          <div>
-            <h3 className="font-semibold text-lg mb-3">Signals</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <Card>
-                <CardContent className="p-4">
-                  <div className="space-y-2">
-                    <span className="text-sm text-gray-600">Rule Consistency</span>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-semibold">
-                        {field.signals.final_rule_consistency.toFixed(2)}
-                      </span>
-                      <Badge variant={getSignalLabel(field.signals.final_rule_consistency).variant}>
-                        {getSignalLabel(field.signals.final_rule_consistency).label}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="space-y-2">
-                    <span className="text-sm text-gray-600">Engine Self-Consistency</span>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-semibold">
-                        {field.signals.final_engine_self_consistency.toFixed(2)}
-                      </span>
-                      <Badge variant={getSignalLabel(field.signals.final_engine_self_consistency).variant}>
-                        {getSignalLabel(field.signals.final_engine_self_consistency).label}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="space-y-2">
-                    <span className="text-sm text-gray-600">OCR Alignment</span>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-semibold">
-                        {field.signals.final_ocr_alignment.toFixed(2)}
-                      </span>
-                      <Badge variant={getSignalLabel(field.signals.final_ocr_alignment).variant}>
-                        {getSignalLabel(field.signals.final_ocr_alignment).label}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="space-y-2">
-                    <span className="text-sm text-gray-600">OCR Corruption</span>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-semibold">
-                        {field.signals.final_ocr_corruption.toFixed(2)}
-                      </span>
-                      <Badge variant={getCorruptionLabel(field.signals.final_ocr_corruption).variant}>
-                        {getCorruptionLabel(field.signals.final_ocr_corruption).label}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              </div>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ padding: '3px 10px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', border: `1px solid ${stateColor}`, color: stateColor, background: `${stateColor}15` }}>{stateLabel}</span>
+                <span style={{ padding: '3px 10px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', border: `1px solid ${t.border}`, color: t.textMuted }}>{field.field_confidence.replace('_', ' ')}</span>
+                <span style={{ padding: '3px 10px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', border: `1px solid ${t.border}`, color: t.textMuted }}>{field.selected_engine === 'engineA' ? 'Engine A' : field.selected_engine === 'engineB' ? 'Engine B' : 'No Engine'}</span>
+              </div>
+              {field.state_reason && (
+                <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${t.border}`, fontSize: '11px', color: t.textSub, lineHeight: 1.6 }}>{field.state_reason}</div>
+              )}
             </div>
           </div>
 
-          <Separator />
-
-          {/* (C) Engine Comparison (A vs B) */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-lg">Engine Comparison</h3>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCompareMode(!compareMode)}
-              >
-                {compareMode ? 'Collapse' : 'Expand'} Details
-              </Button>
+          {/* ── Signals ── */}
+          <div style={section}>
+            <span style={sectionTitle}>Signal Analysis</span>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              {[
+                { label: 'Rule Consistency',    val: field.signals.final_rule_consistency },
+                { label: 'Self-Consistency',    val: field.signals.final_engine_self_consistency },
+                { label: 'OCR Alignment',       val: field.signals.final_ocr_alignment },
+                { label: 'OCR Corruption',      val: field.signals.final_ocr_corruption, inv: true },
+              ].map(({ label, val, inv }) => (
+                <div key={label} style={card}>
+                  <div style={{ fontSize: '10px', color: t.textMuted, letterSpacing: '0.08em', marginBottom: '8px', textTransform: 'uppercase' }}>{label}</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '20px', color: t.text, marginBottom: '8px' }}>{val.toFixed(2)}</div>
+                  <ScoreBar val={val} inv={inv} t={t} />
+                </div>
+              ))}
             </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Engine A</CardTitle>
-                  {field.selected_engine === 'engineA' && (
-                    <Badge variant="default" className="w-fit">Selected</Badge>
-                  )}
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                  <div>
-                    <span className="text-gray-600">Value:</span>
-                    <p className="font-medium mt-1">{field.engineA.extracted_value || '—'}</p>
+          {/* ── Engine Comparison ── */}
+          <div style={section}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <span style={sectionTitle}>Engine Comparison</span>
+              <button onClick={() => setCompareExpanded(!compareExpanded)}
+                style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', background: 'none', border: 'none', color: t.gold, cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>
+                {compareExpanded ? <><ChevronUp size={11} /> Collapse</> : <><ChevronDown size={11} /> Expand</>}
+              </button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              {(['engineA', 'engineB'] as const).map(eng => {
+                const data = field[eng];
+                const isSelected = field.selected_engine === eng;
+                return (
+                  <div key={eng} style={{ ...card, borderTop: isSelected ? `2px solid ${t.gold}` : `1px solid ${t.border}` }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: t.text, letterSpacing: '0.06em' }}>{eng === 'engineA' ? 'Engine A' : 'Engine B'}</div>
+                      {isSelected && <span style={{ fontSize: '9px', letterSpacing: '0.1em', textTransform: 'uppercase', color: t.gold, border: `1px solid ${t.borderHover}`, padding: '2px 6px' }}>Selected</span>}
+                    </div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '16px', color: data.extracted_value ? t.text : t.textGhost, marginBottom: '8px' }}>
+                      {data.extracted_value || '—'}
+                    </div>
+                    {compareExpanded && (
+                      <div style={{ paddingTop: '10px', borderTop: `1px solid ${t.border}` }}>
+                        {[
+                          { label: 'Consistency', val: data.rule_consistency },
+                          { label: 'OCR Align',   val: data.ocr_alignment },
+                          { label: 'Corruption',  val: data.ocr_corruption, inv: true },
+                        ].map(({ label, val, inv }) => (
+                          <div key={label} style={{ marginBottom: '8px' }}>
+                            <div style={{ ...labelStyle, marginBottom: '3px' }}>{label}</div>
+                            <ScoreBar val={val} inv={inv} t={t} />
+                          </div>
+                        ))}
+                        <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: `1px solid ${t.border}` }}>
+                          <div style={{ ...labelStyle, marginBottom: '4px' }}>Summary</div>
+                          <div style={{ fontSize: '11px', color: t.textSub, lineHeight: 1.6 }}>{data.judgment_summary}</div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {compareMode && (
-                    <>
-                      <Separator />
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Consistency:</span>
-                          <span>{field.engineA.rule_consistency.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">OCR Align:</span>
-                          <span>{field.engineA.ocr_alignment.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Corruption:</span>
-                          <span>{field.engineA.ocr_corruption.toFixed(2)}</span>
-                        </div>
-                      </div>
-                      <Separator />
-                      <div>
-                        <span className="text-gray-600">Summary:</span>
-                        <p className="text-xs mt-1 text-gray-700">{field.engineA.judgment_summary}</p>
-                      </div>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Engine B</CardTitle>
-                  {field.selected_engine === 'engineB' && (
-                    <Badge variant="default" className="w-fit">Selected</Badge>
-                  )}
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                  <div>
-                    <span className="text-gray-600">Value:</span>
-                    <p className="font-medium mt-1">{field.engineB.extracted_value || '—'}</p>
-                  </div>
-                  {compareMode && (
-                    <>
-                      <Separator />
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Consistency:</span>
-                          <span>{field.engineB.rule_consistency.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">OCR Align:</span>
-                          <span>{field.engineB.ocr_alignment.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Corruption:</span>
-                          <span>{field.engineB.ocr_corruption.toFixed(2)}</span>
-                        </div>
-                      </div>
-                      <Separator />
-                      <div>
-                        <span className="text-gray-600">Summary:</span>
-                        <p className="text-xs mt-1 text-gray-700">{field.engineB.judgment_summary}</p>
-                      </div>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
+                );
+              })}
             </div>
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </>
   );
 }

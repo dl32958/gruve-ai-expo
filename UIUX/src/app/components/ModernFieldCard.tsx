@@ -1,148 +1,94 @@
-import {
-  Copy,
-  ChevronRight,
-  CheckCircle2,
-  AlertCircle,
-  XCircle,
-} from "lucide-react";
-import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { toast } from "sonner";
-import type { FieldResult, FieldState } from "../types";
+import { useState } from 'react';
+import { Copy, ChevronRight, CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import type { FieldResult, FieldState } from '../types';
+import type { Tokens } from '../tokens';
 
-interface ModernFieldCardProps {
-  field: FieldResult;
-  onClick: () => void;
-}
+interface Props { field: FieldResult; onClick: () => void; tokens: Tokens; }
 
-const stateConfig: Record<
-  FieldState,
-  {
-    icon: React.ReactNode;
-    label: string;
-    bg: string;
-    border: string;
-    textColor: string;
-  }
-> = {
-  pass: {
-    icon: <CheckCircle2 className="h-4 w-4" />,
-    label: "Pass",
-    bg: "bg-green-50 dark:bg-green-950/20",
-    border: "border-l-green-500",
-    textColor: "text-green-700 dark:text-green-400",
-  },
-  review_needed: {
-    icon: <AlertCircle className="h-4 w-4" />,
-    label: "Review Needed",
-    bg: "bg-yellow-50 dark:bg-yellow-950/20",
-    border: "border-l-yellow-500",
-    textColor: "text-yellow-700 dark:text-yellow-400",
-  },
-  fail: {
-    icon: <XCircle className="h-4 w-4" />,
-    label: "Failed",
-    bg: "bg-red-50 dark:bg-red-950/20",
-    border: "border-l-red-500",
-    textColor: "text-red-700 dark:text-red-400",
-  },
-};
+export function ModernFieldCard({ field, onClick, tokens: t }: Props) {
+  const [hovered, setHovered] = useState(false);
 
-export function ModernFieldCard({
-  field,
-  onClick,
-}: ModernFieldCardProps) {
-  const config = stateConfig[field.field_state];
+  const cfg = {
+    pass:          { icon: <CheckCircle2 size={11} />, label: 'Pass',   color: t.green,  bg: t.greenBg,  border: t.greenBorder },
+    review_needed: { icon: <AlertCircle  size={11} />, label: 'Review', color: t.yellow, bg: t.yellowBg, border: t.yellowBorder },
+    fail:          { icon: <XCircle      size={11} />, label: 'Fail',   color: t.red,    bg: t.redBg,    border: t.redBorder },
+  }[field.field_state];
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (field.recommended_value) {
       navigator.clipboard.writeText(field.recommended_value);
-      toast.success('Copied to clipboard');
+      toast.success('Copied');
     }
   };
 
-  const getReasoning = () => {
-    if (field.selected_engine === 'engineA') return field.engineA.reasoning;
-    if (field.selected_engine === 'engineB') return field.engineB.reasoning;
-    return null;
-  };
-
-  const reasoning = getReasoning();
+  const reasoning = field.selected_engine === 'engineA' ? field.engineA.reasoning
+    : field.selected_engine === 'engineB' ? field.engineB.reasoning : null;
 
   return (
-    <Card
-      className={`
-        group cursor-pointer transition-all duration-200 border-l-4
-        hover:shadow-lg hover:scale-[1.02] ${config.border} ${config.bg}
-      `}
+    <div
       onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: hovered ? cfg.bg : 'transparent',
+        border: `1px solid ${hovered ? cfg.color : cfg.border}`,
+        borderLeft: `2px solid ${cfg.color}`,
+        padding: '16px',
+        cursor: 'pointer',
+        position: 'relative',
+        fontFamily: 'var(--font-mono)',
+        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
+        boxShadow: hovered ? t.shadowHover : 'none',
+        transition: 'all 0.18s cubic-bezier(0.34,1.56,0.64,1)',
+      }}
     >
-      <div className="p-5">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-3">
-              <span className={config.textColor}>{config.icon}</span>
-              <h3 className="font-bold text-xl">{field.field_name}</h3>
-            </div>
-            <Badge variant="outline" className={`${config.textColor} border-current text-sm`}>
-              {config.label}
-            </Badge>
-          </div>
-          <ChevronRight className="h-6 w-6 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-        </div>
+      {/* Hover shimmer line */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: `linear-gradient(90deg, transparent, ${cfg.color}, transparent)`, opacity: hovered ? 0.6 : 0, transition: 'opacity 0.2s' }} />
 
-        {/* Value */}
-        <div className="mb-4 p-4 bg-white dark:bg-gray-900 rounded-lg border">
-          {field.recommended_value ? (
-            <div className="flex items-start gap-2">
-              <span className="text-2xl font-bold flex-1 break-all leading-tight">
-                {field.recommended_value}
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 flex-shrink-0 hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={handleCopy}
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 text-gray-400">
-              <span className="text-2xl font-bold">—</span>
-              <span className="text-base">No value extracted</span>
-            </div>
-          )}
-        </div>
-
-        {/* Metadata */}
-        <div className="space-y-2.5 text-base">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600 dark:text-gray-400 font-medium">Confidence</span>
-            <Badge variant="secondary" className="capitalize text-sm">
-              {field.field_confidence.replace('_', ' ')}
-            </Badge>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+            <span style={{ color: cfg.color }}>{cfg.icon}</span>
+            <span style={{ fontSize: '10px', color: cfg.color, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{cfg.label}</span>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600 dark:text-gray-400 font-medium">Engine</span>
-            <Badge variant="outline" className="text-sm">
-              {field.selected_engine === 'engineA' ? 'Engine A' : 
-               field.selected_engine === 'engineB' ? 'Engine B' : 'None'}
-            </Badge>
+          <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '13px', color: t.text, letterSpacing: '0.04em' }}>
+            {field.field_name}
           </div>
-          
-          {reasoning && (
-            <div className="pt-3 mt-3 border-t">
-              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
-                {reasoning}
-              </p>
-            </div>
-          )}
         </div>
+        <ChevronRight size={13} style={{ color: t.textGhost, flexShrink: 0, transform: hovered ? 'translateX(3px)' : 'translateX(0)', transition: 'transform 0.18s' }} />
       </div>
-    </Card>
+
+      {/* Value box */}
+      <div style={{ padding: '10px 12px', background: hovered ? t.bgCard : t.bgInput, border: `1px solid ${t.border}`, marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', transition: 'background 0.15s' }}>
+        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '15px', color: field.recommended_value ? t.text : t.textGhost, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {field.recommended_value || '—'}
+        </span>
+        {field.recommended_value && (
+          <button onClick={handleCopy}
+            style={{ background: 'none', border: 'none', color: t.textGhost, cursor: 'pointer', padding: '2px', flexShrink: 0, transition: 'all 0.1s', transform: hovered ? 'scale(1.1)' : 'scale(1)' }}
+            onMouseEnter={e => (e.currentTarget.style.color = t.gold)}
+            onMouseLeave={e => (e.currentTarget.style.color = t.textGhost)}>
+            <Copy size={11} />
+          </button>
+        )}
+      </div>
+
+      {/* Meta row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: t.textGhost, letterSpacing: '0.06em', marginBottom: reasoning ? '10px' : 0 }}>
+        <span>CONF: <span style={{ color: t.textMuted }}>{field.field_confidence.replace('_', ' ')}</span></span>
+        <span style={{ color: hovered ? cfg.color : t.textGhost, transition: 'color 0.15s' }}>
+          {field.selected_engine === 'none' ? 'NO ENGINE' : field.selected_engine === 'engineA' ? 'ENG-A' : 'ENG-B'}
+        </span>
+      </div>
+
+      {reasoning && (
+        <div style={{ paddingTop: '10px', borderTop: `1px solid ${t.border}`, fontSize: '10px', color: t.textGhost, lineHeight: 1.6, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any }}>
+          {reasoning}
+        </div>
+      )}
+    </div>
   );
 }

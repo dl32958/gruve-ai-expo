@@ -1,378 +1,196 @@
 import { useState } from 'react';
 import { ChevronUp, Download, Search } from 'lucide-react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Badge } from './ui/badge';
-import { Input } from './ui/input';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { toast } from 'sonner';
 import type { RunResult } from '../types';
+import type { Tokens } from '../tokens';
 
-interface ExplainDebugDrawerProps {
-  result: RunResult | null;
-  debugMode: boolean;
-}
+interface Props { result: RunResult | null; debugMode: boolean; tokens: Tokens; }
 
-export function ExplainDebugDrawer({ result, debugMode }: ExplainDebugDrawerProps) {
+export function ExplainDebugDrawer({ result, debugMode, tokens: t }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [tab, setTab] = useState<'ocr'|'extraction'|'judgment'>('ocr');
+  const [engTab, setEngTab] = useState<'A'|'B'>('A');
+  const [selfTab, setSelfTab] = useState<'A'|'B'>('A');
   const [ocrSearch, setOcrSearch] = useState('');
-  const [expandedFields, setExpandedFields] = useState<Record<string, boolean>>({});
+  const [expanded, setExpanded] = useState<Record<string,boolean>>({});
 
   if (!result) return null;
 
-  const downloadJSON = (data: any, filename: string) => {
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
+  const dl = (data: any, name: string) => {
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success(`Downloaded ${filename}`);
+    const a = document.createElement('a'); a.href=url; a.download=name; a.click();
+    URL.revokeObjectURL(url); toast.success(`Downloaded ${name}`);
   };
 
-  const toggleFieldExpanded = (fieldName: string) => {
-    setExpandedFields(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
-  };
-
-  const highlightText = (text: string, search: string) => {
-    if (!search.trim()) return text;
-    const parts = text.split(new RegExp(`(${search})`, 'gi'));
-    return parts.map((part, i) => 
-      part.toLowerCase() === search.toLowerCase() 
-        ? `<mark class="bg-yellow-200">${part}</mark>` 
-        : part
+  const highlight = (text: string, q: string) => {
+    if (!q.trim()) return text;
+    return text.split(new RegExp(`(${q})`, 'gi')).map((p,i) =>
+      p.toLowerCase()===q.toLowerCase() ? `<mark style="background:rgba(201,168,76,0.3);color:${t.gold}">${p}</mark>` : p
     ).join('');
   };
 
-  return (
-    <div className="border-t bg-white dark:bg-gray-950 border-gray-200 dark:border-gray-800">
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger asChild>
-          <Button
-            variant="ghost"
-            className="w-full h-12 flex items-center justify-between px-6 hover:bg-gray-50 dark:hover:bg-gray-900 text-base font-semibold"
-          >
-            <span>Technical Details & Debug Info</span>
-            <ChevronUp className={`h-5 w-5 transition-transform ${isOpen ? '' : 'rotate-180'}`} />
-          </Button>
-        </CollapsibleTrigger>
-        
-        <CollapsibleContent>
-          <div className="p-6 border-t max-h-[400px] overflow-y-auto border-gray-200 dark:border-gray-800">
-            <Tabs defaultValue="ocr">
-              <TabsList className="w-full mb-4 grid grid-cols-3">
-                <TabsTrigger value="ocr" className="text-base">OCR Text</TabsTrigger>
-                <TabsTrigger value="extraction" className="text-base">Engine Extraction</TabsTrigger>
-                <TabsTrigger value="judgment" className="text-base">Final Judgment</TabsTrigger>
-              </TabsList>
+  const tabBtn = (active: boolean): React.CSSProperties => ({
+    padding: '6px 14px', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
+    cursor: 'pointer', border: 'none', background: 'none', fontFamily: 'var(--font-mono)',
+    color: active ? t.gold : t.textGhost,
+    borderBottom: active ? `1px solid ${t.gold}` : '1px solid transparent',
+    transition: 'all 0.15s',
+  });
 
-              {/* OCR Raw Text */}
-              <TabsContent value="ocr" className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-lg">Optical Character Recognition</h3>
-                  {debugMode && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => downloadJSON({ raw_text: result.stage1_ocr_text }, 'ocr_raw_text.json')}
-                    >
-                      <Download className="h-3 w-3 mr-1" />
-                      Download
-                    </Button>
-                  )}
-                </div>
-                
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    placeholder="Search in OCR text..."
-                    value={ocrSearch}
-                    onChange={(e) => setOcrSearch(e.target.value)}
-                    className="pl-9 text-base"
-                  />
-                </div>
+  const dlBtn: React.CSSProperties = {
+    display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 10px',
+    fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase',
+    border: `1px solid ${t.border}`, color: t.gold, background: 'transparent',
+    cursor: 'pointer', fontFamily: 'var(--font-mono)', transition: 'all 0.15s',
+  };
 
-                <Card>
-                  <CardContent className="p-4">
-                    <pre 
-                      className="text-base whitespace-pre-wrap font-mono bg-gray-50 dark:bg-gray-900 p-4 rounded max-h-64 overflow-y-auto leading-relaxed"
-                      dangerouslySetInnerHTML={{ 
-                        __html: highlightText(result.stage1_ocr_text, ocrSearch) 
-                      }}
-                    />
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Engine Extraction */}
-              <TabsContent value="extraction" className="space-y-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg">Dual-Engine Field Extraction</h3>
-                </div>
-
-                <Tabs defaultValue="engineA">
-                  <TabsList className="w-full">
-                    <TabsTrigger value="engineA" className="flex-1 text-base">Engine A</TabsTrigger>
-                    <TabsTrigger value="engineB" className="flex-1 text-base">Engine B</TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="engineA" className="space-y-3 mt-4">
-                    {debugMode && (
-                      <div className="flex justify-end">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const data = result.fields.map(f => ({
-                              field: f.field_name,
-                              extraction: f.engineA,
-                            }));
-                            downloadJSON(data, 'engineA_extraction.json');
-                          }}
-                        >
-                          <Download className="h-3 w-3 mr-1" />
-                          Download
-                        </Button>
-                      </div>
-                    )}
-                    {result.fields.map((field) => (
-                      <EngineExtractionCard
-                        key={field.field_name}
-                        fieldName={field.field_name}
-                        extraction={field.engineA}
-                        isExpanded={expandedFields[`A-${field.field_name}`] || false}
-                        onToggle={() => toggleFieldExpanded(`A-${field.field_name}`)}
-                      />
-                    ))}
-                  </TabsContent>
-
-                  <TabsContent value="engineB" className="space-y-3 mt-4">
-                    {debugMode && (
-                      <div className="flex justify-end">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const data = result.fields.map(f => ({
-                              field: f.field_name,
-                              extraction: f.engineB,
-                            }));
-                            downloadJSON(data, 'engineB_extraction.json');
-                          }}
-                        >
-                          <Download className="h-3 w-3 mr-1" />
-                          Download
-                        </Button>
-                      </div>
-                    )}
-                    {result.fields.map((field) => (
-                      <EngineExtractionCard
-                        key={field.field_name}
-                        fieldName={field.field_name}
-                        extraction={field.engineB}
-                        isExpanded={expandedFields[`B-${field.field_name}`] || false}
-                        onToggle={() => toggleFieldExpanded(`B-${field.field_name}`)}
-                      />
-                    ))}
-                  </TabsContent>
-                </Tabs>
-              </TabsContent>
-
-              {/* Final Judgment */}
-              <TabsContent value="judgment" className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-lg">Cross-Engine Validation & Rules</h3>
-                  {debugMode && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => downloadJSON(result.stage3_consolidated_rules, 'consolidated_rules.json')}
-                    >
-                      <Download className="h-3 w-3 mr-1" />
-                      Download
-                    </Button>
-                  )}
-                </div>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">Consolidated Rules</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <span className="text-base font-medium text-gray-600 dark:text-gray-400">Rules:</span>
-                      <ul className="mt-2 space-y-1.5">
-                        {result.stage3_consolidated_rules.rules.map((rule, idx) => (
-                          <li key={idx} className="text-base flex items-start gap-2">
-                            <span className="text-gray-400">•</span>
-                            <span>{rule}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-base font-medium text-gray-600 dark:text-gray-400">Agreement Level:</span>
-                      <Badge className="text-sm">{result.stage3_consolidated_rules.agreement_level}</Badge>
-                    </div>
-                    {result.stage3_consolidated_rules.notes && (
-                      <div>
-                        <span className="text-base font-medium text-gray-600 dark:text-gray-400">Notes:</span>
-                        <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{result.stage3_consolidated_rules.notes}</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                <div className="mt-4">
-                  <h4 className="font-semibold mb-3 text-base">Self-Consistency Scores</h4>
-                  <Tabs defaultValue="self-engineA">
-                    <TabsList className="w-full">
-                      <TabsTrigger value="self-engineA" className="flex-1">Engine A</TabsTrigger>
-                      <TabsTrigger value="self-engineB" className="flex-1">Engine B</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="self-engineA" className="space-y-3 mt-4">
-                      {result.fields.map((field) => (
-                        <SelfJustificationCard key={field.field_name} field={field} engine="A" />
-                      ))}
-                    </TabsContent>
-
-                    <TabsContent value="self-engineB" className="space-y-3 mt-4">
-                      {result.fields.map((field) => (
-                        <SelfJustificationCard key={field.field_name} field={field} engine="B" />
-                      ))}
-                    </TabsContent>
-                  </Tabs>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
-    </div>
-  );
-}
-
-function EngineExtractionCard({ 
-  fieldName, 
-  extraction, 
-  isExpanded, 
-  onToggle 
-}: { 
-  fieldName: string; 
-  extraction: any; 
-  isExpanded: boolean; 
-  onToggle: () => void;
-}) {
-  return (
-    <Card>
-      <CardHeader className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900" onClick={onToggle}>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-semibold">{fieldName}</CardTitle>
-          <ChevronUp className={`h-4 w-4 transition-transform ${isExpanded ? '' : 'rotate-180'}`} />
-        </div>
-      </CardHeader>
-      {isExpanded && (
-        <CardContent className="space-y-3 text-base">
-          <div>
-            <span className="font-medium text-gray-600 dark:text-gray-400">Constraints:</span>
-            <ul className="mt-1 space-y-1">
-              {extraction.constraint_summary.map((constraint: string, idx: number) => (
-                <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-gray-400">•</span>
-                  <span>{constraint}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <span className="font-medium text-gray-600 dark:text-gray-400">Extracted Value:</span>
-            <p className="mt-1 font-semibold">{extraction.extracted_value || '—'}</p>
-          </div>
-
-          <div>
-            <span className="font-medium text-gray-600 dark:text-gray-400">Evidence Trace:</span>
-            <ul className="mt-1 space-y-1">
-              {extraction.evidence_trace.map((evidence: string, idx: number) => (
-                <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-gray-400">→</span>
-                  <span>{evidence}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <span className="font-medium text-gray-600 dark:text-gray-400">Reasoning:</span>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">{extraction.reasoning}</p>
-          </div>
-        </CardContent>
-      )}
-    </Card>
-  );
-}
-
-function SelfJustificationCard({ field, engine }: { field: any; engine: 'A' | 'B' }) {
-  const data = engine === 'A' ? field.engineA : field.engineB;
-  
-  const getScoreBar = (value: number, type: 'normal' | 'corruption' = 'normal') => {
-    const percentage = value * 100;
-    let color = 'bg-gray-300';
-    
-    if (type === 'corruption') {
-      if (value <= 0.1) color = 'bg-green-500';
-      else if (value <= 0.3) color = 'bg-yellow-500';
-      else color = 'bg-red-500';
-    } else {
-      if (value >= 0.9) color = 'bg-green-500';
-      else if (value >= 0.7) color = 'bg-blue-500';
-      else if (value >= 0.5) color = 'bg-yellow-500';
-      else color = 'bg-red-500';
-    }
-
+  const scoreBar = (val: number, inv = false) => {
+    const color = inv ? (val<=0.1?t.green:val<=0.3?t.yellow:t.red) : (val>=0.8?t.green:val>=0.5?t.yellow:t.red);
     return (
-      <div className="flex items-center gap-2">
-        <div className="flex-1 h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-          <div className={`h-full ${color}`} style={{ width: `${percentage}%` }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ flex: 1, height: '2px', background: t.bgInput }}>
+          <div style={{ height: '100%', background: color, width: `${val*100}%`, boxShadow: `0 0 4px ${color}` }} />
         </div>
-        <span className="text-sm font-medium w-12 text-right">{value.toFixed(2)}</span>
+        <span style={{ fontSize: '11px', color, width: '36px', textAlign: 'right' }}>{val.toFixed(2)}</span>
       </div>
     );
   };
 
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base font-semibold">{field.field_name}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="space-y-2.5">
-          <div>
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Rule Consistency</span>
-            {getScoreBar(data.rule_consistency)}
+    <div style={{ borderTop: `1px solid ${t.border}`, background: t.bgPanel, fontFamily: 'var(--font-mono)', transition: 'background 0.3s' }}>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <CollapsibleTrigger asChild>
+          <button style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', background: 'none', border: 'none', cursor: 'pointer', color: t.textGhost, transition: 'all 0.15s' }}
+            onMouseEnter={e => (e.currentTarget.style.background = t.goldFaint)}
+            onMouseLeave={e => (e.currentTarget.style.background = 'none')}>
+            <span style={{ fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase' }}>Technical Details & Debug</span>
+            <ChevronUp size={12} style={{ transition: 'transform 0.2s', transform: isOpen ? '' : 'rotate(180deg)' }} />
+          </button>
+        </CollapsibleTrigger>
+
+        <CollapsibleContent>
+          <div style={{ maxHeight: '380px', overflowY: 'auto', borderTop: `1px solid ${t.border}`, padding: '20px 24px' }}>
+            {/* Tabs */}
+            <div style={{ display: 'flex', borderBottom: `1px solid ${t.border}`, marginBottom: '20px' }}>
+              {(['ocr','extraction','judgment'] as const).map(tab2 => (
+                <button key={tab2} style={tabBtn(tab===tab2)} onClick={() => setTab(tab2)}>
+                  {tab2==='ocr'?'OCR':tab2==='extraction'?'Extraction':'Judgment'}
+                </button>
+              ))}
+            </div>
+
+            {/* OCR */}
+            {tab==='ocr' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: t.textMuted }}>OCR Output</span>
+                  {debugMode && <button style={dlBtn} onClick={() => dl({raw_text:result.stage1_ocr_text},'ocr_raw.json')}><Download size={10}/> DL</button>}
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <Search size={11} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: t.textGhost }} />
+                  <input placeholder="Search OCR text..." value={ocrSearch} onChange={e => setOcrSearch(e.target.value)}
+                    style={{ width: '100%', padding: '8px 10px 8px 28px', background: t.bgCard, border: `1px solid ${t.border}`, color: t.text, fontSize: '11px', fontFamily: 'var(--font-mono)', outline: 'none', boxSizing: 'border-box' }}
+                    onFocus={e => (e.currentTarget.style.borderColor = t.borderHover)}
+                    onBlur={e => (e.currentTarget.style.borderColor = t.border)} />
+                </div>
+                <pre style={{ fontSize: '11px', background: t.bgCard, padding: '14px', border: `1px solid ${t.border}`, lineHeight: '1.7', maxHeight: '200px', overflowY: 'auto', whiteSpace: 'pre-wrap', color: t.textSub, margin: 0, fontFamily: 'var(--font-mono)' }}
+                  dangerouslySetInnerHTML={{ __html: highlight(result.stage1_ocr_text, ocrSearch) }} />
+              </div>
+            )}
+
+            {/* Extraction */}
+            {tab==='extraction' && (
+              <div>
+                <div style={{ display: 'flex', gap: 0, borderBottom: `1px solid ${t.border}`, marginBottom: '16px', alignItems: 'center' }}>
+                  {(['A','B'] as const).map(e => <button key={e} style={tabBtn(engTab===e)} onClick={() => setEngTab(e)}>Engine {e}</button>)}
+                  {debugMode && <button style={{ ...dlBtn, marginLeft: 'auto' }} onClick={() => { const d = result.fields.map(f => ({field:f.field_name,extraction:engTab==='A'?f.engineA:f.engineB})); dl(d,`engine${engTab}.json`); }}><Download size={10}/> DL</button>}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {result.fields.map(field => {
+                    const key = `${engTab}-${field.field_name}`;
+                    const ext = engTab==='A' ? field.engineA : field.engineB;
+                    const open = expanded[key];
+                    return (
+                      <div key={key} style={{ border: `1px solid ${t.border}`, background: t.bgCard }}>
+                        <div onClick={() => setExpanded(p=>({...p,[key]:!p[key]}))}
+                          style={{ padding: '10px 14px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                          onMouseEnter={e => (e.currentTarget.style.background = t.goldFaint)}
+                          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                          <span style={{ fontSize: '12px', color: t.text }}>{field.field_name}</span>
+                          <ChevronUp size={11} style={{ color: t.textGhost, transform: open?'':'rotate(180deg)', transition: '0.2s' }} />
+                        </div>
+                        {open && (
+                          <div style={{ padding: '0 14px 14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            <div>
+                              <div style={{ fontSize: '10px', color: t.textGhost, marginBottom: '4px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Value</div>
+                              <div style={{ fontSize: '13px', fontWeight: 700, color: ext.extracted_value ? t.gold : t.textGhost }}>{ext.extracted_value||'—'}</div>
+                            </div>
+                            {ext.constraint_summary?.length>0 && (
+                              <div>
+                                <div style={{ fontSize: '10px', color: t.textGhost, marginBottom: '4px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Constraints</div>
+                                {ext.constraint_summary.map((c:string,i:number) => (
+                                  <div key={i} style={{ fontSize: '11px', color: t.textSub, paddingLeft: '10px', borderLeft: `1px solid ${t.borderHover}`, marginBottom: '3px', lineHeight: 1.5 }}>{c}</div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Judgment */}
+            {tab==='judgment' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ border: `1px solid ${t.borderHover}`, background: t.goldFaint, padding: '14px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: t.textMuted }}>Consolidated Rules</span>
+                    {debugMode && <button style={dlBtn} onClick={() => dl(result.stage3_consolidated_rules,'rules.json')}><Download size={10}/> DL</button>}
+                  </div>
+                  {result.stage3_consolidated_rules.rules.map((rule,i) => (
+                    <div key={i} style={{ fontSize: '11px', color: t.textSub, display: 'flex', gap: '8px', marginBottom: '4px', lineHeight: 1.5 }}>
+                      <span style={{ color: t.textGhost, flexShrink: 0 }}>■</span><span>{rule}</span>
+                    </div>
+                  ))}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '10px', marginTop: '10px' }}>
+                    <span style={{ color: t.textGhost, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Agreement:</span>
+                    <span style={{ color: t.gold, border: `1px solid ${t.borderHover}`, padding: '2px 8px', fontSize: '10px' }}>{result.stage3_consolidated_rules.agreement_level}</span>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: 'flex', gap: 0, borderBottom: `1px solid ${t.border}`, marginBottom: '12px' }}>
+                    {(['A','B'] as const).map(e => <button key={e} style={tabBtn(selfTab===e)} onClick={() => setSelfTab(e)}>Engine {e}</button>)}
+                  </div>
+                  {result.fields.map(field => {
+                    const data = selfTab==='A' ? field.engineA : field.engineB;
+                    return (
+                      <div key={field.field_name} style={{ border: `1px solid ${t.border}`, background: t.bgCard, padding: '12px 14px', marginBottom: '6px' }}>
+                        <div style={{ fontSize: '11px', fontWeight: 700, color: t.text, marginBottom: '10px' }}>{field.field_name}</div>
+                        {[
+                          { label:'Rule Consistency', val:data.rule_consistency },
+                          { label:'Self-Consistency', val:data.engine_self_consistency },
+                          { label:'OCR Alignment',    val:data.ocr_alignment },
+                          { label:'OCR Corruption',   val:data.ocr_corruption, inv:true },
+                        ].map(({label,val,inv}) => (
+                          <div key={label} style={{ marginBottom: '6px' }}>
+                            <div style={{ fontSize: '10px', color: t.textGhost, letterSpacing: '0.08em', marginBottom: '3px', textTransform: 'uppercase' }}>{label}</div>
+                            {scoreBar(val, inv)}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
-          <div>
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Engine Self-Consistency</span>
-            {getScoreBar(data.engine_self_consistency)}
-          </div>
-          <div>
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">OCR Alignment</span>
-            {getScoreBar(data.ocr_alignment)}
-          </div>
-          <div>
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">OCR Corruption</span>
-            {getScoreBar(data.ocr_corruption, 'corruption')}
-          </div>
-        </div>
-        <div className="pt-2 border-t">
-          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Summary:</span>
-          <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">{data.judgment_summary}</p>
-        </div>
-      </CardContent>
-    </Card>
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
   );
 }
