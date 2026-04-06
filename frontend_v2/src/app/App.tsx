@@ -140,8 +140,8 @@ function AppShell() {
   const sortedFields = result
     ? [...result.fields].sort(
         (a, b) =>
-          { fail: 0, review_needed: 1, pass: 2 }[a.field_state] -
-          { fail: 0, review_needed: 1, pass: 2 }[b.field_state],
+          ({ fail: 0, review_needed: 1, pass: 2 }[a.field_state] -
+            { fail: 0, review_needed: 1, pass: 2 }[b.field_state]),
       )
     : [];
 
