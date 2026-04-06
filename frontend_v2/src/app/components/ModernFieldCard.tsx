@@ -32,6 +32,8 @@ export function ModernFieldCard({ field, onClick, tokens: t }: Props) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
+        width: '100%',
+        minWidth: 0,
         background: hovered ? cfg.bg : 'transparent',
         border: `1px solid ${hovered ? cfg.color : cfg.border}`,
         borderLeft: `2px solid ${cfg.color}`,
@@ -49,7 +51,7 @@ export function ModernFieldCard({ field, onClick, tokens: t }: Props) {
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
-        <div>
+        <div style={{ minWidth: 0, flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
             <span style={{ color: cfg.color }}>{cfg.icon}</span>
             <span style={{ fontSize: '10px', color: cfg.color, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{cfg.label}</span>
@@ -62,7 +64,7 @@ export function ModernFieldCard({ field, onClick, tokens: t }: Props) {
       </div>
 
       {/* Value box */}
-      <div style={{ padding: '10px 12px', background: hovered ? t.bgCard : t.bgInput, border: `1px solid ${t.border}`, marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', transition: 'background 0.15s' }}>
+      <div style={{ padding: '10px 12px', background: hovered ? t.bgCard : t.bgInput, border: `1px solid ${t.border}`, marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', transition: 'background 0.15s', minWidth: 0 }}>
         <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '15px', color: field.recommended_value ? t.text : t.textGhost, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {field.recommended_value || '—'}
         </span>

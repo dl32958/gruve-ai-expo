@@ -466,7 +466,7 @@ function AppShell() {
                     </div>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "12px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "12px", alignItems: "start" }}>
                     {sortedFields.map((field) => (
                       <ModernFieldCard key={field.field_name} field={field} onClick={() => setSelectedField(field)} tokens={tokens} />
                     ))}
