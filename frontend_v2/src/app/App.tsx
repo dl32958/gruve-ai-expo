@@ -1,26 +1,23 @@
-import { useState } from "react";
-import { Download, Image as ImageIcon, Sparkles } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useEffect, useRef, useState } from "react";
+import { Download, Moon, Sun, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { adaptBackendRunResponse } from "./adapters";
-import { runPipelineFromPath, runPipelineUpload } from "./api";
+import { runPipelineUpload } from "./api";
+import { ThemeProvider, useTheme } from "./ThemeContext";
+import { dark, light } from "./tokens";
 import { ExplainDebugDrawer } from "./components/ExplainDebugDrawer";
 import { FieldDrawer } from "./components/FieldDrawer";
 import { HistorySidebar } from "./components/HistorySidebar";
 import { ModernFieldCard } from "./components/ModernFieldCard";
 import { RunControls } from "./components/RunControls";
-import { UploadSection } from "./components/UploadSection";
-import { Badge } from "./components/ui/badge";
-import { Button } from "./components/ui/button";
+import { UploadSection, type QueueItem } from "./components/UploadSection";
 import { Toaster } from "./components/ui/sonner";
-import { dark, light } from "./tokens";
 import type { FieldResult, PipelineStep, RunResult } from "./types";
 
-const DEFAULT_FIELDS = ["company", "date", "address", "total", "phone number"];
+function AppShell() {
+  const { theme, toggle } = useTheme();
+  const tokens = theme === "dark" ? dark : light;
 
-export default function App() {
-  const { resolvedTheme } = useTheme();
-  const tokens = resolvedTheme === "dark" ? dark : light;
   const [isRunning, setIsRunning] = useState(false);
   const [currentStep, setCurrentStep] = useState<PipelineStep | null>(null);
   const [result, setResult] = useState<RunResult | null>(null);
@@ -28,71 +25,106 @@ export default function App() {
   const [history, setHistory] = useState<RunResult[]>([]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedField, setSelectedField] = useState<FieldResult | null>(null);
+  const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [activeItemId, setActiveItemId] = useState<string | null>(null);
+  const [category, setCategory] = useState("");
+  const [fields, setFields] = useState<string[]>(["company", "date", "address", "total"]);
 
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [inputMode, setInputMode] = useState<"upload" | "path">("upload");
-  const [imagePath, setImagePath] = useState("../data/dev/X00016469612.jpg");
-  const [category, setCategory] = useState("receipt");
-  const [fields, setFields] = useState<string[]>(DEFAULT_FIELDS);
+  const processingRef = useRef(false);
+  const progressTimerRef = useRef<number | null>(null);
 
-  const handleRun = async () => {
-    setIsRunning(true);
+  useEffect(() => {
+    return () => {
+      if (progressTimerRef.current) {
+        window.clearInterval(progressTimerRef.current);
+      }
+    };
+  }, []);
+
+  const startStepAnimation = () => {
+    if (progressTimerRef.current) {
+      window.clearInterval(progressTimerRef.current);
+    }
+
     setCurrentStep(1);
+    progressTimerRef.current = window.setInterval(() => {
+      setCurrentStep((prev) => {
+        if (!prev) return 1;
+        return prev >= 5 ? 5 : ((prev + 1) as PipelineStep);
+      });
+    }, 2500);
+  };
+
+  const stopStepAnimation = () => {
+    if (progressTimerRef.current) {
+      window.clearInterval(progressTimerRef.current);
+      progressTimerRef.current = null;
+    }
+    setCurrentStep(null);
+  };
+
+  const updateItemStatus = (id: string, status: QueueItem["status"]) =>
+    setQueue((prev) => prev.map((item) => (item.id === id ? { ...item, status } : item)));
+
+  const processItem = async (item: QueueItem): Promise<RunResult> => {
+    const response = await runPipelineUpload({
+      file: item.file,
+      docCategory: category,
+      fieldsText: fields.join(","),
+      debug: debugMode,
+    });
+    return adaptBackendRunResponse(response);
+  };
+
+  const runQueue = async (currentQueue: QueueItem[]) => {
+    if (processingRef.current) return;
+    processingRef.current = true;
+    setIsRunning(true);
+    startStepAnimation();
 
     try {
-      const response =
-        inputMode === "upload"
-          ? await runPipelineUpload({
-              file: uploadedFile as File,
-              docCategory: category,
-              fieldsText: fields.join(","),
-              debug: debugMode,
-            })
-          : await runPipelineFromPath({
-              imagePath,
-              docCategory: category,
-              fields,
-              debug: debugMode,
-            });
+      for (const item of currentQueue.filter((entry) => entry.status === "pending")) {
+        setActiveItemId(item.id);
+        updateItemStatus(item.id, "processing");
 
-      setCurrentStep(5);
-      const adapted = adaptBackendRunResponse(response);
-      setResult(adapted);
-      setHistory((prev) => [adapted, ...prev].slice(0, 20));
-      toast.success("Analysis completed");
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Analysis failed";
-      toast.error(message);
+        try {
+          const nextResult = await processItem(item);
+          updateItemStatus(item.id, "done");
+          setResult(nextResult);
+          setHistory((prev) => [nextResult, ...prev].slice(0, 20));
+          toast.success(`Completed ${item.name}`);
+        } catch (error) {
+          updateItemStatus(item.id, "error");
+          const message = error instanceof Error ? error.message : `Failed: ${item.name}`;
+          toast.error(message);
+        }
+      }
     } finally {
+      setActiveItemId(null);
+      stopStepAnimation();
       setIsRunning(false);
-      setCurrentStep(null);
+      processingRef.current = false;
     }
   };
 
-  const handleSelectHistory = (historyResult: RunResult) => {
-    setResult(historyResult);
-  };
-
-  const handleDeleteHistory = (index: number) => {
-    setHistory((prev) => prev.filter((_, i) => i !== index));
-    toast.success("History item deleted");
+  const handleRun = () => {
+    if (!category || queue.filter((item) => item.status === "pending").length === 0 || isRunning) return;
+    runQueue(queue);
   };
 
   const handleNewChat = () => {
+    if (isRunning) return;
     setResult(null);
-    setUploadedImage(null);
-    setUploadedFile(null);
-    setInputMode("upload");
-    setImagePath("../data/dev/X00016469612.jpg");
-    setCategory("receipt");
-    setFields(DEFAULT_FIELDS);
+    setQueue([]);
+    setActiveItemId(null);
+    setCategory("");
+    setFields(["company", "date", "address", "total"]);
+    setSelectedField(null);
   };
 
   const downloadFinalResult = () => {
     if (!result) return;
-    const json = JSON.stringify(result.raw_result, null, 2);
-    const blob = new Blob([json], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(result.raw_result, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -102,222 +134,366 @@ export default function App() {
     toast.success("Downloaded final_result.json");
   };
 
-  const canRun = category && (inputMode === "path" ? imagePath : uploadedFile);
+  const pendingCount = queue.filter((item) => item.status === "pending").length;
+  const canRun = pendingCount > 0 && !!category && !isRunning;
 
   const sortedFields = result
-    ? [...result.fields].sort((a, b) => {
-        const priority = { fail: 0, review_needed: 1, pass: 2 };
-        return priority[a.field_state] - priority[b.field_state];
-      })
+    ? [...result.fields].sort(
+        (a, b) =>
+          { fail: 0, review_needed: 1, pass: 2 }[a.field_state] -
+          { fail: 0, review_needed: 1, pass: 2 }[b.field_state],
+      )
     : [];
 
-  const getOverallStatus = () => {
-    if (!result) return null;
-    const hasFailure = result.fields.some((field) => field.field_state === "fail");
-    const hasReview = result.fields.some((field) => field.field_state === "review_needed");
+  const passCount = result?.fields.filter((field) => field.field_state === "pass").length ?? 0;
+  const reviewCount = result?.fields.filter((field) => field.field_state === "review_needed").length ?? 0;
+  const failCount = result?.fields.filter((field) => field.field_state === "fail").length ?? 0;
 
-    if (hasFailure) return { label: "Failed Fields", variant: "destructive" as const };
-    if (hasReview) return { label: "Needs Review", variant: "secondary" as const };
-    return { label: "All Passed", variant: "default" as const };
+  const resultLabel = result?.metadata
+    ? `${result.metadata.doc_category}${result.metadata.image_path ? ` · ${result.metadata.image_path}` : ""}`
+    : "";
+
+  const headerBtn: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    padding: "5px 12px",
+    fontSize: "11px",
+    letterSpacing: "0.06em",
+    border: `1px solid ${tokens.border}`,
+    color: tokens.gold,
+    background: tokens.goldFaint,
+    cursor: "pointer",
+    fontFamily: "var(--font-mono)",
+    textTransform: "uppercase",
+    transition: "all 0.15s",
   };
 
-  const overallStatus = getOverallStatus();
-
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950">
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        overflow: "hidden",
+        background: tokens.bg,
+        fontFamily: "var(--font-mono)",
+        transition: "background 0.3s",
+      }}
+    >
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "600px",
+          height: "1px",
+          boxShadow: `0 0 120px 40px ${tokens.goldDim}`,
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+
       <HistorySidebar
         history={history}
         currentResult={result}
-        onSelectHistory={handleSelectHistory}
-        onDeleteHistory={handleDeleteHistory}
+        onSelectHistory={setResult}
+        onDeleteHistory={(index) => {
+          setHistory((prev) => prev.filter((_, idx) => idx !== index));
+          toast.success("Deleted");
+        }}
         isCollapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
         onNewChat={handleNewChat}
         tokens={tokens}
       />
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <div className="flex-shrink-0 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
-          <div className="h-16 px-6 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="h-6 w-6 text-white" />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, position: "relative", zIndex: 1 }}>
+        <div
+          style={{
+            height: "56px",
+            borderBottom: `1px solid ${tokens.border}`,
+            background: theme === "dark" ? "rgba(6,6,10,0.95)" : "rgba(245,242,235,0.95)",
+            backdropFilter: "blur(20px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 24px",
+            flexShrink: 0,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                border: `1px solid ${tokens.borderHover}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: tokens.goldFaint,
+                position: "relative",
+              }}
+            >
+              <Zap size={14} style={{ color: tokens.gold }} />
+              <div style={{ position: "absolute", inset: "-1px", boxShadow: `0 0 12px ${tokens.goldDim}`, pointerEvents: "none" }} />
+            </div>
+            <div>
+              <div
+                style={{
+                  fontFamily: "Syne, sans-serif",
+                  fontWeight: 700,
+                  fontSize: "14px",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: tokens.text,
+                }}
+              >
+                GRUVE
               </div>
-              <div>
-                <h1 className="text-xl font-bold">AI Document Analyzer</h1>
-                <p className="text-sm text-gray-500">Intelligent field extraction</p>
+              <div style={{ fontSize: "10px", color: tokens.textMuted, letterSpacing: "0.12em", textTransform: "uppercase", marginTop: "-2px" }}>
+                Document Intelligence
               </div>
             </div>
-            {result && overallStatus ? (
-              <div className="flex items-center gap-3">
-                <Badge variant={overallStatus.variant} className="text-sm h-7 px-3">
-                  {overallStatus.label}
-                </Badge>
-                <span className="text-sm text-gray-500">{result.metadata.elapsed_seconds.toFixed(1)}s</span>
-                <Button onClick={downloadFinalResult} variant="outline" size="sm">
-                  <Download className="h-4 w-4 mr-2" />
-                  Export JSON
-                </Button>
-              </div>
-            ) : null}
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {result && (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px" }}>
+                  <span style={{ color: tokens.green }}>■ {passCount}</span>
+                  <span style={{ color: tokens.textGhost }}>/</span>
+                  <span style={{ color: tokens.yellow }}>■ {reviewCount}</span>
+                  <span style={{ color: tokens.textGhost }}>/</span>
+                  <span style={{ color: tokens.red }}>■ {failCount}</span>
+                </div>
+                <span style={{ color: tokens.border }}>|</span>
+                <span style={{ fontSize: "11px", color: tokens.textMuted }}>{result.metadata.elapsed_seconds.toFixed(2)}s</span>
+                <button
+                  style={headerBtn}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = tokens.goldDim;
+                    e.currentTarget.style.borderColor = tokens.borderHover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = tokens.goldFaint;
+                    e.currentTarget.style.borderColor = tokens.border;
+                  }}
+                  onClick={downloadFinalResult}
+                >
+                  <Download size={11} /> Export
+                </button>
+              </>
+            )}
+
+            <button
+              onClick={toggle}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              style={{
+                width: "32px",
+                height: "32px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: `1px solid ${tokens.border}`,
+                background: tokens.goldFaint,
+                cursor: "pointer",
+                color: tokens.gold,
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = tokens.goldDim;
+                e.currentTarget.style.borderColor = tokens.borderHover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = tokens.goldFaint;
+                e.currentTarget.style.borderColor = tokens.border;
+              }}
+            >
+              {theme === "dark" ? <Sun size={13} /> : <Moon size={13} />}
+            </button>
           </div>
         </div>
 
-        <div className="flex-1 flex overflow-hidden">
-          <div className="w-[420px] flex-shrink-0 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 flex flex-col">
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-lg font-bold mb-1">Input</h2>
-                  <p className="text-sm text-gray-500">Upload and configure</p>
+        <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+          <div
+            style={{
+              width: "380px",
+              flexShrink: 0,
+              borderRight: `1px solid ${tokens.border}`,
+              background: tokens.bgPanel,
+              display: "flex",
+              flexDirection: "column",
+              transition: "background 0.3s",
+            }}
+          >
+            <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+              <div style={{ marginBottom: "28px" }}>
+                <div style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: tokens.textMuted, marginBottom: "4px" }}>
+                  Input
                 </div>
-
-                <UploadSection
-                  uploadedImage={uploadedImage}
-                  onImageUpload={(image, file) => {
-                    setUploadedImage(image);
-                    setUploadedFile(file);
-                  }}
-                  onImageRemove={() => {
-                    setUploadedImage(null);
-                    setUploadedFile(null);
-                  }}
-                  category={category}
-                  onCategoryChange={setCategory}
-                  fields={fields}
-                  onFieldsChange={setFields}
-                  inputMode={inputMode}
-                  onInputModeChange={setInputMode}
-                  imagePath={imagePath}
-                  onImagePathChange={setImagePath}
-                />
+                <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "20px", color: tokens.text }}>Configure Analysis</div>
               </div>
+              <UploadSection
+                queue={queue}
+                onQueueChange={setQueue}
+                activeItemId={activeItemId}
+                category={category}
+                onCategoryChange={setCategory}
+                fields={fields}
+                onFieldsChange={setFields}
+                tokens={tokens}
+              />
             </div>
-
-            <div className="flex-shrink-0 p-6 border-t border-gray-200 dark:border-gray-800">
+            <div style={{ padding: "20px 24px", borderTop: `1px solid ${tokens.border}`, flexShrink: 0 }}>
               <RunControls
                 onRun={handleRun}
                 isRunning={isRunning}
                 currentStep={currentStep}
                 debugMode={debugMode}
                 onDebugModeChange={setDebugMode}
-                canRun={!!canRun}
+                canRun={canRun}
+                pendingCount={pendingCount}
                 tokens={tokens}
               />
             </div>
           </div>
 
-          <div className="flex-1 flex flex-col min-w-0">
-            <div className="flex-1 overflow-y-auto">
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, background: tokens.bg, transition: "background 0.3s" }}>
+            <div style={{ flex: 1, overflowY: "auto" }}>
               {!result ? (
-                <div className="h-full flex items-center justify-center p-8">
-                  <div className="text-center max-w-md">
-                    <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Sparkles className="h-10 w-10 text-gray-400" />
+                <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" }}>
+                  <div style={{ textAlign: "center", maxWidth: "360px" }}>
+                    <div
+                      style={{
+                        width: "64px",
+                        height: "64px",
+                        margin: "0 auto 24px",
+                        border: `1px solid ${tokens.border}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "relative",
+                      }}
+                    >
+                      <Zap size={24} style={{ color: tokens.border }} />
+                      {[0, 1, 2, 3].map((i) => (
+                        <div
+                          key={i}
+                          style={{
+                            position: "absolute",
+                            ...(i === 0 ? { top: "-4px", left: "-4px", borderTop: `2px solid ${tokens.borderHover}`, borderLeft: `2px solid ${tokens.borderHover}`, width: "10px", height: "10px" } : {}),
+                            ...(i === 1 ? { top: "-4px", right: "-4px", borderTop: `2px solid ${tokens.borderHover}`, borderRight: `2px solid ${tokens.borderHover}`, width: "10px", height: "10px" } : {}),
+                            ...(i === 2 ? { bottom: "-4px", left: "-4px", borderBottom: `2px solid ${tokens.borderHover}`, borderLeft: `2px solid ${tokens.borderHover}`, width: "10px", height: "10px" } : {}),
+                            ...(i === 3 ? { bottom: "-4px", right: "-4px", borderBottom: `2px solid ${tokens.borderHover}`, borderRight: `2px solid ${tokens.borderHover}`, width: "10px", height: "10px" } : {}),
+                          }}
+                        />
+                      ))}
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Ready to analyze</h3>
-                    <p className="text-gray-500">Upload a document and click "Run Analysis" to extract fields</p>
+                    <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "18px", color: tokens.text, marginBottom: "8px" }}>
+                      Awaiting Input
+                    </div>
+                    <div style={{ fontSize: "12px", color: tokens.textGhost, lineHeight: "1.7" }}>
+                      Upload documents and run analysis
+                      <br />
+                      to extract structured field data
+                    </div>
+                    <div style={{ marginTop: "32px", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "8px", opacity: 0.4 }}>
+                      {Array.from({ length: 9 }).map((_, i) => (
+                        <div key={i} style={{ height: "2px", background: tokens.goldDim }} />
+                      ))}
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="p-6 space-y-6">
-                  <div className="bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-                    <div className="flex items-center justify-between mb-4">
+                <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "20px" }}>
+                  <div style={{ border: `1px solid ${tokens.border}`, background: tokens.goldFaint, padding: "20px 24px", position: "relative", overflow: "hidden" }}>
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: `linear-gradient(90deg, transparent, ${tokens.gold}, transparent)`, opacity: 0.5 }} />
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "20px" }}>
                       <div>
-                        <h2 className="text-xl font-bold mb-1">Results</h2>
-                        <p className="text-sm text-gray-500">
-                          {result.fields.length} fields • {result.metadata.doc_category}
-                        </p>
+                        <div style={{ fontSize: "10px", letterSpacing: "0.2em", color: tokens.textMuted, textTransform: "uppercase", marginBottom: "4px" }}>
+                          Analysis Complete
+                        </div>
+                        <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "22px", color: tokens.text }}>{result.fields.length} Fields Extracted</div>
+                        <div style={{ fontSize: "11px", color: tokens.textMuted, marginTop: "2px" }}>
+                          {resultLabel} · {result.metadata.timestamp}
+                        </div>
                       </div>
-                      <Button variant="outline" onClick={handleNewChat} size="sm">
+                      <button
+                        onClick={handleNewChat}
+                        style={{
+                          padding: "6px 14px",
+                          fontSize: "11px",
+                          letterSpacing: "0.08em",
+                          border: `1px solid ${tokens.border}`,
+                          color: tokens.gold,
+                          background: "transparent",
+                          cursor: "pointer",
+                          fontFamily: "var(--font-mono)",
+                          textTransform: "uppercase",
+                          transition: "all 0.15s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = tokens.goldDim;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "transparent";
+                        }}
+                      >
                         New Analysis
-                      </Button>
+                      </button>
                     </div>
-
-                    <div className="grid grid-cols-3 gap-3">
-                      <SummaryCard label="Passed" value={result.fields.filter((field) => field.field_state === "pass").length} tone="green" />
-                      <SummaryCard
-                        label="Review"
-                        value={result.fields.filter((field) => field.field_state === "review_needed").length}
-                        tone="yellow"
-                      />
-                      <SummaryCard label="Failed" value={result.fields.filter((field) => field.field_state === "fail").length} tone="red" />
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "12px" }}>
+                      {[
+                        { label: "PASSED", count: passCount, color: tokens.green, bg: tokens.greenBg, border: tokens.greenBorder },
+                        { label: "REVIEW", count: reviewCount, color: tokens.yellow, bg: tokens.yellowBg, border: tokens.yellowBorder },
+                        { label: "FAILED", count: failCount, color: tokens.red, bg: tokens.redBg, border: tokens.redBorder },
+                      ].map(({ label, count, color, bg, border }) => (
+                        <div
+                          key={label}
+                          style={{ background: bg, border: `1px solid ${border}`, padding: "16px", textAlign: "center", transition: "transform 0.15s" }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                          }}
+                        >
+                          <div style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: "32px", color, lineHeight: 1 }}>{count}</div>
+                          <div style={{ fontSize: "10px", letterSpacing: "0.18em", color, opacity: 0.7, marginTop: "6px", textTransform: "uppercase" }}>{label}</div>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      {sortedFields.map((field) => (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "12px" }}>
+                    {sortedFields.map((field) => (
                       <ModernFieldCard key={field.field_name} field={field} onClick={() => setSelectedField(field)} tokens={tokens} />
                     ))}
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <h2 className="text-xl font-bold mb-1">Annotated Image</h2>
-                        <p className="text-sm text-gray-500">Preview of the final field localization output</p>
-                      </div>
-                      {result.metadata.annotated_image_url ? (
-                        <Button asChild variant="outline" size="sm">
-                          <a href={result.metadata.annotated_image_url} target="_blank" rel="noreferrer">
-                            <Download className="h-4 w-4 mr-2" />
-                            Open Image
-                          </a>
-                        </Button>
-                      ) : null}
-                    </div>
-
-                    {result.metadata.annotated_image_url ? (
-                      <div className="space-y-4">
-                        <div className="overflow-hidden rounded-lg border bg-gray-50 dark:bg-gray-900">
-                          <img
-                            src={result.metadata.annotated_image_url}
-                            alt="Annotated result"
-                            className="w-full h-auto object-contain"
-                          />
-                        </div>
-                        <div className="text-sm">
-                          <span className="font-medium text-gray-600 dark:text-gray-400">Artifact path:</span>
-                          <p className="mt-1 break-all">{result.metadata.annotated_image || "N/A"}</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-10 text-center text-sm text-gray-500">
-                        <ImageIcon className="mb-3 h-8 w-8 text-gray-400" />
-                        <p>No annotated image available for this run.</p>
-                      </div>
-                    )}
                   </div>
                 </div>
               )}
             </div>
 
-            {result ? (
-              <div className="flex-shrink-0">
+            {result && debugMode && (
+              <div style={{ flexShrink: 0 }}>
                 <ExplainDebugDrawer result={result} />
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </div>
 
       <FieldDrawer field={selectedField} open={!!selectedField} onClose={() => setSelectedField(null)} />
-      <Toaster />
+      <Toaster theme={theme} />
     </div>
   );
 }
 
-function SummaryCard({ label, value, tone }: { label: string; value: number; tone: "green" | "yellow" | "red" }) {
-  const toneStyles = {
-    green: "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400",
-    yellow: "bg-yellow-50 dark:bg-yellow-950/20 text-yellow-600 dark:text-yellow-400",
-    red: "bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400",
-  };
-
+export default function App() {
   return (
-    <div className={`text-center p-4 rounded-lg ${toneStyles[tone]}`}>
-      <div className="text-3xl font-bold">{value}</div>
-      <div className="text-sm mt-1 font-medium">{label}</div>
-    </div>
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
   );
 }
