@@ -419,29 +419,58 @@ function AppShell() {
                           {resultLabel} · {result.metadata.timestamp}
                         </div>
                       </div>
-                      <button
-                        onClick={handleNewChat}
-                        style={{
-                          padding: "6px 14px",
-                          fontSize: "11px",
-                          letterSpacing: "0.08em",
-                          border: `1px solid ${tokens.border}`,
-                          color: tokens.gold,
-                          background: "transparent",
-                          cursor: "pointer",
-                          fontFamily: "var(--font-mono)",
-                          textTransform: "uppercase",
-                          transition: "all 0.15s",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = tokens.goldDim;
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "transparent";
-                        }}
-                      >
-                        New Analysis
-                      </button>
+                      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                        {result.metadata.annotated_image_url ? (
+                          <a
+                            href={result.metadata.annotated_image_url}
+                            download
+                            style={{
+                              padding: "6px 14px",
+                              fontSize: "11px",
+                              letterSpacing: "0.08em",
+                              border: `1px solid ${tokens.border}`,
+                              color: tokens.gold,
+                              background: "transparent",
+                              cursor: "pointer",
+                              fontFamily: "var(--font-mono)",
+                              textTransform: "uppercase",
+                              transition: "all 0.15s",
+                              textDecoration: "none",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = tokens.goldDim;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = "transparent";
+                            }}
+                          >
+                            Download Annotation
+                          </a>
+                        ) : null}
+                        <button
+                          onClick={handleNewChat}
+                          style={{
+                            padding: "6px 14px",
+                            fontSize: "11px",
+                            letterSpacing: "0.08em",
+                            border: `1px solid ${tokens.border}`,
+                            color: tokens.gold,
+                            background: "transparent",
+                            cursor: "pointer",
+                            fontFamily: "var(--font-mono)",
+                            textTransform: "uppercase",
+                            transition: "all 0.15s",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = tokens.goldDim;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "transparent";
+                          }}
+                        >
+                          New Analysis
+                        </button>
+                      </div>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "12px" }}>
                       {[
