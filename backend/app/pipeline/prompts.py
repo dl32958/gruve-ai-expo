@@ -231,15 +231,19 @@ General hints:
 - Unexpected "?" characters inside a word, number, or phrase are strong evidence of OCR corruption.
 - Strange symbol substitutions, broken fragments, or malformed character sequences may indicate OCR corruption even if part of the value is still readable.
 - A value can still be semantically plausible while being OCR-corrupted.
+- For structured values such as dates, IDs, phone numbers, or totals, missing separators, merged segments, or broken formatting may indicate OCR corruption even when most characters are still readable.
 - Clean punctuation alone does not imply corruption.
 - Normal delimiters such as commas, periods, slashes, hyphens, ampersands, or parentheses are not OCR corruption by themselves.
 
 Examples:
 - absent:
   "2023-08-15"
+  "12/02/2018"
   "123 Main Street"
   "Total: 45.90"
 - possible:
+  "1202/2018"
+  "12/022018"
   "2O23-08-15"
   "123 Main Stree1"
   "Tota1: 45.90"
