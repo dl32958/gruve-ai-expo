@@ -9,6 +9,13 @@ function buildApiUrl(path: string) {
   return `${API_BASE}${path}`;
 }
 
+export function buildArtifactUrl(path: string | undefined) {
+  if (!path) return "";
+  if (/^https?:\/\//i.test(path)) return path;
+  if (!API_BASE) return path;
+  return `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 async function createUploadJob({
   file,
   docCategory,

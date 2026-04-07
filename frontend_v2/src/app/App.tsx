@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Download, Moon, Sun, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { adaptBackendRunResponse } from "./adapters";
-import { runPipelineUpload } from "./api";
+import { buildArtifactUrl, runPipelineUpload } from "./api";
 import { ThemeProvider, useTheme } from "./ThemeContext";
 import { dark, light } from "./tokens";
 import { ExplainDebugDrawer } from "./components/ExplainDebugDrawer";
@@ -148,6 +148,7 @@ function AppShell() {
   const passCount = result?.fields.filter((field) => field.field_state === "pass").length ?? 0;
   const reviewCount = result?.fields.filter((field) => field.field_state === "review_needed").length ?? 0;
   const failCount = result?.fields.filter((field) => field.field_state === "fail").length ?? 0;
+  const annotatedImageUrl = result?.metadata.annotated_image_url ? buildArtifactUrl(result.metadata.annotated_image_url) : "";
 
   const resultLabel = result?.metadata
     ? `${result.metadata.doc_category}${result.metadata.image_path ? ` · ${result.metadata.image_path}` : ""}`
@@ -420,9 +421,9 @@ function AppShell() {
                         </div>
                       </div>
                       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                        {result.metadata.annotated_image_url ? (
+                        {annotatedImageUrl ? (
                           <a
-                            href={result.metadata.annotated_image_url}
+                            href={annotatedImageUrl}
                             download
                             style={{
                               padding: "6px 14px",
