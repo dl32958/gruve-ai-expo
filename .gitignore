@@ -29,5 +29,9 @@ venv/
 # data
 dataset/
 outputs_engine_b/
+data/dev/
+data/uploads/
+data/artifacts/debug/
+data/artifacts/annotated/
 
 output/

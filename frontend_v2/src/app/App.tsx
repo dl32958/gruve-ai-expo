@@ -122,16 +122,33 @@ function AppShell() {
     setSelectedField(null);
   };
 
-  const downloadFinalResult = () => {
-    if (!result) return;
-    const blob = new Blob([JSON.stringify(result.raw_result, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
+  const triggerBrowserDownload = (url: string, filename?: string) => {
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "final_result.json";
+    if (filename) {
+      anchor.download = filename;
+    }
     anchor.click();
+  };
+
+  const exportAnalysisArtifacts = () => {
+    if (!result) return;
+
+    const blob = new Blob([JSON.stringify(result.raw_result, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    triggerBrowserDownload(url, "final_result.json");
+
+    if (annotatedImageUrl) {
+      const imageFilename = result.metadata.annotated_image
+        ? result.metadata.annotated_image.split("/").pop() || "annotated_image"
+        : "annotated_image";
+      window.setTimeout(() => {
+        triggerBrowserDownload(annotatedImageUrl, imageFilename);
+      }, 150);
+    }
+
     URL.revokeObjectURL(url);
-    toast.success("Downloaded final_result.json");
+    toast.success(annotatedImageUrl ? "Exported final JSON and annotation image" : "Exported final_result.json");
   };
 
   const pendingCount = queue.filter((item) => item.status === "pending").length;
@@ -280,7 +297,7 @@ function AppShell() {
                     e.currentTarget.style.background = tokens.goldFaint;
                     e.currentTarget.style.borderColor = tokens.border;
                   }}
-                  onClick={downloadFinalResult}
+                  onClick={exportAnalysisArtifacts}
                 >
                   <Download size={11} /> Export
                 </button>
@@ -421,33 +438,6 @@ function AppShell() {
                         </div>
                       </div>
                       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                        {annotatedImageUrl ? (
-                          <a
-                            href={annotatedImageUrl}
-                            download
-                            style={{
-                              padding: "6px 14px",
-                              fontSize: "11px",
-                              letterSpacing: "0.08em",
-                              border: `1px solid ${tokens.border}`,
-                              color: tokens.gold,
-                              background: "transparent",
-                              cursor: "pointer",
-                              fontFamily: "var(--font-mono)",
-                              textTransform: "uppercase",
-                              transition: "all 0.15s",
-                              textDecoration: "none",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.background = tokens.goldDim;
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.background = "transparent";
-                            }}
-                          >
-                            Download Annotation
-                          </a>
-                        ) : null}
                         <button
                           onClick={handleNewChat}
                           style={{

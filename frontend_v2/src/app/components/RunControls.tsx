@@ -1,24 +1,13 @@
 import { Play, Loader2, Settings2 } from 'lucide-react';
-import type { PipelineStep } from '../types';
 import type { Tokens } from '../tokens';
 
 interface Props {
-  onRun: () => void; isRunning: boolean; currentStep: PipelineStep | null;
+  onRun: () => void; isRunning: boolean; currentStep: number | null;
   debugMode: boolean; onDebugModeChange: (v: boolean) => void;
   canRun: boolean; pendingCount?: number; tokens: Tokens;
 }
 
-const STEPS = [
-  { step: 1, label: 'OCR' },
-  { step: 2, label: 'Const' },
-  { step: 3, label: 'Extr' },
-  { step: 4, label: 'Synth' },
-  { step: 5, label: 'Valid' },
-];
-
 export function RunControls({ onRun, isRunning, currentStep, debugMode, onDebugModeChange, canRun, pendingCount = 0, tokens: t }: Props) {
-  const progress = currentStep ? (currentStep / 5) * 100 : 0;
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontFamily: 'var(--font-mono)' }}>
       {/* Debug toggle */}
@@ -49,23 +38,22 @@ export function RunControls({ onRun, isRunning, currentStep, debugMode, onDebugM
           : <><Play size={13} /> {pendingCount > 1 ? `Run Analysis — ${pendingCount} files` : 'Run Analysis'}</>}
       </button>
 
-      {/* Progress */}
-      {isRunning && currentStep && (
+      {/* Running state */}
+      {isRunning && (
         <div style={{ border: `1px solid ${t.border}`, background: t.bgCard, padding: '14px', transition: 'background 0.3s' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-            <span style={{ fontSize: '11px', color: t.gold, letterSpacing: '0.06em' }}>{STEPS[currentStep - 1].label}</span>
-            <span style={{ fontSize: '10px', color: t.textGhost }}>{currentStep}/5</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <span style={{ fontSize: '11px', color: t.gold, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              Job Running
+            </span>
+            <span style={{ fontSize: '10px', color: t.textGhost }}>
+              {pendingCount > 1 ? `${pendingCount} files queued` : 'Processing 1 file'}
+            </span>
           </div>
-          <div style={{ height: '2px', background: t.bgInput, marginBottom: '10px' }}>
-            <div style={{ height: '100%', background: t.gold, width: `${progress}%`, transition: 'width 0.3s', boxShadow: `0 0 8px ${t.goldDim}` }} />
+          <div style={{ height: '2px', background: t.bgInput, marginBottom: '10px', overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: '100%', background: t.goldDim, boxShadow: `0 0 8px ${t.goldDim}` }} />
           </div>
-          <div style={{ display: 'flex', gap: '4px' }}>
-            {STEPS.map(({ step, label }) => (
-              <div key={step} style={{ flex: 1, textAlign: 'center' }}>
-                <div style={{ height: '2px', marginBottom: '4px', background: currentStep > step ? t.green : currentStep === step ? t.gold : t.bgInput, boxShadow: currentStep === step ? `0 0 6px ${t.goldDim}` : 'none', transition: 'all 0.3s' }} />
-                <div style={{ fontSize: '9px', color: currentStep >= step ? t.textMuted : t.textGhost, letterSpacing: '0.06em' }}>{label}</div>
-              </div>
-            ))}
+          <div style={{ fontSize: '10px', color: t.textGhost, lineHeight: 1.6 }}>
+            The backend is processing this job asynchronously. On the HPC environment, inference can take a while even though exact stage progress is not exposed yet.
           </div>
         </div>
       )}
