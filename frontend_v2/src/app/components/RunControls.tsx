@@ -53,7 +53,7 @@ export function RunControls({ onRun, isRunning, currentStep, debugMode, onDebugM
             <div style={{ height: '100%', width: '100%', background: t.goldDim, boxShadow: `0 0 8px ${t.goldDim}` }} />
           </div>
           <div style={{ fontSize: '10px', color: t.textGhost, lineHeight: 1.6 }}>
-            The backend is processing this job asynchronously. On the HPC environment, inference can take a while even though exact stage progress is not exposed yet.
+            Running on the backend. This may take a moment.
           </div>
         </div>
       )}

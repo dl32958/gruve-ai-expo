@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { PanelLeftClose, PanelLeft, Trash2, Plus, FileText } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
+import { formatRunTimestamp } from '../time';
 import type { RunResult } from '../types';
 import type { Tokens } from '../tokens';
 
@@ -13,6 +14,11 @@ interface Props {
 
 export function HistorySidebar({ history, currentResult, onSelectHistory, onDeleteHistory, isCollapsed, onToggleCollapse, onNewChat, tokens: t }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
+
+  const getImageName = (imagePath?: string) => {
+    if (!imagePath) return "";
+    return imagePath.split("/").pop() || imagePath;
+  };
 
   const dotColor = (r: RunResult) => {
     if (r.fields.some(f => f.field_state === 'fail')) return t.red;
@@ -71,10 +77,10 @@ export function HistorySidebar({ history, currentResult, onSelectHistory, onDele
                     {/* category · filename */}
                     <div style={{ fontSize: '11px', fontWeight: 700, color: isActive ? t.gold : t.text, letterSpacing: '0.04em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {item.metadata.doc_category}
-                      {item.metadata.image_path && <span style={{ color: t.textMuted, fontWeight: 400 }}> · {item.metadata.image_path}</span>}
+                      {item.metadata.image_path && <span style={{ color: t.textMuted, fontWeight: 400 }}> · {getImageName(item.metadata.image_path)}</span>}
                     </div>
                     <div style={{ fontSize: '10px', color: t.textGhost, marginTop: '2px' }}>
-                      {item.metadata.timestamp} · {item.fields.length}f
+                      {formatRunTimestamp(item.metadata.timestamp)} · {item.fields.length}f
                     </div>
                   </div>
                   {hovered === idx && (

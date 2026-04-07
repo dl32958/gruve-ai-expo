@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { adaptBackendRunResponse } from "./adapters";
 import { buildArtifactUrl, runPipelineUpload } from "./api";
 import { ThemeProvider, useTheme } from "./ThemeContext";
+import { formatRunTimestamp } from "./time";
 import { dark, light } from "./tokens";
 import { ExplainDebugDrawer } from "./components/ExplainDebugDrawer";
 import { FieldDrawer } from "./components/FieldDrawer";
@@ -166,9 +167,11 @@ function AppShell() {
   const reviewCount = result?.fields.filter((field) => field.field_state === "review_needed").length ?? 0;
   const failCount = result?.fields.filter((field) => field.field_state === "fail").length ?? 0;
   const annotatedImageUrl = result?.metadata.annotated_image_url ? buildArtifactUrl(result.metadata.annotated_image_url) : "";
-
+  const inputImageName = result?.metadata.image_path
+    ? result.metadata.image_path.split("/").pop() || result.metadata.image_path
+    : "";
   const resultLabel = result?.metadata
-    ? `${result.metadata.doc_category}${result.metadata.image_path ? ` · ${result.metadata.image_path}` : ""}`
+    ? `${result.metadata.doc_category}${inputImageName ? ` · ${inputImageName}` : ""}`
     : "";
 
   const headerBtn: React.CSSProperties = {
@@ -434,7 +437,7 @@ function AppShell() {
                         </div>
                         <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "22px", color: tokens.text }}>{result.fields.length} Fields Extracted</div>
                         <div style={{ fontSize: "11px", color: tokens.textMuted, marginTop: "2px" }}>
-                          {resultLabel} · {result.metadata.timestamp}
+                          {resultLabel} · {formatRunTimestamp(result.metadata.timestamp)}
                         </div>
                       </div>
                       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
