@@ -130,6 +130,16 @@ Start the FastAPI service:
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
+### Model Path Configuration
+
+Before running the backend, you must configure the local paths to the required models in:
+
+```text
+backend/app/config.py
+```
+
+In particular, make sure the model path settings point to valid local checkpoints in your own environment, such as the extraction engines and evaluator model paths. These paths are not portable across machines and should be updated by each user before running the pipeline.
+
 ### Frontend
 
 The current frontend lives in `frontend/`.
