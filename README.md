@@ -31,7 +31,7 @@ The final result is not just an extracted field value, but a structured decision
 
 At a high level, the system consists of:
 
-- `frontend_v2/`: the current React/Vite UI for upload, analysis, result browsing, export, and debug viewing
+- `frontend/`: the current React/Vite UI for upload, analysis, result browsing, export, and debug viewing
 - `backend/`: a FastAPI service that exposes job APIs and runs the document judgment pipeline
 - OCR + model engines: OCR produces raw text and grounding information; multiple LLM engines then perform extraction and judgment
 
@@ -74,7 +74,7 @@ The main pipeline is organized into the following stages:
 ```text
 .
 ├── backend/            # FastAPI backend and pipeline orchestration
-├── frontend_v2/        # current UI integrated with real backend APIs
+├── frontend/           # current UI integrated with real backend APIs
 ├── data/
 │   ├── dev/            # local test documents (gitignored)
 │   ├── uploads/        # runtime uploads (gitignored)
@@ -130,12 +130,12 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ### Frontend
 
-The current frontend lives in `frontend_v2/`.
+The current frontend lives in `frontend/`.
 
 Install dependencies:
 
 ```bash
-cd frontend_v2
+cd frontend
 npm install
 ```
 
@@ -157,7 +157,7 @@ npx vite preview --host 0.0.0.0 --port 5173
 Set the backend base URL in:
 
 ```text
-frontend_v2/.env.local
+frontend/.env.local
 ```
 
 Example:
