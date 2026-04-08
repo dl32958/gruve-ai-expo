@@ -17,6 +17,8 @@ Instead of relying on a single model output, the system uses:
 
 The final result is not just an extracted field value, but a structured decision that includes confidence, OCR-related signals, selection rationale, and downloadable artifacts for inspection.
 
+The project was developed and evaluated in the Northeastern University (NEU) HPC environment, where the backend inference workflow runs with GPU-backed resources.
+
 ## Key Features
 
 - Multi-engine field extraction for structured document understanding
@@ -168,6 +170,18 @@ VITE_API_BASE=https://your-backend-host
 
 In HPC / Open OnDemand environments, this should point to the backend reverse-proxy URL.
 
+## Environment Files
+
+This project currently uses two Conda environment specifications:
+
+- `env_backend.yml`  
+  Main backend environment for FastAPI, pipeline orchestration, and the primary inference workflow
+
+- `env_frontend.yml`  
+  Auxiliary environment used for the frontend-side runtime setup in the NEU HPC workflow
+
+The project was developed in the NEU HPC environment, so these environment files reflect the practical runtime setup used during development and experimentation.
+
 ## Data and Artifacts
 
 The project uses the following runtime directories:
@@ -227,3 +241,7 @@ The current UI also supports:
 ## Acknowledgments
 
 This project was developed in collaboration with [Gruve AI](https://gruve.ai/) as part of a study on improving the trustworthiness of LLM outputs for enterprise document understanding workflows.
+
+We thank [Prof. Ruidong Ma](https://coe.northeastern.edu/people/ma-ruidong/) for his guidance and support throughout the project.
+
+We also thank Northeastern University for providing HPC resources that supported development, experimentation, and GPU-backed execution for this project.
