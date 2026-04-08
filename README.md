@@ -28,6 +28,7 @@ The project was developed and evaluated in the Northeastern University (NEU) HPC
 - Async job-based backend workflow for long-running inference
 - Annotated artifact export and structured debug retrieval
 - Full-stack interface with a React frontend and FastAPI backend
+- Supports multiple document categories, including receipts, invoices, and menus, through field-configurable extraction and judgment workflows
 
 ## Screenshots
 
