@@ -270,7 +270,7 @@ function AppShell() {
                   color: tokens.text,
                 }}
               >
-                GRUVE
+                Groov Gavel
               </div>
               <div style={{ fontSize: "10px", color: tokens.textMuted, letterSpacing: "0.12em", textTransform: "uppercase", marginTop: "-2px" }}>
                 Document Intelligence
